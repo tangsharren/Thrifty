@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "218389215146",
+    "project_id": "thrifty-b73d3",
+    "storage_bucket": "thrifty-b73d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:218389215146:android:7e780fe12737dd769b5dd3",
+        "android_client_info": {
+          "package_name": "my.edu.tarc.thrifty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "218389215146-p4voohdl2vuka5aavi637pdkgh71emdt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD38Ed4FxMxQ7PhaS41AAdUoATLIdDDeYQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "218389215146-p4voohdl2vuka5aavi637pdkgh71emdt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
