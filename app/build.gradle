@@ -37,6 +37,7 @@ android {
     buildFeatures{
         viewBinding true
     }
+
     packagingOptions {
         pickFirst '**'
         exclude 'META-INF/*.SF'
