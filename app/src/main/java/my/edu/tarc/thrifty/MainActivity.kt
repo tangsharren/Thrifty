@@ -1,17 +1,17 @@
 package my.edu.tarc.thrifty
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.PopupMenu
 import androidx.activity.OnBackPressedCallback
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 import my.edu.tarc.thrifty.activity.LoginActivity
 import my.edu.tarc.thrifty.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -20,6 +20,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val user = FirebaseAuth.getInstance().getCurrentUser()
+        user?.let {
+            // Name, email address, and profile photo Url
+//            val name = it.displayName
+            val email = it.email
+            Log.d("MyApp",email!!)
+        }
 
         if(FirebaseAuth.getInstance().currentUser == null){
             startActivity(Intent(this,LoginActivity::class.java))
