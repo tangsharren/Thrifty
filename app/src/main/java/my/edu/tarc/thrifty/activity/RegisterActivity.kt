@@ -131,12 +131,13 @@ class RegisterActivity : AppCompatActivity() {
             .create()
         builder.show()
 
-        val preferences = this.getSharedPreferences("user", MODE_PRIVATE)
-        val editor = preferences.edit()
-
-        editor.putString("email", binding.regEmail.text.toString().lowercase())
-        editor.putString("name", binding.userName.text.toString())
-        editor.apply()
+        //Shared preference is set in Main ady
+//        val preferences = this.getSharedPreferences("user", MODE_PRIVATE)
+//        val editor = preferences.edit()
+//
+////        editor.putString("email", binding.regEmail.text.toString().lowercase())
+//        editor.putString("name", binding.userName.text.toString())
+//        editor.apply()
         val data = UserModel(
             userName = binding.userName.text.toString(),
             userEmail = binding.regEmail.text.toString().lowercase(),

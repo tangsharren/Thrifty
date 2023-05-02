@@ -16,4 +16,6 @@ data class ProductModel (
     val productImage:String? = "",
     @ColumnInfo("productSp")
     val productSp:String? = "",
+    @ColumnInfo("carbon")
+    val carbon:String? = "",
 )

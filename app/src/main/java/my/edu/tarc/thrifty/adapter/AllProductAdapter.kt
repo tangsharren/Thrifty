@@ -15,11 +15,10 @@ import my.edu.tarc.thrifty.databinding.LayoutProductItemBinding
 import my.edu.tarc.thrifty.fragment.AllProductFragmentDirections
 import my.edu.tarc.thrifty.fragment.HomeFragmentDirections
 import my.edu.tarc.thrifty.model.AddProductModel
-//For the product recycler view in home page
-//Used by homeFragment's product recycler
+//Used by allProductFragment's product recycler
 
-class ProductAdapter (val context: Context, val list:ArrayList<AddProductModel>)
-    :RecyclerView.Adapter<ProductAdapter.ProductViewHolder>(){
+class AllProductAdapter (val context: Context, val list:ArrayList<AddProductModel>)
+    :RecyclerView.Adapter<AllProductAdapter.ProductViewHolder>(){
         inner class ProductViewHolder(val binding:LayoutProductItemBinding)
             :RecyclerView.ViewHolder(binding.root)
 
@@ -38,18 +37,20 @@ class ProductAdapter (val context: Context, val list:ArrayList<AddProductModel>)
         holder.binding.btnPrice.text = "RM" + data.productSp
 
         holder.itemView.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToProductDetailsFragment(
-                data.productCategory!!,
-                list[position].productId!!
-            )
+            val action =
+                AllProductFragmentDirections.actionAllProductFragmentToProductDetailsFragment(
+                    data.productCategory!!,
+                    list[position].productId!!
+                )
             findNavController(holder.itemView).navigate(action)
         }
 
         holder.binding.btnPrice.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToProductDetailsFragment(
-                data.productCategory!!,
-                list[position].productId!!
-            )
+            val action =
+                AllProductFragmentDirections.actionAllProductFragmentToProductDetailsFragment(
+                    data.productCategory!!,
+                    list[position].productId!!
+                )
             findNavController(holder.itemView).navigate(action)
         }
     }

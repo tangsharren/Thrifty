@@ -9,16 +9,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.PhoneAuthCredential
-import com.google.firebase.auth.PhoneAuthOptions
-import com.google.firebase.auth.PhoneAuthProvider
 import my.edu.tarc.thrifty.MainActivity
 import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.databinding.ActivityLoginBinding
-import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -51,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
 
                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                     if (it.isSuccessful) {
+                        Toast.makeText(this, "Logged in successfully", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                     } else {
@@ -67,14 +62,20 @@ class LoginActivity : AppCompatActivity() {
         binding.tvForgot.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             val view = layoutInflater.inflate(R.layout.dialog_forgot, null)
-            val userEmail = view.findViewById<EditText>(R.id.editBox)
+            val userEmail = view.findViewById<EditText>(R.id.etEmail)
 
             builder.setView(view)
             val dialog = builder.create()
 
             view.findViewById<Button>(R.id.btnReset).setOnClickListener {
-                compareEmail(userEmail)
-                dialog.dismiss()
+                if(view.findViewById<EditText>(R.id.etEmail).text.isNullOrEmpty()){
+                    Toast.makeText(this,"Please provide your email address",Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    compareEmail(userEmail)
+                    dialog.dismiss()
+                }
+
             }
             view.findViewById<Button>(R.id.btnCancel).setOnClickListener {
                 dialog.dismiss()
@@ -91,7 +92,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    //Outside onCreate
     private fun compareEmail(email: EditText) {
         if (email.text.toString().isEmpty()) {
             return

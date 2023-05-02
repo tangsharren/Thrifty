@@ -2,11 +2,16 @@ package my.edu.tarc.thrifty.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.activity.AddressActivity
 import my.edu.tarc.thrifty.activity.CategoryActivity
@@ -18,7 +23,6 @@ import my.edu.tarc.thrifty.roomdb.ProductModel
 class CartFragment : Fragment() {
     private lateinit var binding :FragmentCartBinding
     private lateinit var list : ArrayList<String>
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,20 +51,38 @@ class CartFragment : Fragment() {
     }
 
     private fun totalCost(data: List<ProductModel>?) {
-        var total = 0
+        var carbon = 0.0
+        var total = 0.0
         for(item in data!!){
-            total += item.productSp!!.toInt()
+            total += item.productSp!!.toFloat()
+            carbon += item.carbon!!.toFloat()
         }
-        binding.textView12.text = "Total item in cart is ${data.size}"
-        binding.textView13.text = "Total Cost : RM $total"
+        binding.tvCarbonSaved.text = String.format("Total Carbon Footprint Saved : %.2f kg", carbon)
+        binding.tvItemCount.text = "Total item In Cart : ${data.size}"
+        binding.tvTotal.text = String.format("Total Cost : RM %.2f", total)
+        binding.btnCheckout.setOnClickListener {
+            if(total == 0.0){
+                Toast.makeText(requireContext(),"Please add product to cart",Toast.LENGTH_SHORT).show()
+            }
+            else{
+                Toast.makeText(requireContext(),"Please Confirm Your address ",Toast.LENGTH_SHORT).show()
+//            // To create a fragment with arguments
+//            val fragment = AddressFragment()
+//            val b = Bundle()
+//            b.putStringArrayList("productIds",list)
+//            b.putString("totalCost",total.toString())
+//            fragment.arguments = b
+                Log.d("MyApp",list.toTypedArray().toString())
+                val action = CartFragmentDirections.actionCartFragmentToAddressFragment(list.toTypedArray(), total.toString())
 
-        binding.checkout.setOnClickListener {
-            val intent = Intent(context, AddressActivity::class.java)
-            val b = Bundle()
-            b.putStringArrayList("productIds",list)
-            b.putString("totalCost",total.toString())
-            intent.putExtras(b)
-            startActivity(intent)
+                findNavController().navigate(action)
+
+
+                // To get the arguments in the fragment
+//            val args = requireArguments()
+//            val value = args.getString("key")
+            }
+
         }
     }
 

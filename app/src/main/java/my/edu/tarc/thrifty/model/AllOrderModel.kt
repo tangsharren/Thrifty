@@ -7,4 +7,7 @@ data class AllOrderModel(
     val status: String?= "",
     val productId: String?= "",
     val price: String?= "",
+    val carbon: String?= "",
+    val orderDate: String?="",
+    val orderTime:String?="",
 )

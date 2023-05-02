@@ -11,4 +11,5 @@
     <color name="red">#B80C0C</color>
     <color name="colorPrimary">#AB6EF4</color>
     <color name="colorSecondary">#FFBB86FC</color>
+    <color name="darkPurple">#FF6322B1</color>
 </resources>

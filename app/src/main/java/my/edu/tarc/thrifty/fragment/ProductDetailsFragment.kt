@@ -1,11 +1,16 @@
-package my.edu.tarc.thrifty.activity
+package my.edu.tarc.thrifty.fragment
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.google.firebase.firestore.ktx.firestore
@@ -14,21 +19,27 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import my.edu.tarc.thrifty.MainActivity
 import my.edu.tarc.thrifty.R
-import my.edu.tarc.thrifty.databinding.ActivityProductDetailsBinding
+import my.edu.tarc.thrifty.databinding.FragmentProductDetailsBinding
 import my.edu.tarc.thrifty.roomdb.AppDatabase
 import my.edu.tarc.thrifty.roomdb.ProductDao
 import my.edu.tarc.thrifty.roomdb.ProductModel
 
-class ProductDetailsActivity : AppCompatActivity() {
-    private lateinit var binding:ActivityProductDetailsBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityProductDetailsBinding.inflate(layoutInflater)
+class ProductDetailsFragment : Fragment() {
+    private lateinit var binding : FragmentProductDetailsBinding
+    private val args : ProductDetailsFragmentArgs by navArgs()
 
-        getProductDetails(intent.getStringExtra("id"))
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        binding = FragmentProductDetailsBinding.inflate(layoutInflater)
+
+//        getProductDetails(intent.getStringExtra("id"))
+        getProductDetails(args.id)
+
+        return binding.root
     }
-
     private fun getProductDetails(proId:String?) {
         Firebase.firestore.collection("products")
             .document(proId!!).get().addOnSuccessListener {
@@ -45,18 +56,18 @@ class ProductDetailsActivity : AppCompatActivity() {
                 Log.d("MyApp",list.toString())
                 val slideList = ArrayList<SlideModel>()
                 for(data in list){
-                    slideList.add(SlideModel(data,ScaleTypes.CENTER_CROP))
+                    slideList.add(SlideModel(data, ScaleTypes.CENTER_CROP))
                 }
 
                 cartAction(proId,name,productSp,it.getString("productCoverImg"),productCarbon)
                 binding.imageSlider.setImageList(slideList)
             }.addOnFailureListener {
-                Toast.makeText(this,"Something went wrong",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),"Something went wrong", Toast.LENGTH_SHORT).show()
             }
     }
 
     private fun cartAction(proId: String, name: String?, productSp: String?, coverImg: String?,carbon: String?) {
-        val productDao = AppDatabase.getInstance(this).productDao()
+        val productDao = AppDatabase.getInstance(requireContext()).productDao()
         if(productDao.isExit(proId)!=null)
             binding.tvAddToCart.text = "Go to Cart"
         else
@@ -70,7 +81,7 @@ class ProductDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun addToCart(productDao: ProductDao, proId: String, name: String?, productSp: String?, coverImg: String?,carbon: String?) {
+    private fun addToCart(productDao: ProductDao, proId: String, name: String?, productSp: String?, coverImg: String?, carbon: String?) {
         val data = ProductModel(proId,name,coverImg,productSp,carbon)
         Log.d("MyApp",carbon!!)
         lifecycleScope.launch(Dispatchers.IO){
@@ -80,12 +91,14 @@ class ProductDetailsActivity : AppCompatActivity() {
     }
 
     private fun openCart() {
-       val preference = this.getSharedPreferences("info", MODE_PRIVATE)
+        val preference = requireContext().getSharedPreferences("info", AppCompatActivity.MODE_PRIVATE)
         val editor = preference.edit()
         editor.putBoolean("isCart",true)
         editor.apply()
 
-        startActivity(Intent(this,MainActivity::class.java))
-        finish()
+//        startActivity(Intent(this, MainActivity::class.java))
+//        finish()
+        val intent = Intent(requireContext(),MainActivity::class.java)
+        startActivity(intent)
     }
 }

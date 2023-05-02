@@ -8,20 +8,129 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="my.edu.tarc.thrifty.fragment.HomeFragment"
-        android:label="fragment_home"
+        android:label="Home Page"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_cartFragment"
             app:destination="@id/cartFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_allProductFragment"
+            app:destination="@id/allProductFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_homeFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
         android:name="my.edu.tarc.thrifty.fragment.CartFragment"
-        android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" />
+        android:label="Shopping Cart"
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_cartFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+        <action
+            android:id="@+id/action_cartFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/moreFragment"
         android:name="my.edu.tarc.thrifty.fragment.MoreFragment"
-        android:label="fragment_more"
-        tools:layout="@layout/fragment_more" />
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_more" >
+        <action
+            android:id="@+id/action_moreFragment_to_allOrderFragment"
+            app:destination="@id/allOrderFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_listingFragment"
+            app:destination="@id/listingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/allOrderFragment"
+        android:name="my.edu.tarc.thrifty.fragment.AllOrderFragment"
+        android:label="All Orders"
+        tools:layout="@layout/fragment_all_order" />
+    <fragment
+        android:id="@+id/allProductFragment"
+        android:name="my.edu.tarc.thrifty.fragment.AllProductFragment"
+        android:label="All Products"
+        tools:layout="@layout/fragment_all_product" >
+        <action
+            android:id="@+id/action_allProductFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addressFragment"
+        android:name="my.edu.tarc.thrifty.fragment.AddressFragment"
+        android:label="Edit Address"
+        tools:layout="@layout/fragment_address" >
+        <argument
+            android:name="productIds"
+            app:argType="string[]" />
+        <argument
+            android:name="totalCost"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_addressFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="my.edu.tarc.thrifty.fragment.CheckoutFragment"
+        android:label="Checkout"
+        tools:layout="@layout/fragment_checkout" >
+        <argument
+            android:name="productIds"
+            app:argType="string[]" />
+        <argument
+            android:name="totalCost"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/productDetailsFragment"
+        android:name="my.edu.tarc.thrifty.fragment.ProductDetailsFragment"
+        android:label="Product Details"
+        tools:layout="@layout/fragment_product_details" >
+        <argument
+            android:name="cat"
+            app:argType="string" />
+        <argument android:name="id"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="my.edu.tarc.thrifty.fragment.CategoryFragment"
+        android:label="Category Products"
+        tools:layout="@layout/fragment_category" >
+        <argument
+            android:name="cat"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_categoryFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listingFragment"
+        android:name="my.edu.tarc.thrifty.fragment.ListingFragment"
+        android:label="Listings"
+        tools:layout="@layout/fragment_listing" >
+        <action
+            android:id="@+id/action_listingFragment_to_listingDetailsFragment"
+            app:destination="@id/listingDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listingDetailsFragment"
+        android:name="my.edu.tarc.thrifty.fragment.ListingDetailsFragment"
+        android:label="Listing Details"
+        tools:layout="@layout/fragment_listing_details" />
 </navigation>

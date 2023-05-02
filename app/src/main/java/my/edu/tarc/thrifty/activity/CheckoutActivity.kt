@@ -3,6 +3,7 @@ package my.edu.tarc.thrifty.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.android.volley.toolbox.StringRequest
@@ -21,9 +22,11 @@ import my.edu.tarc.thrifty.roomdb.ProductModel
 import org.json.JSONObject
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
+import java.text.SimpleDateFormat
+import java.util.*
 
-class CheckoutActivity : AppCompatActivity() ,PaymentResultListener{
-//class CheckoutActivity : AppCompatActivity() {
+//class CheckoutActivity : AppCompatActivity() ,PaymentResultListener{
+class CheckoutActivity : AppCompatActivity() {
     private lateinit var binding :ActivityCheckoutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,39 +34,8 @@ class CheckoutActivity : AppCompatActivity() ,PaymentResultListener{
         binding = ActivityCheckoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val checkout = Checkout()
-        checkout.setKeyID("rzp_live_deTONJhwSZzH53")
-
-        val price = intent.getStringExtra("totalCost")
-
-        try {
-            val options = JSONObject()
-            options.put("name","Thrifty")
-            options.put("description","Preloved Saver")
-            options.put("image","https://s3.amazonaws.com/rzp-mobile/images/rzp.jpg")
-            options.put("theme.color","#AB6EF4")
-            options.put("currency","INR");
-            options.put("order_id", "order_DBJOWzybf0sJbb");
-            options.put("amount",(price!!.toInt()*100))//pass amount in currency subunits;
-
-            val prefill = JSONObject()
-            prefill.put("email","tangs-wp19@student.tarc.edu.my")
-            prefill.put("contact","60179997754")
-
-            options.put("prefill",prefill)
-            checkout.open(this,options)
-        }catch (e: Exception){
-            Toast.makeText(this,"Something went wrong " ,Toast.LENGTH_SHORT).show()
-            e.printStackTrace()
-        }
-    }
-    override fun onPaymentSuccess(p0:String?){
-        Toast.makeText(this,"Payment Success",Toast.LENGTH_SHORT).show()
-
+        Toast.makeText(this,"Order Placed",Toast.LENGTH_SHORT).show()
         uploadData()
-    }
-    override fun onPaymentError(p0: Int, p1: String?) {
-        Toast.makeText(this,"Payment Error",Toast.LENGTH_SHORT).show()
     }
     private fun uploadData() {
         val id = intent.getStringArrayListExtra("productIds")
@@ -74,7 +46,13 @@ class CheckoutActivity : AppCompatActivity() ,PaymentResultListener{
 
     private fun fetchData(productId: String?) {
         val dao = AppDatabase.getInstance(this).productDao()
+        val dateFormatter = SimpleDateFormat("dd/MM/yyyy")
+        val currentDate = dateFormatter.format(Date())
 
+        val timeFormatter = SimpleDateFormat("HH:mm:ss")
+        val currentTime = timeFormatter.format(Date())
+        Log.d("MyApp",currentDate.toString())
+        Log.d("MyApp",currentTime.toString())
         Firebase.firestore.collection("products")
             .document(productId!!).get().addOnSuccessListener {
                 lifecycleScope.launch(Dispatchers.IO){
@@ -82,18 +60,24 @@ class CheckoutActivity : AppCompatActivity() ,PaymentResultListener{
                 }
                 saveData(it.getString("productName"),
                 it.getString("productSp"),
-                productId)
+                productId,
+                it.getString("carbon"),
+                currentDate.toString(),
+                currentTime.toString())
             }
     }
 
-    private fun saveData(name: String?, price: String?, productId: String) {
+    private fun saveData(name: String?, price: String?, productId: String,carbon: String?,orderDate: String?,orderTime: String?) {
         val preferences = this.getSharedPreferences("user", MODE_PRIVATE)
         val data = hashMapOf<String,Any>()
         data["name"] = name!!
         data["price"] = price!!
         data["productId"] = productId
         data["status"] = "Ordered"
-        data["userId"] = preferences.getString("number","")!!
+        data["userId"] = preferences.getString("email","")!!
+        data["carbon"] = carbon!!
+        data["orderDate"] = orderDate!!
+        data["orderTime"] = orderTime!!
 
         val firestore = Firebase.firestore.collection("allOrders")
         val key = firestore.document().id

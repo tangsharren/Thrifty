@@ -23,11 +23,14 @@
                 android:layout_height="190dp"
                 app:cardCornerRadius="20dp">
 
-                <ImageView
+                <com.denzcoskun.imageslider.ImageSlider
                     android:id="@+id/slider"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitCenter"
+                    android:layout_height="250dp"
+                    app:iss_auto_cycle="true"
+                    app:iss_delay="1000"
+                    app:iss_period="3000"
+                    app:iss_text_align="CENTER"
                     app:srcCompat="@drawable/thrift_benefit" />
             </androidx.cardview.widget.CardView>
 
@@ -46,15 +49,6 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="See All"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -73,7 +67,7 @@
 
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/tvCarbonCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Shop by Products"
@@ -82,12 +76,12 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/tvAllProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:text="See All"
-                    android:textColor="@color/black"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 

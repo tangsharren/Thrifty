@@ -8,7 +8,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="12dp"
-    tools:context=".activity.AddressActivity">
+    tools:context=".fragment.AddressFragment">
 
     <TextView
         android:layout_width="match_parent"

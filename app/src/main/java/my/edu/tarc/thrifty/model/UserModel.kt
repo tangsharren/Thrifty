@@ -4,8 +4,9 @@ data class UserModel (
     val userName: String? = "",
     val userEmail : String? = "",
     val userPassword : String? = "",
-    val village : String? = "",
+    val unitNo : String? = "",
     val state : String? = "",
-    val city : String? = "",
-    val pinCode : String? = ""
+    val street : String? = "",
+    val postcode : String? = "",
+    val profilePic: String?= "",
 )
