@@ -1,25 +1,27 @@
 package my.edu.tarc.thrifty.fragment
 
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.databinding.FragmentAddressBinding
 
 class AddressFragment : Fragment() {
-    private val args : AddressFragmentArgs by navArgs()
-//    val args = requireArguments()
-//val args = AddressFragmentArgs.fromBundle(requireArguments())
-//    private val userPrefs = UserPreferences(requireContext())
+
     private lateinit var binding :FragmentAddressBinding
     private lateinit var list : ArrayList<String>
+    private lateinit var preferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,15 +64,9 @@ class AddressFragment : Fragment() {
     }
 
     private fun storeData(postcode: String, street: String, state: String, unitNo: String) {
-        val email : String
-        val user = FirebaseAuth.getInstance().getCurrentUser()
-        user.let {
-            email = it!!.email!!
-        }
-        //get user from shared preference instead
-//        val userEmail = userPrefs.userEmail
-//        val user = preferences?.getString("user",)
-//        val userName = userPrefs.userName
+        preferences = requireActivity().getSharedPreferences("user", MODE_PRIVATE)
+        val email = preferences.getString("email", "")!!
+
         val map = hashMapOf<String,Any>()
         map["unitNo"] = unitNo
         map["state"] = state
@@ -81,23 +77,18 @@ class AddressFragment : Fragment() {
             .document(email)
             .update(map).addOnSuccessListener {
                 //to get args from cart fragment
-                val totalCost = args.totalCost
-                val list = args.productIds.toList()
-                val b = Bundle()
-                b.putStringArrayList("productIds",ArrayList(list))
-                if(totalCost!=null){
+                val previousFragment = findNavController().previousBackStackEntry?.destination?.id
+                if(previousFragment == R.id.cartFragment){
+                    val args : AddressFragmentArgs by navArgs()
+//                if(args.totalCost!=""){
                     var total = args.totalCost
-                    b.putString("totalCost",totalCost)
-
+                    val list = args.productIds!!.toList()
+                    val b = Bundle()
+                    b.putStringArrayList("productIds",ArrayList(list))
                     val action = AddressFragmentDirections.actionAddressFragmentToCheckoutFragment(list.toTypedArray(), total.toString())
-//                    it.findNavController().navigate(action)
                     findNavController().navigate(action)
-//                    val intent = Intent(this, CheckoutActivity::class.java)
-//                    intent.putExtras(b)
-//                    startActivity(intent)
                 }
                 Toast.makeText(requireContext(),"Address Updated", Toast.LENGTH_SHORT).show()
-
             }
 
             .addOnFailureListener {

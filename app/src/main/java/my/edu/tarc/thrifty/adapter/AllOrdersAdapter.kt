@@ -1,6 +1,7 @@
 package my.edu.tarc.thrifty.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.ViewGroup
@@ -33,11 +34,16 @@ class AllOrdersAdapter(val list : ArrayList<AllOrderModel> , val context : Conte
         holder.binding.orderTime.text = "Time: "+list[position].orderTime
         holder.binding.orderDate.text = "Date: "+list[position].orderDate
 
+        var totalCarbonSaved=0.0
+        for(item in list){
+            if(item.status != "Canceled"){
+                totalCarbonSaved += item.carbon!!.toDouble()
+            }
+        }
         when(list[position].status){
             "Ordered" -> {
                 holder.binding.productStatus.text = "Ordered"
             }
-
             "Dispatched" -> {
                 holder.binding.productStatus.text = "Dispatched"
             }
@@ -61,6 +67,7 @@ class AllOrdersAdapter(val list : ArrayList<AllOrderModel> , val context : Conte
             val dialog = builder.create()
             dialog.show()
         }
+//        Log.d("MyApp",totalCarbonSaved.toString())
     }
     fun updateStatus(str:String , doc:String){
         val data = hashMapOf<String, Any>()

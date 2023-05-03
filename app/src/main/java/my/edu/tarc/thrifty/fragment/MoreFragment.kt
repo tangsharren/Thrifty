@@ -1,14 +1,12 @@
 package my.edu.tarc.thrifty.fragment
 
 import android.app.Activity
-import android.app.Dialog
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
@@ -16,12 +14,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -34,8 +32,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import my.edu.tarc.thrifty.R
-import my.edu.tarc.thrifty.activity.AddressActivity
-import my.edu.tarc.thrifty.activity.CheckoutActivity
 import my.edu.tarc.thrifty.activity.LoginActivity
 import my.edu.tarc.thrifty.databinding.FragmentMoreBinding
 import java.util.*
@@ -53,6 +49,7 @@ class MoreFragment : Fragment() {
         if (it.resultCode == Activity.RESULT_OK) {
             imageUrl = it.data!!.data
             binding.profilePic.setImageURI(imageUrl)
+//            binding.profilePic.setImageResource(R.drawable.profile)
         }
     }
     override fun onCreateView(
@@ -61,10 +58,15 @@ class MoreFragment : Fragment() {
     ): View? {
         binding = FragmentMoreBinding.inflate(layoutInflater)
         firebaseAuth = FirebaseAuth.getInstance()
+//        if(getProfilePic()==0)
+//            binding.profilePic.setImageResource(R.drawable.profile)
+        getProfilePic()
 
         binding.tvUpdateAdd.setOnClickListener {
-            val addressIntent = Intent(context, AddressActivity::class.java)
-            startActivity(addressIntent)
+//            val addressIntent = Intent(context, AddressActivity::class.java)
+//            startActivity(addressIntent)
+            it.findNavController().navigate(R.id.action_moreFragment_to_addressFragment)
+
         }
         binding.tvViewOrders.setOnClickListener {
             it.findNavController().navigate(R.id.action_moreFragment_to_allOrderFragment)
@@ -118,7 +120,7 @@ class MoreFragment : Fragment() {
                 val credential = EmailAuthProvider.getCredential(user!!.email!!, password)
                 Toast.makeText(requireContext(), "Please wait...", Toast.LENGTH_SHORT).show()
                 // Reauthenticate the user with the credential
-                user!!.reauthenticate(credential)
+                user.reauthenticate(credential)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             // Reauthentication successful
@@ -148,24 +150,17 @@ class MoreFragment : Fragment() {
         }
 
         binding.tvChangePsw.setOnClickListener {
-            //send reset psw email
-            //https://www.youtube.com/watch?v=wbuCil83wC8&list=PLQ_Ai1O7sMV2_qzi0ra-eL4EX-vN3W2QW&index=10
             val builder = AlertDialog.Builder(requireContext())
             val view = layoutInflater.inflate(R.layout.dialog_forgot, null)
-            val userEmail = view.findViewById<EditText>(R.id.etEmail)
-            view.findViewById<TextView>(R.id.forgotTitle).setText("Update Password")
-
+            view.findViewById<TextView>(R.id.forgotTitle).setText("Reset Password")
+            view.findViewById<Button>(R.id.btnReset).setText("Confirm")
+            view.findViewById<EditText>(R.id.etEmail).isVisible = false
+            view.findViewById<TextView>(R.id.desc).setText("Are you sure you want to reset password?")
             builder.setView(view)
             val dialog = builder.create()
 
             view.findViewById<Button>(R.id.btnReset).setOnClickListener {
-                if(view.findViewById<EditText>(R.id.etEmail).text.isNullOrEmpty()){
-                    Toast.makeText(context,"Please provide your email address",Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    compareEmail(userEmail)
-                    dialog.dismiss()
-                }
+                sendEmail(email)
             }
             view.findViewById<Button>(R.id.btnCancel).setOnClickListener {
                 dialog.dismiss()
@@ -185,8 +180,18 @@ class MoreFragment : Fragment() {
             validateData()
         }
         binding.tvViewListing.setOnClickListener {
-
+            val action = MoreFragmentDirections.actionMoreFragmentToListingFragment(email)
+            findNavController().navigate(action)
         }
+
+        //get the total carbon saved calculated in all order fragment
+        //but we must open the fragment in order to get it;(
+//        var totalCarbonSaved:Float
+//        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("carbonSaved")?.observe(viewLifecycleOwner) { data ->
+//            totalCarbonSaved = data.toFloat()
+//            Log.d("profile",totalCarbonSaved.toString())
+//            binding.tvCarbonTotal.text = totalCarbonSaved.toString() +"kg"
+//        }
         return binding.root
     }
     private fun validateData() {
@@ -212,11 +217,13 @@ class MoreFragment : Fragment() {
             }
     }
     private fun storeData(url: String){
-        val email : String
-        val user = firebaseAuth.getCurrentUser()
-        user.let {
-            email = it!!.email!!
-        }
+//        val email : String
+//        val user = firebaseAuth.getCurrentUser()
+//        user.let {
+//            email = it!!.email!!
+//        }
+        preferences = requireActivity().getSharedPreferences("user", MODE_PRIVATE)
+        val email = preferences.getString("email", "")!!
         val data = hashMapOf<String, Any>(
             "img" to url
         )
@@ -226,30 +233,44 @@ class MoreFragment : Fragment() {
             .update(data).addOnSuccessListener {
 //                binding.profilePic.setImageResource(R.drawable.profile)
                 Toast.makeText(requireContext(),"Profile Pic Updated",Toast.LENGTH_SHORT).show()
+                getProfilePic()
             }
 
             .addOnFailureListener {
                 Toast.makeText(requireContext(),"Something went wrong",Toast.LENGTH_SHORT).show()
             }
     }
-    private fun compareEmail(email: EditText) {
-        if (email.text.toString().isEmpty()) {
+    private fun getProfilePic() :Int{
+        var gotProfilePic = 0
+        preferences = requireActivity().getSharedPreferences("user", MODE_PRIVATE)
+        val email = preferences.getString("email", "")!!
+        Firebase.firestore.collection("users").document(email)
+            .get().addOnSuccessListener {
+                Glide.with(requireContext()).load(it.get("img")).into(binding.profilePic)
+                gotProfilePic = 1
+            }
+            .addOnFailureListener {
+//                binding.profilePic.setImageResource(R.drawable.profile)
+                Log.d("MyApp","No profile pic")
+            }
+        return gotProfilePic
+    }
+    private fun sendEmail(email: String) {
+        if (email.isEmpty()) {
             return
         }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email.text.toString()).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             return
         }
-        firebaseAuth.sendPasswordResetEmail(email.text.toString())
+        firebaseAuth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(requireContext(), "Check your email", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Check your email's spam", Toast.LENGTH_SHORT).show()
                 }
                 else{
                     Toast.makeText(requireContext(), "Email not found", Toast.LENGTH_SHORT).show()
                 }
             }
-
-
     }
     private fun removeUser(email: String) {
         val user = firebaseAuth.getCurrentUser()

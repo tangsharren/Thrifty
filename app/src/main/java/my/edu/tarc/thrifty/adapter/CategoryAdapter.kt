@@ -1,17 +1,13 @@
 package my.edu.tarc.thriftyadmin.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import my.edu.tarc.thrifty.R
-import my.edu.tarc.thrifty.activity.CategoryActivity
 import my.edu.tarc.thrifty.databinding.LayoutCategoryItemBinding
 import my.edu.tarc.thrifty.fragment.HomeFragmentDirections
 import my.edu.tarc.thrifty.model.CategoryModel

@@ -3,6 +3,7 @@ package my.edu.tarc.thrifty
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -28,10 +29,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+        navController = navHostFragment!!.findNavController()
 //        navController = this.findNavController(R.id.fragmentContainer)
         if(FirebaseAuth.getInstance().currentUser == null){
             startActivity(Intent(this,LoginActivity::class.java))
             finish()
+//            navController.navigate(R.id.loginFragment)
         }
         //Get current user email & name
         val email : String
@@ -61,13 +65,23 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this,"Something went wrong",Toast.LENGTH_SHORT).show()
             }
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
-        navController = navHostFragment!!.findNavController()
-
         val popupMenu = PopupMenu(this, null)
         popupMenu.inflate(R.menu.bottom_nav)
         binding.bottomBar.setupWithNavController(popupMenu.menu, navController)
-
+        //To hide bottom bar in login and register
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.loginFragment -> {
+                    binding.bottomBar.visibility = View.GONE
+                }
+                R.id.registerFragment -> {
+                    binding.bottomBar.visibility = View.GONE
+                }
+                else -> {
+                    binding.bottomBar.visibility = View.VISIBLE
+                }
+            }
+        }
         binding.bottomBar.onItemSelected = {
             when (it) {
                 0 -> {
@@ -81,50 +95,27 @@ class MainActivity : AppCompatActivity() {
                 2 ->{
                     i = 2
                 }
-
-
             }
         }
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val currentFragment = navController.currentDestination!!.id
                 Log.d("MyApp", "current i : $i")
-                when (currentFragment) {
-                    R.id.homeFragment ->
-                        finish()
-
-                    R.id.cartFragment -> {
-                        navController.navigate(R.id.homeFragment)
-                        i = 0
-                    }
-                    R.id.moreFragment -> {
-                        navController.navigate(R.id.homeFragment)
-                        i = 0
-                    }
-                    R.id.allOrderFragment ->
-                        navController.navigate(R.id.moreFragment)
-                    R.id.allProductFragment -> {
-                        navController.navigate(R.id.homeFragment)
-                        i = 0
-                    }
-
-                    R.id.productDetailsFragment ->{
-                        val previousFragment = navController.previousBackStackEntry?.destination?.id
-                        Log.d("MyApp",previousFragment.toString())
-                        if(previousFragment == R.id.allProductFragment)
-                            navController.navigate(R.id.allProductFragment)
-                        else if(previousFragment == R.id.homeFragment)
-                            navController.navigate(R.id.homeFragment)
-                        else if(previousFragment == R.id.cartFragment)
-                            navController.navigate(R.id.cartFragment)
-                        else
-                            navController.navigate(R.id.categoryFragment)
-                    }
-                    R.id.categoryFragment ->{
-                        navController.navigate(R.id.homeFragment)
-                    }
+                if(currentFragment ==  R.id.homeFragment)
+                    finish()
+                else if(currentFragment ==  R.id.cartFragment ){
+                    navController.navigate(R.id.homeFragment)
+                    i = 0
+                }
+                else if(currentFragment ==  R.id.moreFragment){
+                    navController.navigate(R.id.homeFragment)
+                    i = 0
+                }
+                else {
+                    navController.popBackStack()
                 }
             }
+
         }
         NavigationUI.setupActionBarWithNavController(this,navController)
         onBackPressedDispatcher.addCallback(this, callback)

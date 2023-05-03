@@ -1,20 +1,16 @@
 package my.edu.tarc.thrifty.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import my.edu.tarc.thrifty.activity.ProductDetailsActivity
 import my.edu.tarc.thrifty.databinding.LayoutCartItemBinding
 import my.edu.tarc.thrifty.fragment.CartFragmentDirections
-import my.edu.tarc.thrifty.fragment.HomeFragmentDirections
 import my.edu.tarc.thrifty.roomdb.AppDatabase
 import my.edu.tarc.thrifty.roomdb.ProductModel
 

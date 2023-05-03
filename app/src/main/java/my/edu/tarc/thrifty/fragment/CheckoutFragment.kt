@@ -1,6 +1,8 @@
 package my.edu.tarc.thrifty.fragment
 
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,6 +35,7 @@ import kotlin.collections.ArrayList
 class CheckoutFragment : Fragment() {
     private val args : AddressFragmentArgs by navArgs()
     private lateinit var binding : FragmentCheckoutBinding
+    private lateinit var preferences: SharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,12 +78,14 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun saveData(name: String?, price: String?, productId: String,carbon: String?,orderDate: String?,orderTime: String?) {
-//        val preferences = this.getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
-        val email : String
-        val user = FirebaseAuth.getInstance().getCurrentUser()
-        user.let {
-            email = it!!.email!!
-        }
+        preferences = requireActivity().getSharedPreferences("user", MODE_PRIVATE)
+        val email = preferences.getString("email", "")!!
+
+//        val email : String
+//        val user = FirebaseAuth.getInstance().getCurrentUser()
+//        user.let {
+//            email = it!!.email!!
+//        }
         val data = hashMapOf<String,Any>()
         data["name"] = name!!
         data["price"] = price!!
@@ -98,8 +103,9 @@ class CheckoutFragment : Fragment() {
 
         firestore.document(key).set(data).addOnSuccessListener {
             Toast.makeText(requireContext(),"Order Placed",Toast.LENGTH_SHORT).show()
-//            val action = CheckoutFragmentDirections.actionCheckoutFragmentToHomeFragment()
-//            findNavController().navigate(action)
+
+            //Delete the product after purchasing
+            deleteProduct(productId)
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
             if(activity != null) {
@@ -108,5 +114,18 @@ class CheckoutFragment : Fragment() {
         }.addOnFailureListener {
             Toast.makeText(requireContext(),"Something went wrong",Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun deleteProduct(productId: String) {
+        val db = Firebase.firestore
+        val storageRef = db.collection("products").document(productId!!)
+
+        storageRef.delete()
+            .addOnSuccessListener {
+               Log.d("MyApp","Purchased product deleted")
+            }
+            .addOnFailureListener { e ->
+                Log.d("MyApp", e.toString())
+            }
     }
 }

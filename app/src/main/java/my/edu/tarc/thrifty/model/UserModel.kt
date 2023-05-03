@@ -8,5 +8,5 @@ data class UserModel (
     val state : String? = "",
     val street : String? = "",
     val postcode : String? = "",
-    val profilePic: String?= "",
+    val img: String?= "",
 )

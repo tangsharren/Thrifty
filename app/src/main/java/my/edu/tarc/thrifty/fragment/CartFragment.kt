@@ -1,6 +1,5 @@
 package my.edu.tarc.thrifty.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,12 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import my.edu.tarc.thrifty.R
-import my.edu.tarc.thrifty.activity.AddressActivity
-import my.edu.tarc.thrifty.activity.CategoryActivity
 import my.edu.tarc.thrifty.adapter.CartAdapter
 import my.edu.tarc.thrifty.databinding.FragmentCartBinding
 import my.edu.tarc.thrifty.roomdb.AppDatabase
@@ -66,21 +60,9 @@ class CartFragment : Fragment() {
             }
             else{
                 Toast.makeText(requireContext(),"Please Confirm Your address ",Toast.LENGTH_SHORT).show()
-//            // To create a fragment with arguments
-//            val fragment = AddressFragment()
-//            val b = Bundle()
-//            b.putStringArrayList("productIds",list)
-//            b.putString("totalCost",total.toString())
-//            fragment.arguments = b
                 Log.d("MyApp",list.toTypedArray().toString())
                 val action = CartFragmentDirections.actionCartFragmentToAddressFragment(list.toTypedArray(), total.toString())
-
                 findNavController().navigate(action)
-
-
-                // To get the arguments in the fragment
-//            val args = requireArguments()
-//            val value = args.getString("key")
             }
 
         }

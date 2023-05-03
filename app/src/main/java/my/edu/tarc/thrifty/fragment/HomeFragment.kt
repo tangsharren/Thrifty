@@ -1,6 +1,5 @@
 package my.edu.tarc.thrifty.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,13 +9,11 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import my.edu.tarc.thrifty.R
-import my.edu.tarc.thrifty.activity.ProductDetailsActivity
 import my.edu.tarc.thrifty.adapter.ProductAdapter
 import my.edu.tarc.thrifty.databinding.FragmentHomeBinding
 import my.edu.tarc.thrifty.model.AddProductModel
@@ -35,8 +32,6 @@ class HomeFragment : Fragment() {
 
         binding.categoryRecycler.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment)
-//            val intent = Intent(requireContext(),ProductDetailsActivity::class.java)
-//            startActivity(intent)
         }
         val preference = requireContext().getSharedPreferences("info",AppCompatActivity.MODE_PRIVATE)
 
@@ -46,7 +41,6 @@ class HomeFragment : Fragment() {
         binding.tvAllProduct.setOnClickListener {
             it.findNavController().navigate(R.id.action_homeFragment_to_allProductFragment)
         }
-
         getCategories()
         getSliderImage()
         getProducts()
@@ -63,7 +57,7 @@ class HomeFragment : Fragment() {
                     list.add(data.toString())
                 }
                 Log.d("MyApp",list.toString())
-//                binding.sliderRecycler.adapter = CategoryAdapter(requireContext(),list)
+
                 val slideList = ArrayList<SlideModel>()
                 for(data in list){
                     slideList.add(SlideModel(data, ScaleTypes.CENTER_INSIDE))

@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.adapter.AllProductAdapter
 
 import my.edu.tarc.thrifty.adapter.ProductAdapter
@@ -23,6 +25,9 @@ class AllProductFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAllProductBinding.inflate(layoutInflater)
+
+        //Search
+        val searchView = binding.productSearchView
 
         list = ArrayList()
         Firebase.firestore.collection("products")

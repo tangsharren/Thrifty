@@ -6,10 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".fragment.AllProductFragment">
 
+    <SearchView
+        android:id="@+id/productSearchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:searchIcon="@drawable/baseline_search"
+        app:layout_constraintBottom_toTopOf="@id/allProductRecycler"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/allProductRecycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/layout_product_item"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productSearchView"
+        tools:listitem="@layout/layout_product_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>

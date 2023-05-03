@@ -22,6 +22,7 @@
             android:id="@+id/productTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
             android:text="Product Name"
             android:textSize="22sp"
             android:textStyle="bold" />
@@ -29,14 +30,15 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="4dp">
 
             <TextView
                 android:id="@+id/orderId"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Order ID"
+                android:text="ID"
                 android:textSize="14sp"
                 android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -66,7 +68,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="4dp">
 
             <TextView
                 android:id="@+id/orderDate"
@@ -101,7 +104,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="4dp">
 
             <TextView
                 android:id="@+id/productCarbon"
@@ -123,8 +127,9 @@
                 android:layout_height="wrap_content"
                 android:text="Price : "
                 android:textColor="@color/colorPrimary"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline7"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

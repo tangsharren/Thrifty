@@ -10,6 +10,7 @@ import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.Filter
 import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.databinding.LayoutProductItemBinding
 import my.edu.tarc.thrifty.fragment.AllProductFragmentDirections
@@ -58,4 +59,6 @@ class AllProductAdapter (val context: Context, val list:ArrayList<AddProductMode
     override fun getItemCount(): Int {
         return list.size
     }
+    // A method that returns a filter object for the adapter
+
 }

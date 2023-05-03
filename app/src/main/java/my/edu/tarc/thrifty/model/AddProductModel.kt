@@ -9,5 +9,6 @@ data class AddProductModel(
     val productId: String?= "",
     val carbon: String?= "",
     val productSp: String?= "",
-    val productImages: ArrayList<String>  = ArrayList()
+    val productImages: ArrayList<String>  = ArrayList(),
+    val userEmail: String?=""
     )

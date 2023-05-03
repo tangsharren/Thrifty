@@ -1,16 +1,13 @@
 package my.edu.tarc.thrifty.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import my.edu.tarc.thrifty.activity.ProductDetailsActivity
 import my.edu.tarc.thrifty.databinding.ItemCategoryProductLayoutBinding
 import my.edu.tarc.thrifty.fragment.CategoryFragmentDirections
-import my.edu.tarc.thrifty.fragment.HomeFragmentDirections
 import my.edu.tarc.thrifty.model.AddProductModel
 //For the product recycler view in category fragment
 class CategoryProductAdapter (val context: Context, val list:ArrayList<AddProductModel>)
