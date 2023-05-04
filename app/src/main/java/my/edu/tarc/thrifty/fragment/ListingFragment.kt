@@ -40,11 +40,12 @@ class ListingFragment : Fragment() {
         val queryByName = Firebase.firestore.collection("products").whereEqualTo("userEmail",email)
         queryByName.get().addOnSuccessListener {
             list.clear()
-            Log.d("MyApp",list.toString())
+
             for(doc in it.documents){
                 val data = doc.toObject(AddProductModel::class.java)
                 list.add(data!!)
             }
+            Log.d("MyApp","getListings:"+list.toString())
             binding.productRecycler.adapter = AllListingAdapter(requireContext(),list)
         }
     }

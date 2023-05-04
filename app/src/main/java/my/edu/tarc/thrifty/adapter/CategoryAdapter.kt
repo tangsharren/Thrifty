@@ -28,9 +28,6 @@ class CategoryAdapter(var context: Context, val list : ArrayList<CategoryModel>)
         Glide.with(context).load(list[position].img).into(holder.binding.imageView)
 
         holder.itemView.setOnClickListener{
-//            val intent = Intent(context,CategoryActivity::class.java)
-//            intent.putExtra("cat",list[position].cat)
-//            context.startActivity(intent)
             val action = HomeFragmentDirections.actionHomeFragmentToCategoryFragment(list[position].cat!!)
             findNavController(holder.itemView).navigate(action)
         }

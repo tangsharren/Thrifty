@@ -56,7 +56,7 @@ class HomeFragment : Fragment() {
                     val data = doc.data?.get("img")
                     list.add(data.toString())
                 }
-                Log.d("MyApp",list.toString())
+                Log.d("MyApp","Slider get in home:"+list.toString())
 
                 val slideList = ArrayList<SlideModel>()
                 for(data in list){

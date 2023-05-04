@@ -18,7 +18,7 @@ import my.edu.tarc.thrifty.fragment.HomeFragmentDirections
 import my.edu.tarc.thrifty.model.AddProductModel
 //Used by allProductFragment's product recycler
 
-class AllProductAdapter (val context: Context, val list:ArrayList<AddProductModel>)
+class AllProductAdapter (val context: Context, var list:ArrayList<AddProductModel>)
     :RecyclerView.Adapter<AllProductAdapter.ProductViewHolder>(){
         inner class ProductViewHolder(val binding:LayoutProductItemBinding)
             :RecyclerView.ViewHolder(binding.root)
@@ -59,6 +59,9 @@ class AllProductAdapter (val context: Context, val list:ArrayList<AddProductMode
     override fun getItemCount(): Int {
         return list.size
     }
-    // A method that returns a filter object for the adapter
+    fun searchDataList(searchList: ArrayList<AddProductModel>) {
+        list = searchList
+        notifyDataSetChanged()
+    }
 
 }

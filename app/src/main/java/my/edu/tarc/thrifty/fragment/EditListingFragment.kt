@@ -1,0 +1,354 @@
+package my.edu.tarc.thrifty.fragment
+
+import android.app.Activity
+import android.app.Dialog
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.net.Uri
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import my.edu.tarc.thrifty.R
+import my.edu.tarc.thrifty.databinding.FragmentEditListingBinding
+import my.edu.tarc.thrifty.model.CategoryModel
+import my.edu.tarc.thriftyadmin.adapter.EditProductImageAdapter
+import java.util.*
+import kotlin.collections.ArrayList
+
+class EditListingFragment : Fragment(){
+
+    private lateinit var binding : FragmentEditListingBinding
+    private lateinit var list: ArrayList<Uri>
+    private lateinit var addedImagelist: ArrayList<Uri>
+    private lateinit var listImages: ArrayList<String>
+    private lateinit var adapter: EditProductImageAdapter
+    private lateinit var preferences: SharedPreferences
+    private val args : EditListingFragmentArgs by navArgs()
+    private var newCoverImage: Uri? = null
+    private var coverImage: Uri? = null
+    private var newCoverImgUrl: String? = ""
+
+    private lateinit var dialog: Dialog
+    private lateinit var categoryList: ArrayList<String>
+
+    private var launchGalleryActivity = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            newCoverImage = it.data!!.data
+            binding.productCoverImg.setImageURI(newCoverImage)
+            binding.productCoverImg.isVisible = true
+            binding.prodImgRecycler.isVisible = true
+        }
+    }
+    private var launchProductActivity = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            val imageUrl = it.data!!.data
+            list.add(imageUrl!!)
+            addedImagelist.add(imageUrl)
+            adapter.notifyDataSetChanged()
+        }
+    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentEditListingBinding.inflate(layoutInflater)
+        list = ArrayList()
+        listImages = ArrayList()
+        addedImagelist = ArrayList()
+
+        dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.progress_layout)
+        dialog.setCancelable(false)
+
+        getListingDetails(args.productId)
+//        adapter = EditProductImageAdapter(requireContext(),list,args.productId!!)
+//        binding.prodImgRecycler.adapter= adapter
+
+        binding.btnCoverImg.setOnClickListener {
+            val intent = Intent("android.intent.action.GET_CONTENT")
+            intent.type = "image/*"
+            launchGalleryActivity.launch(intent)
+        }
+        binding.btnProdImg.setOnClickListener {
+            val intent = Intent("android.intent.action.GET_CONTENT")
+            intent.type = "image/*"
+            launchProductActivity.launch(intent)
+        }
+
+        binding.btnUpdate.setOnClickListener {
+            if(validateData()){
+                Log.d("MyApp","go to storedata")
+                storeData()
+
+            }
+
+        }
+
+
+        return binding.root
+    }
+    private fun setProductCategory(previousCat:String) {
+        categoryList = ArrayList()
+        Firebase.firestore.collection("categories").get().addOnSuccessListener {
+            categoryList.clear()
+            for (doc in it.documents) {
+                val data = doc.toObject(CategoryModel::class.java)
+                categoryList.add(data!!.cat!!)
+            }
+            Log.d("MyApp", "categoryList: $categoryList")
+            categoryList.add(0, "Select Category")
+
+            val arrayAdapter =
+                ArrayAdapter(
+                    requireContext(),
+                    com.google.android.material.R.layout.support_simple_spinner_dropdown_item,
+                    categoryList
+                )
+            //arrayAdapter.setDropDownViewResource(com.google.android.material.R.layout.support_simple_spinner_dropdown_item)
+            binding.catSpinner.adapter = arrayAdapter
+            if(previousCat == "Furniture"){
+                            binding.catSpinner.setSelection(9)
+                        }
+            when(previousCat){
+                "Video Gaming "->binding.catSpinner.setSelection(1)
+                "Photography"->binding.catSpinner.setSelection(2)
+                "Tops"->binding.catSpinner.setSelection(3)
+                "Footwear "->binding.catSpinner.setSelection(4)
+                "Sports equipment "->binding.catSpinner.setSelection(5)
+                "Babies & Kids"->binding.catSpinner.setSelection(6)
+                "Bottom"->binding.catSpinner.setSelection(7)
+                "Home Appliances "->binding.catSpinner.setSelection(8)
+                "Furniture "->binding.catSpinner.setSelection(9)
+            }
+//            binding.catSpinner.setSelection(0)
+            Log.d("MyApp","PreviousCat in setCategory:"+previousCat)
+
+            val nowSelected = binding.catSpinner.selectedItem
+            binding.catSpinner.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+//                        if(previousCat == "Furniture"){
+//                            binding.catSpinner.setSelection(9)
+//                        }
+//                        when(previousCat){
+//                            "Video Gaming"->binding.catSpinner.setSelection(1)
+//                            "Photography"->binding.catSpinner.setSelection(2)
+//                            "Tops"->binding.catSpinner.setSelection(3)
+//                            "Footwear"->binding.catSpinner.setSelection(4)
+//                            "Sports equipment"->binding.catSpinner.setSelection(5)
+//                            "Babies & Kids"->binding.catSpinner.setSelection(6)
+//                            "Bottom"->binding.catSpinner.setSelection(7)
+//                            "Home Appliances"->binding.catSpinner.setSelection(8)
+//                            "Furniture"->binding.catSpinner.setSelection(9)
+//                        }
+                        if (!nowSelected.toString().equals(previousCat)){
+
+                        }
+                        val selectedCategory = parent?.getItemAtPosition(position).toString()
+                        Log.d("MyApp", "selectedCategory: $selectedCategory")
+                        // Do something with the selected category
+                    }
+
+                    override fun onNothingSelected(p0: AdapterView<*>?) {
+                        return
+                    }
+                }
+        }
+    }
+    private fun getListingDetails(proId:String?) {
+        preferences = requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE)
+        val email = preferences.getString("email", "")!!
+        Firebase.firestore.collection("products")
+            .document(proId!!).get().addOnSuccessListener {
+                val oldProdImages = it.get("productImages") as ArrayList<String>
+                val name = it.getString("productName")
+                val productSp = it.getString("productSp")
+                val productDesc = it.getString("productDescription")
+                val productCarbon = it.getString("carbon")
+                val productCat = it.getString("productCategory")
+                coverImage = Uri.parse(it.getString("productCoverImg"))
+
+                Glide.with(requireContext()).load(it.getString("productCoverImg")).into(binding.productCoverImg)
+                Log.d("MyApp","oldProdImgs in getListingDetails:"+ oldProdImages.toString())
+
+                adapter = EditProductImageAdapter(requireContext(),list,proId)
+                binding.prodImgRecycler.adapter= adapter
+
+                for (str in oldProdImages) {
+                    list.add(Uri.parse(str))
+                }
+                Log.d("MyApp","list of Uri:${list.toString()}")
+
+                binding.etName.setText(name)
+                binding.etPrice.setText(productSp)
+                binding.etDesc.setText(productDesc)
+                binding.etCarbon.setText(productCarbon)
+
+
+                setProductCategory(productCat!!)
+
+            }.addOnFailureListener {
+                Toast.makeText(requireContext(),"Something went wrong", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun uploadCoverImage() {
+        dialog.show()
+        val fileName = UUID.randomUUID().toString() + ".jpg"
+
+        val refStorage = FirebaseStorage.getInstance().reference.child("products/$fileName")
+        refStorage.putFile(newCoverImage!!)
+            .addOnSuccessListener {
+                it.storage.downloadUrl.addOnSuccessListener { image ->
+                    newCoverImgUrl = image.toString()
+//                    uploadProductImage()
+                    val newCoverImg = image
+                    val db = Firebase.firestore.collection("products")
+                    val key = args.productId
+                    db.document(key).update("productCoverImg" ,newCoverImgUrl)
+                        .addOnSuccessListener {
+                            Toast.makeText(requireContext(), "Cover Image Updated", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                        }
+                        .addOnFailureListener {
+                            dialog.dismiss()
+                            Toast.makeText(requireContext(), "Something went wrong with updating cover img", Toast.LENGTH_SHORT).show()
+                        }
+
+                }
+            }
+            .addOnFailureListener {
+                dialog.dismiss()
+                Toast.makeText(requireContext(), "Something went wrong with cover image storage", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private var i = 0
+    private fun uploadProductImage() {
+        dialog.show()
+        val fileName = UUID.randomUUID().toString() + ".jpg"
+
+        val refStorage = FirebaseStorage.getInstance().reference.child("products/$fileName")
+        refStorage.putFile(addedImagelist[i])
+            .addOnSuccessListener {
+                it.storage.downloadUrl.addOnSuccessListener { image ->
+                    listImages.add(image!!.toString())
+                    if (addedImagelist.size == listImages.size){
+                        val newProductImg = image
+                        val db = Firebase.firestore.collection("products")
+                        val key = args.productId
+                        val docRef = db.document(key)
+
+                        docRef.update("productImages", FieldValue.arrayUnion(*listImages.toTypedArray()))
+                            .addOnSuccessListener {
+                                Log.d("MyApp", "DocumentSnapshot successfully updated!")
+
+                                dialog.dismiss()
+                            }
+                            .addOnFailureListener { e -> Log.w("MyApp", "Error updating document", e) }
+                    }
+
+                    else {
+                        i += 1
+                        uploadProductImage()
+                    }
+                }
+            }
+            .addOnFailureListener {
+                dialog.dismiss()
+                Toast.makeText(
+                    requireContext(),
+                    "Something went wrong with product image storage",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+    private fun validateData() :Boolean{
+        if (binding.etName.text.toString().isEmpty()) {
+            binding.etName.requestFocus()
+            binding.etName.error = "Empty"
+            return false
+        } else if (binding.etPrice.text.toString().isEmpty()) {
+            binding.etPrice.requestFocus()
+            binding.etPrice.error = "Empty"
+            return false
+        } else if (coverImage == null){
+            Toast.makeText(requireContext(), "Please select cover image", Toast.LENGTH_SHORT)
+                .show()
+            return false
+        }
+
+        else if (list.size < 1){
+            Toast.makeText(requireContext(), "Please select product image", Toast.LENGTH_SHORT)
+                .show()
+            return false
+        }
+        else if (binding.catSpinner.selectedItemPosition == 0) {
+            Toast.makeText(requireContext(), "Please select category", Toast.LENGTH_SHORT)
+                .show()
+            return false
+
+        } else if(newCoverImage !=null){
+            uploadCoverImage()
+        }
+
+        else if(!addedImagelist.isEmpty()){
+            Log.d("MyApp","addedImageList: "+addedImagelist.toString())
+            uploadProductImage()
+
+        }
+        return true
+    }
+    private fun storeData() {
+        val db = Firebase.firestore.collection("products")
+        val key = args.productId
+        categoryList = ArrayList()
+        Firebase.firestore.collection("categories").get()
+
+        val newName = binding.etName.text.toString()
+        val newDesc = binding.etDesc.text.toString()
+        val newCat = binding.catSpinner.selectedItem.toString()
+        val newCarbon = binding.etCarbon.text.toString()
+        val newPrice = binding.etPrice.text.toString()
+
+        db.document(key).update(
+            mapOf("productName" to newName,
+                "productSp" to newPrice,
+                "productDescription" to newDesc,
+                "productCategory" to newCat,
+                "carbon" to newCarbon))
+            .addOnSuccessListener {
+                Toast.makeText(requireContext(), "Listing Updated", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                dialog.dismiss()
+                Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+
+}

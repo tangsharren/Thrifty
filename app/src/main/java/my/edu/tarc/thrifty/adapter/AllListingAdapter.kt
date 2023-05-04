@@ -58,8 +58,8 @@ class AllListingAdapter  (val context: Context, val list:ArrayList<AddProductMod
             dialog.show()
         }
         holder.binding.btnEdit.setOnClickListener {
-//            val action = ListingFragmentDirections.actionListingFragmentToEditListingFragment(data.productId!!)
-//            findNavController(holder.itemView).navigate(action)
+            val action = ListingFragmentDirections.actionListingFragmentToEditListingFragment(data.productId!!)
+            findNavController(holder.itemView).navigate(action)
         }
     }
 

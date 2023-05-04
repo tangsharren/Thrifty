@@ -6,6 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".fragment.AllOrderFragment">
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/productSearchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/lavender_border"
+        android:focusable="false"
+        app:closeIcon="@drawable/baseline_clear"
+        app:iconifiedByDefault="false"
+        app:layout_constraintBottom_toTopOf="@id/btnTotalCarbon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryBackground="@android:color/transparent"
+        app:queryHint="Search..."
+        app:searchHintIcon="@null"
+        app:searchIcon="@drawable/baseline_search" />
 
     <Button
         android:id="@+id/btnTotalCarbon"
@@ -14,8 +34,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="12dp"
-        android:backgroundTint="@color/colorSecondary"
-        android:clickable="false"
+        android:background="@drawable/lavender_border"
         android:elegantTextHeight="true"
         android:fontFamily="@font/abhaya_libre_medium"
         android:isScrollContainer="false"
@@ -26,13 +45,16 @@
         app:cornerRadius="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/productSearchView" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
