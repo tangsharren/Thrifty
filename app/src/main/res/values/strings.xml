@@ -3,4 +3,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="required">Required</string>
+    <string-array name="sorting">
+        <item>Sort By:</item>
+        <item>Name(Ascending)</item>
+        <item>Price(Ascending)</item>
+        <item>Carbon Footprint Saved(Ascending)</item>
+        <item>Name(Descending)</item>
+        <item>Price(Descending)</item>
+        <item>Carbon Footprint Saved(Descending)</item>
+    </string-array>
 </resources>

@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
     tools:context=".fragment.ListingFragment">
 
 
@@ -20,26 +22,61 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5" />
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/productSearchView"
+    <LinearLayout
+        android:id="@+id/sortContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/categoryRecyclerContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/productSearchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/lavender_border"
+            android:focusable="false"
+            app:closeIcon="@drawable/baseline_clear"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@android:color/transparent"
+            app:queryHint="Search by product name"
+            app:searchHintIcon="@null"
+            app:searchIcon="@drawable/baseline_search" />
+
+        <Button
+            android:id="@+id/btnSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+
+            android:background="@drawable/lavender_border"
+            android:backgroundTint="@color/white"
+            android:elevation="2dp"
+            android:padding="0dp"
+            app:cornerRadius="3dp"
+            app:icon="@drawable/baseline_filter_alt_24"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categoryRecyclerContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/lavender_border"
-        android:focusable="false"
-        app:closeIcon="@drawable/baseline_clear"
-        app:iconifiedByDefault="false"
-        app:layout_constraintBottom_toTopOf="@id/productRecycler"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        android:paddingTop="4dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:queryBackground="@android:color/transparent"
-        app:queryHint="Search..."
-        app:searchHintIcon="@null"
-        app:searchIcon="@drawable/baseline_search" />
+        app:layout_constraintTop_toBottomOf="@id/sortContainer"
+        tools:listitem="@layout/layout_category_search" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/productRecycler"
@@ -52,7 +89,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/progressBar2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/productSearchView"
+        app:layout_constraintTop_toBottomOf="@id/categoryRecyclerContainer"
         tools:listitem="@layout/all_product_list"
         tools:paddingTop="4dp" />
 

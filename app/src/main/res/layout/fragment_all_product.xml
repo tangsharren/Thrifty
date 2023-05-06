@@ -6,43 +6,84 @@
     android:layout_height="match_parent"
     tools:context=".fragment.AllProductFragment">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/productSearchView"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/sortContainer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/lavender_border"
-        android:focusable="false"
-        app:closeIcon="@drawable/baseline_clear"
-        app:iconifiedByDefault="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:queryHint="Search..."
-        app:searchHintIcon="@null"
-        app:searchIcon="@drawable/baseline_search"
-        app:queryBackground="@android:color/transparent"
-        app:layout_constraintBottom_toTopOf="@id/categoryRecyclerContainer">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/categoryRecyclerContainer"
+        app:layout_constraintStart_toStartOf="parent">
 
-    </androidx.appcompat.widget.SearchView>
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/productSearchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/lavender_border"
+            android:focusable="false"
+            app:closeIcon="@drawable/baseline_clear"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@android:color/transparent"
+            app:queryHint="Search by product name"
+            app:searchHintIcon="@null"
+            app:searchIcon="@drawable/baseline_search">
+
+        </androidx.appcompat.widget.SearchView>
+
+        <Button
+            android:id="@+id/btnSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:background="@drawable/lavender_border"
+            android:backgroundTint="@color/white"
+            app:cornerRadius="3dp"
+            app:icon="@drawable/baseline_filter_alt_24"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp" />
+
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categoryRecyclerContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:orientation="horizontal"
         android:paddingTop="4dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sortContainer"
+        tools:listitem="@layout/layout_category_search" />
+
+    <TextView
+        android:id="@+id/encourageMsg"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="Single-line text view that scrolls automatically if the text is too long to fit in the widget"
+        android:textIsSelectable="true"
+        android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@id/allProductRecycler"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/productSearchView"
-        tools:listitem="@layout/layout_category_search" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/categoryRecyclerContainer" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/allProductRecycler"
@@ -51,8 +92,9 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="4dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categoryRecyclerContainer"
+        app:layout_constraintTop_toBottomOf="@id/encourageMsg"
         tools:listitem="@layout/layout_product_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>

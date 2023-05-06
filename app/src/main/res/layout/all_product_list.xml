@@ -48,7 +48,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:text="Name"
+                    android:singleLine="true"
+                    android:text="STUSSY 8 ball RARE COLLECTION"
                     android:textColor="@color/purple_200"
                     android:textSize="20sp"
                     android:textStyle="bold" />

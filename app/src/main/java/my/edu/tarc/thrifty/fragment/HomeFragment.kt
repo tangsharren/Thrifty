@@ -57,7 +57,6 @@ class HomeFragment : Fragment() {
                     list.add(data.toString())
                 }
                 Log.d("MyApp","Slider get in home:"+list.toString())
-
                 val slideList = ArrayList<SlideModel>()
                 for(data in list){
                     slideList.add(SlideModel(data, ScaleTypes.CENTER_INSIDE))

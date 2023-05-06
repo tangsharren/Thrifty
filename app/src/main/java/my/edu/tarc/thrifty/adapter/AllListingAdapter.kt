@@ -14,8 +14,9 @@ import com.google.firebase.ktx.Firebase
 import my.edu.tarc.thrifty.databinding.AllProductListBinding
 import my.edu.tarc.thrifty.fragment.ListingFragmentDirections
 import my.edu.tarc.thrifty.model.AddProductModel
+import my.edu.tarc.thrifty.model.AllOrderModel
 
-class AllListingAdapter  (val context: Context, val list:ArrayList<AddProductModel>)
+class AllListingAdapter  (val context: Context, var list:ArrayList<AddProductModel>)
     : RecyclerView.Adapter<AllListingAdapter.ProductViewHolder>(){
 
     inner class ProductViewHolder(val binding:AllProductListBinding)
@@ -57,6 +58,10 @@ class AllListingAdapter  (val context: Context, val list:ArrayList<AddProductMod
             val dialog = builder.create()
             dialog.show()
         }
+        holder.itemView.setOnClickListener {
+            val action = ListingFragmentDirections.actionListingFragmentToEditListingFragment(data.productId!!)
+            findNavController(holder.itemView).navigate(action)
+        }
         holder.binding.btnEdit.setOnClickListener {
             val action = ListingFragmentDirections.actionListingFragmentToEditListingFragment(data.productId!!)
             findNavController(holder.itemView).navigate(action)
@@ -65,5 +70,9 @@ class AllListingAdapter  (val context: Context, val list:ArrayList<AddProductMod
 
     override fun getItemCount(): Int {
         return list.size
+    }
+    fun searchDataList(searchList: ArrayList<AddProductModel>) {
+        list = searchList
+        notifyDataSetChanged()
     }
 }

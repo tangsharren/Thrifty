@@ -115,7 +115,6 @@ class MainActivity : AppCompatActivity() {
                     navController.popBackStack()
                 }
             }
-
         }
         NavigationUI.setupActionBarWithNavController(this,navController)
         onBackPressedDispatcher.addCallback(this, callback)
@@ -123,4 +122,5 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp()
     }
+
 }

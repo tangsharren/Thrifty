@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import my.edu.tarc.thrifty.databinding.AllOrderItemBinding
+import my.edu.tarc.thrifty.model.AddProductModel
 import my.edu.tarc.thrifty.model.AllOrderModel
 //For recycler view in all order fragment
-class AllOrdersAdapter(val list : ArrayList<AllOrderModel> , val context : Context)
+class AllOrdersAdapter(var list : ArrayList<AllOrderModel> , val context : Context)
     : RecyclerView.Adapter<AllOrdersAdapter.AllOrderViewHolder>(){
 
     inner class AllOrderViewHolder(val binding:AllOrderItemBinding)
@@ -81,5 +82,9 @@ class AllOrdersAdapter(val list : ArrayList<AllOrderModel> , val context : Conte
     }
     override fun getItemCount(): Int {
         return list.size
+    }
+    fun searchDataList(searchList: ArrayList<AllOrderModel>) {
+        list = searchList
+        notifyDataSetChanged()
     }
 }

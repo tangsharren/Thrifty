@@ -15,6 +15,7 @@ import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.databinding.LayoutCategoryItemBinding
 import my.edu.tarc.thrifty.databinding.LayoutCategorySearchBinding
 import my.edu.tarc.thrifty.fragment.HomeFragmentDirections
+import my.edu.tarc.thrifty.model.AddProductModel
 import my.edu.tarc.thrifty.model.CategoryModel
 
 class CategorySearchAdapter(val listener:OnItemClickListener,var context: Context, val list : ArrayList<CategoryModel>)
@@ -29,6 +30,7 @@ class CategorySearchAdapter(val listener:OnItemClickListener,var context: Contex
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
+
         val button = holder.binding.btnCategory
         button.text = list[position].cat
 
