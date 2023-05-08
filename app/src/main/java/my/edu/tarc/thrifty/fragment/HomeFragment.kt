@@ -87,6 +87,7 @@ class HomeFragment : Fragment() {
                 for(doc in it.documents){
                     val data = doc.toObject(CategoryModel::class.java)
                     list.add(data!!)
+                    list.sortBy { it.cat }
                 }
                  binding.categoryRecycler.adapter = CategoryAdapter(requireContext(),list)
             }

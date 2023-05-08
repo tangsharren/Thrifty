@@ -30,14 +30,16 @@
 
     <TextView
         android:id="@+id/tvName"
-        android:text="@string/product_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/product_name"
         android:textSize="22sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvCarbons"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardView" />
@@ -51,34 +53,22 @@
         android:layout_marginStart="8dp"
         android:text="@string/price"
         android:textSize="22sp"
-
+        android:textStyle="bold"
+        android:textColor="@color/darkPurple"
         app:layout_constraintStart_toEndOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@id/cardView" />
 
     <TextView
+        android:id="@+id/tvCarbons"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="8dp"
         android:text="@string/carbon_footprint_saved_kg"
-
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvName" />
-
-    <TextView
-        android:id="@+id/tvCarbon"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/carbon"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/tvPrice"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
 
     <TextView
         android:id="@+id/tvDesc"
@@ -92,7 +82,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCarbon" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCarbons" />
 
     <TextView
         android:id="@+id/tvAddToCart"

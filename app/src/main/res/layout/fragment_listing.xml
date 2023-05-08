@@ -24,7 +24,7 @@
 
     <LinearLayout
         android:id="@+id/sortContainer"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/categoryRecyclerContainer"
@@ -41,6 +41,7 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/lavender_border"
             android:focusable="false"
+            android:layout_weight="2"
             app:closeIcon="@drawable/baseline_clear"
             app:iconifiedByDefault="false"
             app:queryBackground="@android:color/transparent"
@@ -54,6 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="4dp"
+            android:layout_weight="1"
             android:background="@drawable/lavender_border"
             android:backgroundTint="@color/white"
             android:elevation="2dp"

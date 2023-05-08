@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.AllProductFragment">
+    tools:context=".fragment.AllProductFragment"
+    android:layout_margin="10dp">
 
     <LinearLayout
         android:id="@+id/sortContainer"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/categoryRecyclerContainer"
@@ -23,6 +24,7 @@
             android:layout_marginEnd="4dp"
             android:background="@drawable/lavender_border"
             android:focusable="false"
+            android:layout_weight="2"
             app:closeIcon="@drawable/baseline_clear"
             app:iconifiedByDefault="false"
             app:queryBackground="@android:color/transparent"
@@ -33,11 +35,13 @@
         </androidx.appcompat.widget.SearchView>
 
         <Button
+            android:contentDescription="@string/sorting"
             android:id="@+id/btnSort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="4dp"
+            android:layout_weight="1"
             android:background="@drawable/lavender_border"
             android:backgroundTint="@color/white"
             app:cornerRadius="3dp"

@@ -51,7 +51,7 @@ class ProductDetailsFragment : Fragment() {
                 binding.tvName.text = name
                 binding.tvPrice.text = getString(R.string.rm) + productSp
                 binding.tvDesc.text = productDesc
-                binding.tvCarbon.text = productCarbon
+                binding.tvCarbons.text = getString(R.string.total_carbon_footprint_saved) + productCarbon + getString(R.string.kg)
                 Log.d("MyApp",list.toString())
                 val slideList = ArrayList<SlideModel>()
                 for(data in list){

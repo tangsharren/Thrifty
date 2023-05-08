@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Thrifty</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="required">Required</string>
     <string name="successLogin">Logged in successfully</string>
     <string name="wrongPsw">Invalid email or incorrect password</string>
@@ -32,7 +31,7 @@
     <string name="canceled">Order canceled</string>
     <string name="kg">kg</string>
     <string name="rm">RM </string>
-    <string name="carbonKg">\" kg of Carbon Footprint\"</string>
+    <string name="carbonKg">kg of Carbon Footprint</string>
     <string name="selectCat">"Select Category"</string>
     <string name="selectCover">Please select cover image</string>
     <string name="selectProd">Please select product image</string>
@@ -48,7 +47,7 @@
     <string name="list4">Do you enjoy exploring different styles and trends without breaking the bank? Starts thrifting now!</string>
     <string name="list5">Thrifting saves tons of preloved from ending up in landfills</string>
     <string name="list7">Reusing 1 kg of clothing saves 25 kg of CO2 according to a study.</string>
-    <string name="itemCart">\"Total item In Cart : \"</string>
+    <string name="itemCart">Total item In Cart :</string>
     <string name="carbonTotal">Total Carbon Footprint Saved : %.2f kg</string>
     <string name="costTotal">Total Cost : RM %.2f</string>
     <string name="addProd">Please add product to cart</string>
@@ -117,6 +116,7 @@
     <string name="add_listing_button">Add Listing Button</string>
     <string name="add_to_cart">Add To Cart</string>
     <string name="of_carbon_footprint_saved">of carbon footprint saved!</string>
+    <string name="sorting">Sorting</string>
 
 
     <string-array name="encourageMsg">
