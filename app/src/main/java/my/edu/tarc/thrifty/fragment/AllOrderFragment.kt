@@ -65,7 +65,7 @@ class AllOrderFragment : Fragment(){
                         binding.recyclerView.adapter = adapter
                     }
                     R.id.orderDate -> {
-                        // Sort by price
+                        // Sort by date
                         list.sortBy { it.orderDate }
                         adapter = AllOrdersAdapter(list, requireContext())
                         binding.recyclerView.adapter = adapter
@@ -134,10 +134,7 @@ class AllOrderFragment : Fragment(){
                         totalCarbonSaved += item.carbon!!.toFloat()
                     }
                 }
-                binding.carbonMsg.text = String.format(
-                    "Total of  %.2f kg carbon footprint is saved from your past purchase!",
-                    totalCarbonSaved
-                )
+                binding.carbonMsg.text = String.format( "Total of  %.2f kg carbon footprint is saved from your past purchase!", totalCarbonSaved)
                 Log.d("MyApp","OrderList:$list")
                 adapter = AllOrdersAdapter(list, requireContext())
                 binding.recyclerView.adapter = adapter

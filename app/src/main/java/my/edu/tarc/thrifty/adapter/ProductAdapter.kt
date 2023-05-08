@@ -34,8 +34,8 @@ class ProductAdapter (val context: Context, val list:ArrayList<AddProductModel>)
         Glide.with(context).load(data.productCoverImg).into(holder.binding.imageView2)
         holder.binding.tvProName.text = data.productName
         holder.binding.tvCat.text = data.productCategory
-        holder.binding.tvCarbonCount.text = data.carbon + "kg"
-        holder.binding.btnPrice.text = "RM" + data.productSp
+        holder.binding.tvCarbonCount.text = data.carbon + context.getString(R.string.kg)
+        holder.binding.btnPrice.text = context.getString(R.string.rm) + data.productSp
 
         holder.itemView.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToProductDetailsFragment(

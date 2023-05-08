@@ -45,16 +45,15 @@ class LoginActivity : AppCompatActivity() {
 
                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        Toast.makeText(this, "Logged in successfully", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.successLogin), Toast.LENGTH_SHORT).show()
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                     } else {
-//                        Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
-                        Toast.makeText(this, "Invalid email or incorrect password", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.wrongPsw), Toast.LENGTH_SHORT).show()
                     }
                 }
             } else {
-                Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.emptyFields), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -69,7 +68,7 @@ class LoginActivity : AppCompatActivity() {
 
             view.findViewById<Button>(R.id.btnReset).setOnClickListener {
                 if(view.findViewById<EditText>(R.id.etEmail).text.isNullOrEmpty()){
-                    Toast.makeText(this,"Please provide your email address",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,getString(R.string.warningEmail),Toast.LENGTH_SHORT).show()
                 }
                 else{
                     compareEmail(userEmail)
@@ -102,10 +101,10 @@ class LoginActivity : AppCompatActivity() {
         firebaseAuth.sendPasswordResetEmail(email.text.toString())
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(this, "Check your email", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.chkEmail), Toast.LENGTH_SHORT).show()
                 }
                 else{
-                    Toast.makeText(this, "Email not found", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.wrongEmail), Toast.LENGTH_SHORT).show()
                 }
             }
 

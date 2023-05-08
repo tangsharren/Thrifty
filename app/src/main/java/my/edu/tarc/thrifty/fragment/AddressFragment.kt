@@ -18,7 +18,6 @@ import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.databinding.FragmentAddressBinding
 
 class AddressFragment : Fragment() {
-
     private lateinit var binding :FragmentAddressBinding
     private lateinit var list : ArrayList<String>
     private lateinit var preferences: SharedPreferences
@@ -35,10 +34,6 @@ class AddressFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         list = ArrayList()
 
-//        preferences = activity.getSharedPreferences("user", Context.MODE_PRIVATE)
-        //Get preference
-//        val userName = userPrefs.userName
-//        val userEmail = userPrefs.userEmail
         loadUserInfo()
 
         binding.saveAdd.setOnClickListener {
@@ -56,7 +51,7 @@ class AddressFragment : Fragment() {
     private fun validateData(email: String, name: String, postcode: String,
                              street: String, state: String, unitNo: String) {
         if(email.isEmpty() || name.isEmpty() || postcode.isEmpty()|| street.isEmpty()|| state.isEmpty()|| unitNo.isEmpty())
-            Toast.makeText(requireContext(),"Please fill all fields", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),getString(R.string.emptyField), Toast.LENGTH_SHORT).show()
         else{
             storeData(postcode,street,state,unitNo)
 //            finish()
@@ -80,7 +75,7 @@ class AddressFragment : Fragment() {
                 val previousFragment = findNavController().previousBackStackEntry?.destination?.id
                 if(previousFragment == R.id.cartFragment){
                     val args : AddressFragmentArgs by navArgs()
-//                if(args.totalCost!=""){
+
                     var total = args.totalCost
                     val list = args.productIds!!.toList()
                     val b = Bundle()
@@ -88,11 +83,11 @@ class AddressFragment : Fragment() {
                     val action = AddressFragmentDirections.actionAddressFragmentToCheckoutFragment(list.toTypedArray(), total.toString())
                     findNavController().navigate(action)
                 }
-                Toast.makeText(requireContext(),"Address Updated", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),getString(R.string.updateAdd), Toast.LENGTH_SHORT).show()
             }
 
             .addOnFailureListener {
-                Toast.makeText(requireContext(),"Something went wrong", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),getString(R.string.wentWrong), Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -102,8 +97,6 @@ class AddressFragment : Fragment() {
         user.let {
             email = it!!.email!!
         }
-//        val userEmail = userPrefs.userEmail
-
 
         Firebase.firestore.collection("users")
             .document(email)

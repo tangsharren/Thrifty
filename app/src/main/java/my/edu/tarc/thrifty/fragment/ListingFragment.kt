@@ -144,7 +144,6 @@ class ListingFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener{
 
         else if(catSelected.equals("All")||catSelected == ""){
             list = getListings()
-//            binding.productRecycler.adapter = AllListingAdapter(requireContext(),list)
         }
 
 

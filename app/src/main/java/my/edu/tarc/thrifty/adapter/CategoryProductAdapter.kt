@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.databinding.ItemCategoryProductLayoutBinding
 import my.edu.tarc.thrifty.fragment.CategoryFragmentDirections
 import my.edu.tarc.thrifty.model.AddProductModel
@@ -24,13 +25,10 @@ class CategoryProductAdapter (val context: Context, val list:ArrayList<AddProduc
     override fun onBindViewHolder(holder: CategoryProductAdapter.CategoryProductViewHolder, position: Int) {
         Glide.with(context).load(list[position].productCoverImg).into(holder.binding.imageView3)
         holder.binding.tvProductNama.text = list[position].productName
-        holder.binding.tvProductPrice.text = "RM"+list[position].productSp
-        holder.binding.tvCarbonFoot.text = list[position].carbon+"kg"
+        holder.binding.tvProductPrice.text = context.getString(R.string.rm)+list[position].productSp
+        holder.binding.tvCarbonFoot.text = list[position].carbon+context.getString(R.string.kg)
 
         holder.itemView.setOnClickListener{
-//            val intent = Intent(context,ProductDetailsActivity::class.java)
-//            intent.putExtra("id",list[position].productId)
-//            context.startActivity(intent)
             val action = CategoryFragmentDirections.actionCategoryFragmentToProductDetailsFragment("",list[position].productId!!)
             Navigation.findNavController(holder.itemView).navigate(action)
         }

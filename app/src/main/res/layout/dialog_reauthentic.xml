@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/dialogReauthentic"
+    android:id="@+id/dialogReauthenticate"
     android:layout_margin="20dp"
     android:padding="20dp">
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,14 +15,14 @@
         android:background="@drawable/lavender_border">
 
         <TextView
-            android:id="@+id/reauthenticTitle"
+            android:id="@+id/reauthenticateTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/lavender_fill"
-            android:drawableLeft="@drawable/baseline_lock_reset_24"
+            app:drawableStartCompat="@drawable/baseline_lock_reset_24"
             android:drawablePadding="8dp"
             android:padding="10dp"
-            android:text="Please reauthentic before deletion"
+            android:text="@string/reauthenticate"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +37,7 @@
             android:layout_marginBottom="30dp"
             android:maxLines="1"
             android:textSize="16sp"
-            app:helperText="Required"
+            app:helperText="@string/required"
             app:helperTextTextColor="@color/red"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +55,7 @@
                 android:layout_height="70dp"
                 android:backgroundTint="@color/grey_font"
                 android:backgroundTintMode="screen"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white" />
@@ -68,7 +68,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="24dp"
-            android:text="Cancel"
+            android:text="@string/cancelBtn"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:cornerRadius="20dp"
@@ -83,7 +83,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="24dp"
-            android:text="Submit"
+            android:text="@string/submit"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:cornerRadius="20dp"

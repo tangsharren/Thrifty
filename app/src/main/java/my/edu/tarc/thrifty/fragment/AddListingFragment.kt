@@ -103,7 +103,7 @@ class AddListingFragment : Fragment() {
                 categoryList.add(data!!.cat!!)
             }
             Log.d("MyApp", "categoryList: $categoryList")
-            categoryList.add(0, "Select Category")
+            categoryList.add(0, getString(R.string.selectCat))
 
             val arrayAdapter =
                 ArrayAdapter(
@@ -143,13 +143,13 @@ class AddListingFragment : Fragment() {
             binding.productSpEdt.requestFocus()
             binding.productSpEdt.error = "Empty"
         } else if (coverImage == null)
-            Toast.makeText(requireContext(), "Please select cover image", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), getString(R.string.selectCover), Toast.LENGTH_SHORT)
                 .show()
         else if (list.size < 1)
-            Toast.makeText(requireContext(), "Please select product image", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), getString(R.string.selectProd), Toast.LENGTH_SHORT)
                 .show()
         else if (binding.productCategoryDropdown.selectedItemPosition == 0) {
-            Toast.makeText(requireContext(), "Please select category", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), getString(R.string.selectWarn), Toast.LENGTH_SHORT)
                 .show()
 
         } else
@@ -178,11 +178,10 @@ class AddListingFragment : Fragment() {
             }
     }
 
-    private var i = 0
     private fun uploadProductImage() {
         dialog.show()
         val fileName = UUID.randomUUID().toString() + ".jpg"
-
+        var i = 0
         val refStorage = FirebaseStorage.getInstance().reference.child("products/$fileName")
         refStorage.putFile(list[i])
             .addOnSuccessListener {
@@ -199,10 +198,7 @@ class AddListingFragment : Fragment() {
             .addOnFailureListener {
                 dialog.dismiss()
                 Toast.makeText(
-                    requireContext(),
-                    "Something went wrong with storage",
-                    Toast.LENGTH_SHORT
-                ).show()
+                    requireContext(),getString(R.string.storageError),Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -234,11 +230,11 @@ class AddListingFragment : Fragment() {
                 binding.etCarbon.text!!.clear()
                 binding.productCategoryDropdown.setSelection(0)
                 dialog.dismiss()
-                Toast.makeText(requireContext(), "Product Added", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.addedProd), Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
                 dialog.dismiss()
-                Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), getString(R.string.wentWrong), Toast.LENGTH_SHORT)
                     .show()
             }
     }

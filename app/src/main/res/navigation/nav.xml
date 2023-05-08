@@ -52,6 +52,9 @@
         <action
             android:id="@+id/action_moreFragment_to_listingFragment"
             app:destination="@id/listingFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/allOrderFragment"

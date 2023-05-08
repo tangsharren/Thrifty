@@ -56,11 +56,6 @@ class LoginFragment : Fragment() {
                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                     if (it.isSuccessful) {
                         Toast.makeText(requireContext(), "Logged in successfully", Toast.LENGTH_SHORT).show()
-//                        val intent = Intent(this, MainActivity::class.java)
-//                        startActivity(intent)
-
-//                        val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-//                        findNavController().navigate(action)
 
                         val intent = Intent(requireContext(), MainActivity::class.java)
                         startActivity(intent)
@@ -68,7 +63,6 @@ class LoginFragment : Fragment() {
                             activity?.finish()
                         }
                     } else {
-//                        Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
                         Toast.makeText(requireContext(), "Invalid email or incorrect password", Toast.LENGTH_SHORT).show()
                     }
                 }

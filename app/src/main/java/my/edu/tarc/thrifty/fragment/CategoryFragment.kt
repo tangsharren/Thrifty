@@ -39,7 +39,6 @@ class CategoryFragment : Fragment() {
                     val data = doc.toObject(AddProductModel::class.java)
                     list.add(data!!)
                 }
-//                val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
                 val recyclerView = binding.recyclerView
                 recyclerView.adapter = CategoryProductAdapter(requireContext(),list)
             }

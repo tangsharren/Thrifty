@@ -69,25 +69,24 @@ class MainActivity : AppCompatActivity() {
         popupMenu.inflate(R.menu.bottom_nav)
         binding.bottomBar.setupWithNavController(popupMenu.menu, navController)
         //To hide bottom bar in login and register
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.loginFragment -> {
-                    binding.bottomBar.visibility = View.GONE
-                }
-                R.id.registerFragment -> {
-                    binding.bottomBar.visibility = View.GONE
-                }
-                else -> {
-                    binding.bottomBar.visibility = View.VISIBLE
-                }
-            }
-        }
+//        navController.addOnDestinationChangedListener { _, destination, _ ->
+//            when (destination.id) {
+//                R.id.loginFragment -> {
+//                    binding.bottomBar.visibility = View.GONE
+//                }
+//                R.id.registerFragment -> {
+//                    binding.bottomBar.visibility = View.GONE
+//                }
+//                else -> {
+//                    binding.bottomBar.visibility = View.VISIBLE
+//                }
+//            }
+//        }
         binding.bottomBar.onItemSelected = {
             when (it) {
                 0 -> {
                     i = 0
                     navController.navigate(R.id.homeFragment)
-//                    replaceFragment(HomeFragment())
                 }
                 1 ->
                     i = 1

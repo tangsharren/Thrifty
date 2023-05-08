@@ -13,6 +13,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:contentDescription="@string/product_image"
             android:id="@+id/imageView4"
             android:layout_width="80dp"
             android:layout_height="80dp"
@@ -25,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="name"
+            android:text="@string/name"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/imageView4"
@@ -37,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginBottom="8dp"
-            android:text="carbon"
+            android:text="@string/carbon"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/tvProPrice"
@@ -51,13 +52,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginBottom="4dp"
-            android:text="RM"
+            android:text="@string/rm"
             android:textColor="@color/colorPrimary"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView4"
             app:layout_constraintStart_toEndOf="@+id/imageView4" />
 
         <ImageView
+            android:contentDescription="@string/delete"
             android:id="@+id/imageView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

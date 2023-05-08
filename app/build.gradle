@@ -39,13 +39,14 @@ android {
     }
 
     packagingOptions {
-        pickFirst '**'
-        exclude 'META-INF/*.SF'
-        exclude 'META-INF/*.DSA'
-        exclude 'META-INF/*.RSA'
-        exclude 'META-INF/*.EC'
         exclude 'META-INF/*'
         exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/versions/9/previous-compilation-data.bin'
+        exclude 'META-INF/MANIFEST.MF'
+    }
+    aaptOptions {
+        ignoreAssetsPattern "!META-INF/MANIFEST.MF"
+        ignoreAssetsPattern "META-INF/MANIFEST.MF"
     }
 }
 

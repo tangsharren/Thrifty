@@ -7,6 +7,7 @@
     tools:context=".activity.LoginActivity">
 
     <ImageView
+        android:contentDescription="@string/loginlogo"
         android:id="@+id/imageView6"
         android:layout_width="250dp"
         android:layout_height="250dp"
@@ -23,7 +24,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        app:helperText="Required"
+        app:helperText="@string/required"
         app:startIconDrawable="@drawable/baseline_email_24"
         app:helperTextTextColor="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,8 +36,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:hint="Email Address"
-
+            android:hint="@string/email_address"
             android:inputType="textEmailAddress"
             android:lines="1" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -62,7 +62,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
     <Button
@@ -72,7 +72,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:text="sign in"
+        android:text="@string/sign_in"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,21 +85,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:text="No account? Sign up here"
+        android:text="@string/no_account_sign_up_here"
         app:layout_constraintEnd_toEndOf="@+id/btnSignin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnSignin" />
     <TextView
         android:id="@+id/tvForgot"
         android:layout_margin="24dp"
-        android:textSize="45px"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:drawableStart="@drawable/baseline_lock_reset_24"
-        android:drawableTint="@color/colorPrimary"
+        app:drawableStartCompat="@drawable/baseline_lock_reset_24"
+        app:drawableTint="@color/colorPrimary"
         android:textColor="@color/purple_200"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Forgot Password?"
+        android:text="@string/forgot_password"
         app:layout_constraintTop_toBottomOf="@id/btnSignup"
         app:layout_constraintStart_toStartOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

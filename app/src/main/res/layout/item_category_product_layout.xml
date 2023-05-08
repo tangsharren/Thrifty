@@ -20,6 +20,7 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:contentDescription="@string/product_image"
                 android:id="@+id/imageView3"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -33,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="4dp"
-                android:text="TextView"
+                android:text="@string/product_name"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/imageView3"
@@ -45,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginBottom="4dp"
-                android:text="Carbon"
+                android:text="@string/carbon"
                 app:layout_constraintBottom_toTopOf="@id/tvProductPrice"
 
                 app:layout_constraintStart_toEndOf="@id/imageView3" />
@@ -56,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginBottom="8dp"
-                android:text="TextView"
+                android:text="@string/price"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/imageView3" />
 
@@ -64,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
-                android:text=" of carbon footprint saved!"
+                android:text="@string/of_carbon_footprint_saved"
                 app:layout_constraintStart_toEndOf="@+id/tvCarbonFoot"
                 app:layout_constraintTop_toTopOf="@+id/tvCarbonFoot" />
         </androidx.constraintlayout.widget.ConstraintLayout>

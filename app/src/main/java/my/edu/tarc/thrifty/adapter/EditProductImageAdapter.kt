@@ -41,7 +41,6 @@ class EditProductImageAdapter(var context: Context, val list : ArrayList<Uri>, v
 
             Toast.makeText(context,"Image delete in adapter for $productId:$list[position]",Toast.LENGTH_SHORT).show()
             val deletedImgUrl = list[currentPosition] // Get the URL to delete
-//            list.remove(list[position])
             list.removeAt(currentPosition) // Remove the item from the list
             notifyItemRemoved(position)
             notifyDataSetChanged()
@@ -51,9 +50,7 @@ class EditProductImageAdapter(var context: Context, val list : ArrayList<Uri>, v
             Log.d("MyApp","deletedImgUrl: $deletedImgUrl")
 
             // Delete the file
-            // Assume you have a reference to the document that contains the image URL
             val docRef =Firebase.firestore.collection("products").document(productId)
-            // Assume the image URL is stored in an array field called "photos"
             docRef.update("productImages", FieldValue.arrayRemove(deletedImgUrl)) // Remove the URL from the array
                 .addOnSuccessListener {
                     Log.d("MyApp", "DocumentSnapshot successfully updated!")

@@ -86,13 +86,14 @@ class AllProductFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener
         textView.setHorizontallyScrolling(true)
         //To show encouraging message
         // Create an array list of strings
-        val lists= arrayListOf("Do you know? Furniture production has a huge global carbon footprint. Each piece of furniture generates an average of 47kg of carbon dioxide equivalents."
-            , "Hey! The fashion industry accounts for about 8-10% of global carbon emissions, and nearly 20% of wastewater! Let's start thrifting now",
-            "Fashion industry creates more emission than flying, forget about fast fashion now!",
-            "Do you enjoy exploring different styles and trends without breaking the bank? Starts thrifting now!",
-        "Thrifting saves tons of preloved from ending up in landfills",
-        "Let's discover your treasures here, from vintage gems to designer labels",
-        "Reusing 1 kg of clothing saves 25 kg of CO2 according to a study.")
+        val lists= arrayListOf(
+            getString(R.string.list1),
+            getString(R.string.list2),
+            getString(R.string.list3),
+            getString(R.string.list4),
+            getString(R.string.list5),
+            getString(R.string.list6),
+            getString(R.string.list7))
 
         var index = 0
         val timer = Timer()

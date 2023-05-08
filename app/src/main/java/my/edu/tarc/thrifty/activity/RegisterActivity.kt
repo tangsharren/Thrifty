@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import my.edu.tarc.thrifty.MainActivity
+import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.databinding.ActivityRegisterBinding
 import my.edu.tarc.thrifty.model.UserModel
 
@@ -22,7 +23,6 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         firebaseAuth = FirebaseAuth.getInstance()
 
@@ -72,29 +72,20 @@ class RegisterActivity : AppCompatActivity() {
                         .addOnCompleteListener {
                             if (it.isSuccessful) {
                                 storeData()
-//                                val intent = Intent(this, LoginActivity::class.java)
-//                                startActivity(intent)
                             } else {
-                                Toast.makeText(this, "This email address is registered. Please login ", Toast.LENGTH_SHORT)
+                                Toast.makeText(this, getString(R.string.emailWarning), Toast.LENGTH_SHORT)
                                     .show()
                             }
                         }
                 } else {
-                    Toast.makeText(this, "Password does not matched", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.unmatchPsw), Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.emptyFields), Toast.LENGTH_SHORT).show()
             }
-//            storeData()
         }
     }
 
-//    private fun validateUser() {
-//        if (binding.userName.text!!.isEmpty() || binding.userNumber.text!!.isEmpty())
-//            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
-//        else
-//            storeData()
-//    }
     private fun validEmail(): String? {
         val email = binding.regEmail.text.toString()
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -104,40 +95,27 @@ class RegisterActivity : AppCompatActivity() {
     }
     private fun validPassword(): String? {
         val passwordText = binding.regPassword.text.toString()
-        if(passwordText.length < 8)
-        {
-            return "Minimum 8 Character Password"
+        if(passwordText.length < 8) {
+            return getString(R.string.min8)
         }
-        if(!passwordText.matches(".*[A-Z].*".toRegex()))
-        {
-            return "Must Contain 1 Upper-case Character"
+        if(!passwordText.matches(".*[A-Z].*".toRegex())) {
+            return getString(R.string.upperCase)
         }
         if(!passwordText.matches(".*[a-z].*".toRegex()))
-        {
-            return "Must Contain 1 Lower-case Character"
-        }
+            return getString(R.string.lowerCase)
         if(!passwordText.matches(".*[@#\$%^&+=].*".toRegex()))
-        {
-            return "Must Contain 1 Special Character (@#\$%^&+=)"
-        }
+            return getString(R.string.specialChar)
 
         return null
     }
     private fun storeData() {
         val builder = AlertDialog.Builder(this)
-            .setTitle("Loading")
-            .setMessage("Please Wait")
+            .setTitle(getString(R.string.loading))
+            .setMessage(getString(R.string.plsWait))
             .setCancelable(false)
             .create()
         builder.show()
 
-        //Shared preference is set in Main ady
-//        val preferences = this.getSharedPreferences("user", MODE_PRIVATE)
-//        val editor = preferences.edit()
-//
-////        editor.putString("email", binding.regEmail.text.toString().lowercase())
-//        editor.putString("name", binding.userName.text.toString())
-//        editor.apply()
         val data = UserModel(
             userName = binding.userName.text.toString(),
             userEmail = binding.regEmail.text.toString().lowercase(),
@@ -146,12 +124,10 @@ class RegisterActivity : AppCompatActivity() {
 
         Firebase.firestore.collection("users").document(binding.regEmail.text.toString().lowercase())
             .set(data).addOnSuccessListener {
-//                Toast.makeText(this, "User registered", Toast.LENGTH_SHORT).show()
                 val user = FirebaseAuth.getInstance().getCurrentUser()
                 var email:String? = ""
                 user?.let {
                     email = it.email
-                    Log.d("MyApp",email!!)
                 }
                 builder.dismiss()
                 Toast.makeText(this, "Registered & Signed In As $email", Toast.LENGTH_SHORT).show()
@@ -163,13 +139,11 @@ class RegisterActivity : AppCompatActivity() {
             }
             .addOnFailureListener {
                 builder.dismiss()
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.wentWrong), Toast.LENGTH_SHORT).show()
             }
     }
 
     private fun openLogin() {
-//        val loginIntent = Intent(this, LoginActivity::class.java)
-//        startActivity(loginIntent)
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }

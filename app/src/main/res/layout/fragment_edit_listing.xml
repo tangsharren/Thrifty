@@ -6,12 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".fragment.EditListingFragment">
 
+
+
     <ProgressBar
         android:id="@+id/progressBar3"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        android:max="100"
+        android:minWidth="200dp"
+        android:minHeight="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -37,7 +44,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Product Name"
+                android:hint="@string/product_name"
                 android:padding="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -50,7 +57,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Product Description"
+                android:hint="@string/product_description"
                 android:padding="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -62,7 +69,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Carbon Footprint Saved(kg)"
+                android:hint="@string/carbon_footprint_saved_kg"
                 android:padding="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -75,7 +82,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Product Price"
+                android:hint="@string/product_price"
                 android:padding="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -84,6 +91,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
+
             <Spinner
                 android:id="@+id/catSpinner"
                 android:layout_width="match_parent"
@@ -92,44 +100,45 @@
                 android:spinnerMode="dropdown" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCoverImg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnCoverImg"
-                android:text="Select Cover Image"
-                android:textAllCaps="false"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:text="@string/select_cover_image"
+                android:textAllCaps="false" />
 
             <ImageView
                 android:id="@+id/product_cover_img"
                 android:layout_width="200dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:scaleType="centerInside"/>
+                android:contentDescription="@string/product_image"
+                android:scaleType="centerInside" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnProdImg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnProdImg"
-                android:text="Select Product Image"
-                android:textAllCaps="false"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:text="@string/select_product_image"
+                android:textAllCaps="false" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/prodImgRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                tools:listitem="@layout/image_item"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="horizontal"
-                android:id="@+id/prodImgRecycler"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/image_item" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUpdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/btnUpdate"
-                android:text="Update"
-                android:textAllCaps="false"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:text="@string/update_listing"
+                android:textAllCaps="false" />
         </LinearLayout>
     </ScrollView>
 

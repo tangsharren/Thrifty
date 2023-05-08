@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.databinding.AllOrderItemBinding
 import my.edu.tarc.thrifty.model.AddProductModel
 import my.edu.tarc.thrifty.model.AllOrderModel
@@ -42,40 +43,39 @@ class AllOrdersAdapter(var list : ArrayList<AllOrderModel> , val context : Conte
             }
         }
         when(list[position].status){
-            "Ordered" -> {
-                holder.binding.productStatus.text = "Ordered"
+            context.getString(R.string.ordered) -> {
+                holder.binding.productStatus.text = context.getString(R.string.ordered)
             }
-            "Dispatched" -> {
-                holder.binding.productStatus.text = "Dispatched"
+            context.getString(R.string.dispatch) -> {
+                holder.binding.productStatus.text =  context.getString(R.string.dispatch)
             }
-            "Delivered" -> {
-                holder.binding.productStatus.text = "Delivered"
+            context.getString(R.string.deliver) -> {
+                holder.binding.productStatus.text =  context.getString(R.string.deliver)
             }
-            "Canceled" -> {
-                holder.binding.productStatus.text = "Canceled"
+            context.getString(R.string.cancel) -> {
+                holder.binding.productStatus.text = context.getString(R.string.cancel)
                 holder.binding.btnCancelOrder.isVisible = false
             }
         }
         holder.binding.btnCancelOrder.setOnClickListener {
             val builder = AlertDialog.Builder(context)
-            builder.setTitle("Cancel Order")
-            builder.setMessage("Are you sure you want to cancel this order?")
-            builder.setPositiveButton("Yes") { _, _ ->
+            builder.setTitle(context.getString(R.string.cancelOrder))
+            builder.setMessage(context.getString(R.string.cfmCancelOrder))
+            builder.setPositiveButton(context.getString(R.string.yes)) { _, _ ->
                 holder.binding.btnCancelOrder.visibility = GONE
-                updateStatus("Canceled",list[position].orderId!!)
+                updateStatus(context.getString(R.string.cancel),list[position].orderId!!)
             }
-            builder.setNegativeButton("No", null)
+            builder.setNegativeButton(context.getString(R.string.no), null)
             val dialog = builder.create()
             dialog.show()
         }
-//        Log.d("MyApp",totalCarbonSaved.toString())
     }
     fun updateStatus(str:String , doc:String){
         val data = hashMapOf<String, Any>()
         data["status"] = str
         Firebase.firestore.collection("allOrders")
             .document(doc).update(data).addOnSuccessListener {
-                Toast.makeText(context,"Order canceled",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,context.getString(R.string.canceled),Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
                 Toast.makeText(context,it.message,Toast.LENGTH_SHORT).show()
             }

@@ -49,9 +49,8 @@ class ProductDetailsFragment : Fragment() {
                 val productDesc = it.getString("productDescription")
                 val productCarbon = it.getString("carbon")
                 binding.tvName.text = name
-                binding.tvPrice.text = productSp
+                binding.tvPrice.text = getString(R.string.rm) + productSp
                 binding.tvDesc.text = productDesc
-//                binding.tvCarbon.text = productCarbon + "kg of carbon footprint will be saved!"
                 binding.tvCarbon.text = productCarbon
                 Log.d("MyApp",list.toString())
                 val slideList = ArrayList<SlideModel>()
@@ -69,9 +68,9 @@ class ProductDetailsFragment : Fragment() {
     private fun cartAction(proId: String, name: String?, productSp: String?, coverImg: String?,carbon: String?) {
         val productDao = AppDatabase.getInstance(requireContext()).productDao()
         if(productDao.isExit(proId)!=null)
-            binding.tvAddToCart.text = "Go to Cart"
+            binding.tvAddToCart.text = getString(R.string.goCart)
         else
-            binding.tvAddToCart.text = "Add to Cart"
+            binding.tvAddToCart.text = getString(R.string.addCart)
         binding.tvAddToCart.setOnClickListener{
             if(productDao.isExit(proId)!=null){
                 openCart()
@@ -86,7 +85,7 @@ class ProductDetailsFragment : Fragment() {
         Log.d("MyApp",carbon!!)
         lifecycleScope.launch(Dispatchers.IO){
             productDao.insertProduct(data)
-            binding.tvAddToCart.text = "Go to Cart"
+            binding.tvAddToCart.text = getString(R.string.goCart)
         }
     }
 
@@ -96,8 +95,6 @@ class ProductDetailsFragment : Fragment() {
         editor.putBoolean("isCart",true)
         editor.apply()
 
-//        startActivity(Intent(this, MainActivity::class.java))
-//        finish()
         val intent = Intent(requireContext(),MainActivity::class.java)
         startActivity(intent)
     }

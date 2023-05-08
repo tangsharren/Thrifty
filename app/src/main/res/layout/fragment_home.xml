@@ -44,7 +44,7 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Shop by Category"
+                    android:text="@string/shop_by_category"
                     android:textColor="@color/colorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -71,7 +71,7 @@
                     android:id="@+id/tvCarbonCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Shop by Products"
+                    android:text="@string/shop_by_products"
                     android:textColor="@color/colorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -81,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:text="See All"
+                    android:text="@string/see_all"
                     android:textColor="@color/colorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold" />

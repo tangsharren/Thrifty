@@ -7,6 +7,7 @@
     tools:context=".activity.LoginActivity">
 
     <ImageView
+        android:contentDescription="@string/registerlogo"
         android:id="@+id/imageView6"
         android:layout_width="250dp"
         android:layout_height="250dp"
@@ -36,7 +37,7 @@
             android:layout_height="65dp"
             android:lines="1"
             android:inputType="text"
-            android:hint="Username" />
+            android:hint="@string/username" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,7 +62,7 @@
             android:layout_height="65dp"
             android:lines="1"
             android:inputType="textEmailAddress"
-            android:hint="Email Address" />
+            android:hint="@string/email_address" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,7 +92,7 @@
             android:layout_height="65dp"
             android:lines="1"
             android:inputType="textPassword"
-            android:hint="Password" />
+            android:hint="@string/password" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -119,7 +120,7 @@
             android:layout_height="65dp"
             android:lines="1"
             android:inputType="textPassword"
-            android:hint="Confirm Password" />
+            android:hint="@string/confirm_password" />
 
     </com.google.android.material.textfield.TextInputLayout>
     <Button
@@ -129,7 +130,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:text="sign up"
+        android:text="@string/sign_up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirmContainer" />
@@ -141,7 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:text="Already Have An Account? Login"
+        android:text="@string/already_have_an_account_login"
         app:layout_constraintEnd_toEndOf="@+id/signup"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup" />

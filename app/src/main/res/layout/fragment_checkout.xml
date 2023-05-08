@@ -9,7 +9,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Redirecting you back to home page..."
+        android:textSize="22sp"
+        android:text="@string/redirecting_you_back_to_home_page"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:layout_marginLeft="6dp"
+    android:layout_marginStart="6dp"
     android:layout_marginTop="12dp"
     android:orientation="vertical"
     android:padding="24dp"
@@ -24,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
-            android:text="Product Name"
+            android:text="@string/product_name"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -39,7 +38,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="ID"
+                android:text="@string/id"
                 android:textSize="14sp"
                 android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -52,7 +51,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Delivered"
+                android:text="@string/delivered"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +75,7 @@
                 android:id="@+id/orderDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Date: "
+                android:text="@string/date"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline8"
                 app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +93,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Time:"
+                android:text="@string/time"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guideline8"
@@ -110,10 +109,10 @@
 
             <TextView
                 android:id="@+id/productCarbon"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Carbon : "
+                android:text="@string/carbon"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -126,7 +125,7 @@
                 android:id="@+id/productPrice"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Price : "
+                android:text="@string/price"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -147,7 +146,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/red"
-                android:text="Cancel"
+                android:text="@string/cancelBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
                 app:layout_constraintTop_toTopOf="parent" />

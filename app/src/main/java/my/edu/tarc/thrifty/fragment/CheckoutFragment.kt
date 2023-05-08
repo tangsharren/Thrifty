@@ -21,7 +21,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import my.edu.tarc.thrifty.MainActivity
 import my.edu.tarc.thrifty.R
-import my.edu.tarc.thrifty.activity.LoginActivity
 import my.edu.tarc.thrifty.databinding.FragmentAddressBinding
 import my.edu.tarc.thrifty.databinding.FragmentCartBinding
 import my.edu.tarc.thrifty.databinding.FragmentCheckoutBinding
@@ -81,17 +80,12 @@ class CheckoutFragment : Fragment() {
         preferences = requireActivity().getSharedPreferences("user", MODE_PRIVATE)
         val email = preferences.getString("email", "")!!
 
-//        val email : String
-//        val user = FirebaseAuth.getInstance().getCurrentUser()
-//        user.let {
-//            email = it!!.email!!
-//        }
+
         val data = hashMapOf<String,Any>()
         data["name"] = name!!
         data["price"] = price!!
         data["productId"] = productId
         data["status"] = "Ordered"
-//        data["userId"] = preferences.getString("email","")!!
         data["userId"] = email
         data["carbon"] = carbon!!
         data["orderDate"] = orderDate!!

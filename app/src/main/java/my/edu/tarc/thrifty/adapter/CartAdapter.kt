@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.databinding.LayoutCartItemBinding
 import my.edu.tarc.thrifty.fragment.CartFragmentDirections
 import my.edu.tarc.thrifty.roomdb.AppDatabase
@@ -28,13 +29,10 @@ class CartAdapter(val context: Context, val list: List<ProductModel>) :
         Glide.with(context).load(list[position].productImage).into(holder.binding.imageView4)
 
         holder.binding.tvProNames.text = list[position].productName
-        holder.binding.tvProPrice.text = "RM " + list[position].productSp
-        holder.binding.tvProCarbons.text = list[position].carbon + " kg of Carbon Footprint"
+        holder.binding.tvProPrice.text = context.getString(R.string.rm) + list[position].productSp
+        holder.binding.tvProCarbons.text = list[position].carbon + context.getString(R.string.carbonKg)
 
         holder.itemView.setOnClickListener{
-//            val intent = Intent(context,ProductDetailsActivity::class.java)
-//            intent.putExtra("id",list[position].productId)
-//            context.startActivity(intent)
             val action = CartFragmentDirections.actionCartFragmentToProductDetailsFragment("",list[position].productId)
             Navigation.findNavController(holder.itemView).navigate(action)
         }

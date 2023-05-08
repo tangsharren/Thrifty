@@ -15,9 +15,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import my.edu.tarc.thrifty.MainActivity
-import my.edu.tarc.thrifty.R
-import my.edu.tarc.thrifty.activity.LoginActivity
-import my.edu.tarc.thrifty.databinding.FragmentLoginBinding
 import my.edu.tarc.thrifty.databinding.FragmentRegisterBinding
 import my.edu.tarc.thrifty.model.UserModel
 
@@ -150,11 +147,6 @@ class RegisterFragment : Fragment() {
                 builder.dismiss()
                 Toast.makeText(requireContext(), "Registered & Signed In As $email", Toast.LENGTH_SHORT).show()
 
-//                val intent = Intent(this, MainActivity::class.java)
-//                startActivity(intent)
-
-//                val action = RegisterFragmentDirections.actionRegisterFragmentToHomeFragment()
-//                findNavController().navigate(action)
 
                 val intent = Intent(requireContext(), MainActivity::class.java)
                 startActivity(intent)
@@ -170,8 +162,6 @@ class RegisterFragment : Fragment() {
     }
 
     private fun openLogin() {
-//        startActivity(Intent(this, LoginActivity::class.java))
-//        finish()
         val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
         findNavController().navigate(action)
     }

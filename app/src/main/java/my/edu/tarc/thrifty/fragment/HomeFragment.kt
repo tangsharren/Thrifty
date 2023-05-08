@@ -74,7 +74,6 @@ class HomeFragment : Fragment() {
                     val data = doc.toObject(AddProductModel::class.java)
                     list.add(data!!)
                 }
-//                Log.d("MyApp",findNavController().currentDestination?.label.toString())
                 binding.productRecycler.adapter = ProductAdapter(requireContext(),list)
             }
     }

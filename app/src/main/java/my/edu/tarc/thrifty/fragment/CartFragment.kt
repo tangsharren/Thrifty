@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
+import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.adapter.CartAdapter
 import my.edu.tarc.thrifty.databinding.FragmentCartBinding
 import my.edu.tarc.thrifty.roomdb.AppDatabase
@@ -21,7 +22,6 @@ class CartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentCartBinding.inflate(layoutInflater)
 
         val preference = requireContext().getSharedPreferences("info",AppCompatActivity.MODE_PRIVATE)
@@ -51,15 +51,14 @@ class CartFragment : Fragment() {
             total += item.productSp!!.toFloat()
             carbon += item.carbon!!.toFloat()
         }
-        binding.tvCarbonSaved.text = String.format("Total Carbon Footprint Saved : %.2f kg", carbon)
-        binding.tvItemCount.text = "Total item In Cart : ${data.size}"
-        binding.tvTotal.text = String.format("Total Cost : RM %.2f", total)
+        binding.tvCarbonSaved.text = String.format(getString(R.string.carbonTotal), carbon)
+        binding.tvItemCount.text = getString(R.string.itemCart)+data.size
+        binding.tvTotal.text = String.format(getString(R.string.costTotal), total)
         binding.btnCheckout.setOnClickListener {
-            if(total == 0.0){
-                Toast.makeText(requireContext(),"Please add product to cart",Toast.LENGTH_SHORT).show()
-            }
+            if(total == 0.0)
+                Toast.makeText(requireContext(),getString(R.string.addProd),Toast.LENGTH_SHORT).show()
             else{
-                Toast.makeText(requireContext(),"Please Confirm Your address ",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),getString(R.string.confirmAdd),Toast.LENGTH_SHORT).show()
                 Log.d("MyApp",list.toTypedArray().toString())
                 val action = CartFragmentDirections.actionCartFragmentToAddressFragment(list.toTypedArray(), total.toString())
                 findNavController().navigate(action)

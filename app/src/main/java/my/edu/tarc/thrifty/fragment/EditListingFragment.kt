@@ -80,8 +80,6 @@ class EditListingFragment : Fragment(){
         dialog.setCancelable(false)
 
         getListingDetails(args.productId)
-//        adapter = EditProductImageAdapter(requireContext(),list,args.productId!!)
-//        binding.prodImgRecycler.adapter= adapter
 
         binding.btnCoverImg.setOnClickListener {
             val intent = Intent("android.intent.action.GET_CONTENT")
@@ -96,11 +94,8 @@ class EditListingFragment : Fragment(){
 
         binding.btnUpdate.setOnClickListener {
             if(validateData()){
-                Log.d("MyApp","go to storedata")
                 storeData()
-
             }
-
         }
 
 
@@ -114,7 +109,6 @@ class EditListingFragment : Fragment(){
                 val data = doc.toObject(CategoryModel::class.java)
                 categoryList.add(data!!.cat!!)
             }
-            Log.d("MyApp", "categoryList: $categoryList")
             categoryList.add(0, "Select Category")
 
             val arrayAdapter =
@@ -139,7 +133,7 @@ class EditListingFragment : Fragment(){
                 "Home Appliances "->binding.catSpinner.setSelection(8)
                 "Furniture "->binding.catSpinner.setSelection(9)
             }
-//            binding.catSpinner.setSelection(0)
+
             Log.d("MyApp","PreviousCat in setCategory:"+previousCat)
 
             val nowSelected = binding.catSpinner.selectedItem
@@ -151,20 +145,7 @@ class EditListingFragment : Fragment(){
                         position: Int,
                         id: Long
                     ) {
-//                        if(previousCat == "Furniture"){
-//                            binding.catSpinner.setSelection(9)
-//                        }
-//                        when(previousCat){
-//                            "Video Gaming"->binding.catSpinner.setSelection(1)
-//                            "Photography"->binding.catSpinner.setSelection(2)
-//                            "Tops"->binding.catSpinner.setSelection(3)
-//                            "Footwear"->binding.catSpinner.setSelection(4)
-//                            "Sports equipment"->binding.catSpinner.setSelection(5)
-//                            "Babies & Kids"->binding.catSpinner.setSelection(6)
-//                            "Bottom"->binding.catSpinner.setSelection(7)
-//                            "Home Appliances"->binding.catSpinner.setSelection(8)
-//                            "Furniture"->binding.catSpinner.setSelection(9)
-//                        }
+
                         if (!nowSelected.toString().equals(previousCat)){
 
                         }
@@ -201,7 +182,7 @@ class EditListingFragment : Fragment(){
                 for (str in oldProdImages) {
                     list.add(Uri.parse(str))
                 }
-                Log.d("MyApp","list of Uri:${list.toString()}")
+                Log.d("MyApp","list of Uri:${list}")
 
                 binding.etName.setText(name)
                 binding.etPrice.setText(productSp)
@@ -225,25 +206,24 @@ class EditListingFragment : Fragment(){
             .addOnSuccessListener {
                 it.storage.downloadUrl.addOnSuccessListener { image ->
                     newCoverImgUrl = image.toString()
-//                    uploadProductImage()
                     val newCoverImg = image
                     val db = Firebase.firestore.collection("products")
                     val key = args.productId
                     db.document(key).update("productCoverImg" ,newCoverImgUrl)
                         .addOnSuccessListener {
-                            Toast.makeText(requireContext(), "Cover Image Updated", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), getString(R.string.coverUpdate), Toast.LENGTH_SHORT).show()
                             dialog.dismiss()
                         }
                         .addOnFailureListener {
                             dialog.dismiss()
-                            Toast.makeText(requireContext(), "Something went wrong with updating cover img", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), getString(R.string.coverError), Toast.LENGTH_SHORT).show()
                         }
 
                 }
             }
             .addOnFailureListener {
                 dialog.dismiss()
-                Toast.makeText(requireContext(), "Something went wrong with cover image storage", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.coverStoreError), Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -281,10 +261,7 @@ class EditListingFragment : Fragment(){
             .addOnFailureListener {
                 dialog.dismiss()
                 Toast.makeText(
-                    requireContext(),
-                    "Something went wrong with product image storage",
-                    Toast.LENGTH_SHORT
-                ).show()
+                    requireContext(), getString(R.string.prodImgError), Toast.LENGTH_SHORT).show()
             }
     }
     private fun validateData() :Boolean{
@@ -342,11 +319,11 @@ class EditListingFragment : Fragment(){
                 "productCategory" to newCat,
                 "carbon" to newCarbon))
             .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Listing Updated", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.updateListing), Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
                 dialog.dismiss()
-                Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.wentWrong), Toast.LENGTH_SHORT).show()
             }
     }
 

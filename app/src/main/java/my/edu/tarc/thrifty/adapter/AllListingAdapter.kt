@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.databinding.AllProductListBinding
 import my.edu.tarc.thrifty.fragment.ListingFragmentDirections
 import my.edu.tarc.thrifty.model.AddProductModel
@@ -37,18 +38,16 @@ class AllListingAdapter  (val context: Context, var list:ArrayList<AddProductMod
         holder.binding.tvPrice.text =  "RM" + data.productSp
 
         holder.binding.btnDelete.setOnClickListener {
-//            val dao = AppDatabase.getInstance(context).productDao()
-
             val builder = AlertDialog.Builder(context)
-            builder.setTitle("Delete item")
-            builder.setMessage("Are you sure you want to delete this product?")
+            builder.setTitle(context.getString(R.string.deleteListing))
+            builder.setMessage(context.getString(R.string.cfmDelete))
             builder.setPositiveButton("Yes") { _, _ ->
                 val db = Firebase.firestore
                 val storageRef = db.collection("products").document(list[position].productId!!)
 
                 storageRef.delete()
                     .addOnSuccessListener {
-                        Toast.makeText(context,"Product deleted", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context,context.getString(R.string.prodDeleted), Toast.LENGTH_SHORT).show()
                     }
                     .addOnFailureListener { e ->
                         Log.d("MyApp", e.toString())
