@@ -1,11 +1,11 @@
 package my.edu.tarc.thrifty.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.ktx.firestore
@@ -32,14 +32,6 @@ class AllProductFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener
         binding = FragmentAllProductBinding.inflate(layoutInflater)
 
         list = ArrayList()
-//        Firebase.firestore.collection("products")
-//            .get().addOnSuccessListener {
-//                list.clear()
-//                for (doc in it.documents) {
-//                    val data = doc.toObject(AddProductModel::class.java)
-//                    list.add(data!!)
-//                }
-//            }
         list = getProducts()
         adapter = AllProductAdapter(requireContext(), list)
         binding.allProductRecycler.adapter = adapter
@@ -49,25 +41,28 @@ class AllProductFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener
             val sortPopup = PopupMenu(requireContext(), sortButton)
             sortPopup.menuInflater.inflate(R.menu.sort_menu, sortPopup.menu)
             sortPopup.setOnMenuItemClickListener { item ->
-                Log.d("MyApp","Sort by: ${item.itemId}")
+
                 when (item.itemId) {
                     R.id.prodName -> {
                         // Sort by name
                         list.sortBy { it.productName }
                         adapter = AllProductAdapter(requireContext(), list)
                         binding.allProductRecycler.adapter = adapter
+                        Toast.makeText(requireContext(),"Sort by product name",Toast.LENGTH_SHORT).show()
                     }
                     R.id.prodCarbon -> {
                         // Sort by carbon
-                        list.sortBy { it.carbon }
+                        list.sortBy { it.carbon?.toFloat() }
                         adapter = AllProductAdapter(requireContext(), list)
                         binding.allProductRecycler.adapter = adapter
+                        Toast.makeText(requireContext(),"Sort by carbon footprint",Toast.LENGTH_SHORT).show()
                     }
                     R.id.prodPrice -> {
                         // Sort by price
-                        list.sortBy { it.productSp }
+                        list.sortBy { it.productSp?.toFloat() }
                         adapter = AllProductAdapter(requireContext(), list)
                         binding.allProductRecycler.adapter = adapter
+                        Toast.makeText(requireContext(),"Sort by product price",Toast.LENGTH_SHORT).show()
                     }
                 }
                 true
@@ -150,11 +145,12 @@ class AllProductFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener
     }
 
     override fun onItemClick(catSelected : String) {
-        Log.d("MyApp","catselected in fragment:" +catSelected.toString())
+        Toast.makeText(requireContext(),"Current Category: " + catSelected,Toast.LENGTH_SHORT ).show()
         if(!catSelected.equals("All"))
             list = getCatProducts(catSelected)
         else if(catSelected.equals("All")||catSelected == "")
             list = getProducts()
+
     }
     private fun getCatProducts(category:String?) :ArrayList<AddProductModel>{
         val list = ArrayList<AddProductModel>()
@@ -165,6 +161,7 @@ class AllProductFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener
                     val data = doc.toObject(AddProductModel::class.java)
                     list.add(data!!)
                 }
+                list.sortBy{it.productName}
                 adapter = AllProductAdapter(requireContext(), list)
                 binding.allProductRecycler.adapter = adapter
             }
@@ -179,6 +176,7 @@ class AllProductFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener
                     val data = doc.toObject(AddProductModel::class.java)
                     list.add(data!!)
                 }
+                list.sortBy{it.productName}
                 adapter = AllProductAdapter(requireContext(), list)
                 binding.allProductRecycler.adapter = adapter
             }

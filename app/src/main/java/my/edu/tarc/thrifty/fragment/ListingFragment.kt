@@ -44,7 +44,6 @@ class ListingFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener{
         val sortButton = binding.btnSort
 
         sortButton.setOnClickListener {
-            // Kotlin code for the popup
             val sortPopup = PopupMenu(requireContext(), sortButton)
             sortPopup.menuInflater.inflate(R.menu.sort_menu, sortPopup.menu)
             sortPopup.setOnMenuItemClickListener { item ->
@@ -58,13 +57,13 @@ class ListingFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener{
                     }
                     R.id.prodCarbon -> {
                         // Sort by carbon
-                        list.sortBy { it.carbon }
+                        list.sortBy { it.carbon?.toFloat()  }
                         adapter = AllListingAdapter(requireContext(), list)
                         binding.productRecycler.adapter = adapter
                     }
                     R.id.prodPrice -> {
                         // Sort by price
-                        list.sortBy { it.productSp }
+                        list.sortBy { it.productSp?.toFloat()  }
                         adapter = AllListingAdapter(requireContext(), list)
                         binding.productRecycler.adapter = adapter
                     }
@@ -100,7 +99,8 @@ class ListingFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener{
                 val data = doc.toObject(AddProductModel::class.java)
                 list.add(data!!)
             }
-            Log.d("MyApp","getListings:"+list.toString())
+            //the listing will be sorted by product name by default
+            list.sortBy{it.productName}
             adapter = AllListingAdapter(requireContext(),list)
             binding.productRecycler.adapter = adapter
         }
@@ -135,7 +135,7 @@ class ListingFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener{
     }
 
     override fun onItemClick(catSelected : String) {
-        Log.d("MyApp","catselected in fragment:" +catSelected.toString())
+        Log.d("MyApp","catselected in fragment:" +catSelected)
         if(!catSelected.equals("All"))
             list = getCatProducts(catSelected)
 
@@ -146,7 +146,7 @@ class ListingFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener{
 
     }
     private fun getCatProducts(category:String?)  :ArrayList<AddProductModel>{
-        list = ArrayList<AddProductModel>()
+        list = ArrayList()
         Firebase.firestore.collection("products")
             .whereEqualTo("productCategory",category)
             .whereEqualTo("userEmail",args.email)
@@ -156,6 +156,7 @@ class ListingFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener{
                     val data = doc.toObject(AddProductModel::class.java)
                     list.add(data!!)
                 }
+                list.sortBy{it.productName}
                 adapter = AllListingAdapter(requireContext(),list)
                 binding.productRecycler.adapter = adapter
             }

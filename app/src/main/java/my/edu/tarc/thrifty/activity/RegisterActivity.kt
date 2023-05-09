@@ -1,10 +1,9 @@
 package my.edu.tarc.thrifty.activity
 
+import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.UserManager
-import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -19,6 +18,7 @@ import my.edu.tarc.thrifty.model.UserModel
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var dialog: Dialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -40,7 +40,7 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
         binding.regEmail.setOnFocusChangeListener { _, focused ->
-            val email = binding.regEmail.text.toString()
+//            val email = binding.regEmail.text.toString()
             if(!focused) {
                 binding.emailContainer.helperText = validEmail()
                 }
@@ -52,7 +52,9 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-
+    dialog = Dialog(this)
+    dialog.setContentView(R.layout.progress_layout)
+    dialog.setCancelable(false)
     binding.signup.setOnClickListener {
             val email = binding.regEmail.text.toString().lowercase()
             val password = binding.regPassword.text.toString()
@@ -67,12 +69,14 @@ class RegisterActivity : AppCompatActivity() {
 
             if (validEmail && validPassword &&email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
                 if (password == confirmPassword) {
-
+                    dialog.show()
                     firebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener {
                             if (it.isSuccessful) {
+                                dialog.dismiss()
                                 storeData()
                             } else {
+                                dialog.dismiss()
                                 Toast.makeText(this, getString(R.string.emailWarning), Toast.LENGTH_SHORT)
                                     .show()
                             }

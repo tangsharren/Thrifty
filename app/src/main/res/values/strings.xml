@@ -8,7 +8,7 @@
     <string name="warningEmail">Please provide your email address</string>
     <string name="chkEmail">Check your email</string>
     <string name="wrongEmail">Email not found</string>
-    <string name="emailWarning">\"This email address is registered. Please login \"</string>
+    <string name="emailWarning">This email address is registered. Please login </string>
     <string name="unmatchPsw">Password does not matched</string>
     <string name="min8">Minimum 8 Character Password</string>
     <string name="upperCase">Must Contain 1 Upper-case Character</string>

@@ -1,5 +1,6 @@
 package my.edu.tarc.thrifty.activity
 
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ import my.edu.tarc.thrifty.databinding.ActivityLoginBinding
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var dialog: Dialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -37,18 +39,24 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, RegisterActivity::class.java))
             finish()
         }
+        dialog = Dialog(this)
+        dialog.setContentView(R.layout.progress_layout)
+        dialog.setCancelable(false)
         binding.btnSignin.setOnClickListener {
+
             val email = binding.loginEmail.text.toString().lowercase()
             val password = binding.loginPassword.text.toString()
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
-
+                dialog.show()
                 firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                     if (it.isSuccessful) {
+                        dialog.dismiss()
                         Toast.makeText(this, getString(R.string.successLogin), Toast.LENGTH_SHORT).show()
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                     } else {
+                        dialog.dismiss()
                         Toast.makeText(this, getString(R.string.wrongPsw), Toast.LENGTH_SHORT).show()
                     }
                 }

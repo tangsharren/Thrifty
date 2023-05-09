@@ -47,24 +47,31 @@ class AllOrderFragment : Fragment(){
                         list.sortBy { it.name }
                         adapter = AllOrdersAdapter(list, requireContext())
                         binding.recyclerView.adapter = adapter
+                        Toast.makeText(requireContext(),"Sort by product name",Toast.LENGTH_SHORT).show()
                     }
                     R.id.orderProdCarbon -> {
                         // Sort by carbon
-                        list.sortBy { it.carbon }
+                        list.sortBy { it.carbon?.toFloat()  }
                         adapter = AllOrdersAdapter(list, requireContext())
                         binding.recyclerView.adapter = adapter
+                        Toast.makeText(requireContext(),"Sort by carbon footprint saved",Toast.LENGTH_SHORT).show()
+
                     }
                     R.id.orderPrice -> {
                         // Sort by price
-                        list.sortBy { it.price }
+                        list.sortBy { it.price?.toFloat()  }
                         adapter = AllOrdersAdapter(list, requireContext())
                         binding.recyclerView.adapter = adapter
+                        Toast.makeText(requireContext(),"Sort by price",Toast.LENGTH_SHORT).show()
+
                     }
                     R.id.orderDate -> {
                         // Sort by date
                         list.sortBy { it.orderDate }
                         adapter = AllOrdersAdapter(list, requireContext())
                         binding.recyclerView.adapter = adapter
+                        Toast.makeText(requireContext(),"Sort by order date",Toast.LENGTH_SHORT).show()
+
                     }
                 }
                 true
@@ -90,8 +97,6 @@ class AllOrderFragment : Fragment(){
                 return true
             }
         })
-
-
         return binding.root
     }
 
@@ -124,6 +129,7 @@ class AllOrderFragment : Fragment(){
                     val data = doc.toObject(AllOrderModel::class.java)
                     list.add(data)
                 }
+
                 var totalCarbonSaved = 0.0
                 for (item in list) {
                     if (item.status != "Canceled") {
@@ -131,6 +137,7 @@ class AllOrderFragment : Fragment(){
                     }
                 }
                 binding.carbonMsg.text = String.format( "Total of  %.2f kg carbon footprint is saved from your past purchase!", totalCarbonSaved)
+                list.sortBy{it.name}
                 Log.d("MyApp","OrderList:$list")
                 adapter = AllOrdersAdapter(list, requireContext())
                 binding.recyclerView.adapter = adapter
