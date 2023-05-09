@@ -40,16 +40,12 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
         binding.regEmail.setOnFocusChangeListener { _, focused ->
-//            val email = binding.regEmail.text.toString()
-            if(!focused) {
+            if(!focused)
                 binding.emailContainer.helperText = validEmail()
-                }
-
         }
         binding.confirmContainer.setOnFocusChangeListener{ _,focused ->
-            if(!focused) {
+            if(!focused)
                 binding.confirmContainer.helperText = ""
-            }
         }
 
     dialog = Dialog(this)

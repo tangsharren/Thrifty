@@ -41,13 +41,12 @@ class CheckoutFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentCheckoutBinding.inflate(layoutInflater)
-        Toast.makeText(requireContext(),"Order Placed", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(),getString(R.string.placedOrder), Toast.LENGTH_SHORT).show()
         uploadData()
         return binding.root
     }
     private fun uploadData() {
         val id = args.productIds.toList()
-//        val id = intent.getStringArrayListExtra("productIds")
         for(currentId in id!!){
             fetchData(currentId)
         }
@@ -85,7 +84,7 @@ class CheckoutFragment : Fragment() {
         data["name"] = name!!
         data["price"] = price!!
         data["productId"] = productId
-        data["status"] = "Ordered"
+        data["status"] = getString(R.string.ordered)
         data["userId"] = email
         data["carbon"] = carbon!!
         data["orderDate"] = orderDate!!
@@ -96,7 +95,7 @@ class CheckoutFragment : Fragment() {
         data["orderId"] = key
 
         firestore.document(key).set(data).addOnSuccessListener {
-            Toast.makeText(requireContext(),"Order Placed",Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),getString(R.string.placedOrder),Toast.LENGTH_SHORT).show()
 
             //Delete the product after purchasing
             deleteProduct(productId)
@@ -106,7 +105,7 @@ class CheckoutFragment : Fragment() {
                 activity?.finish()
             }
         }.addOnFailureListener {
-            Toast.makeText(requireContext(),"Something went wrong",Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),getString(R.string.wentWrong),Toast.LENGTH_SHORT).show()
         }
     }
 

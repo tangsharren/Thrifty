@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -45,7 +44,7 @@ class EditListingFragment : Fragment(){
 
     private lateinit var dialog: Dialog
     private lateinit var categoryList: ArrayList<String>
-
+    //launch gallery to add cover image
     private var launchGalleryActivity = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
@@ -56,6 +55,7 @@ class EditListingFragment : Fragment(){
             binding.prodImgRecycler.isVisible = true
         }
     }
+    //launch gallery to add product images
     private var launchProductActivity = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
@@ -91,11 +91,13 @@ class EditListingFragment : Fragment(){
             intent.type = "image/*"
             launchProductActivity.launch(intent)
         }
-
+        //Store the user's updated details only if all fields are correct
         binding.btnUpdate.setOnClickListener {
-            if(validateData()){
+            if(validateData())
                 storeData()
-            }
+
+            else(!validateData())
+                Toast.makeText(requireContext(),R.string.wentWrong,Toast.LENGTH_SHORT).show()
         }
 
 
@@ -117,11 +119,8 @@ class EditListingFragment : Fragment(){
                     com.google.android.material.R.layout.support_simple_spinner_dropdown_item,
                     categoryList
                 )
-            //arrayAdapter.setDropDownViewResource(com.google.android.material.R.layout.support_simple_spinner_dropdown_item)
             binding.catSpinner.adapter = arrayAdapter
-            if(previousCat == "Furniture"){
-                            binding.catSpinner.setSelection(9)
-                        }
+            //set the selection of the category spinner based on the category previously saved
             when(previousCat){
                 "Video Gaming "->binding.catSpinner.setSelection(1)
                 "Photography"->binding.catSpinner.setSelection(2)
@@ -133,32 +132,9 @@ class EditListingFragment : Fragment(){
                 "Home Appliances "->binding.catSpinner.setSelection(8)
                 "Furniture "->binding.catSpinner.setSelection(9)
             }
-
-            Log.d("MyApp","PreviousCat in setCategory:"+previousCat)
-
-            val nowSelected = binding.catSpinner.selectedItem
-            binding.catSpinner.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        val selectedCategory = parent?.getItemAtPosition(position).toString()
-                        Log.d("MyApp", "selectedCategory: $selectedCategory")
-                        // Do something with the selected category
-                    }
-
-                    override fun onNothingSelected(p0: AdapterView<*>?) {
-                        return
-                    }
-                }
         }
     }
     private fun getListingDetails(proId:String?) {
-        preferences = requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE)
-        val email = preferences.getString("email", "")!!
         Firebase.firestore.collection("products")
             .document(proId!!).get().addOnSuccessListener {
                 val oldProdImages = it.get("productImages") as ArrayList<String>
@@ -178,7 +154,6 @@ class EditListingFragment : Fragment(){
                 for (str in oldProdImages) {
                     list.add(Uri.parse(str))
                 }
-                Log.d("MyApp","list of Uri:${list}")
 
                 binding.etName.setText(name)
                 binding.etPrice.setText(productSp)
@@ -189,7 +164,7 @@ class EditListingFragment : Fragment(){
                 setProductCategory(productCat!!)
 
             }.addOnFailureListener {
-                Toast.makeText(requireContext(),"Something went wrong", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),R.string.wentWrong, Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -202,7 +177,7 @@ class EditListingFragment : Fragment(){
             .addOnSuccessListener {
                 it.storage.downloadUrl.addOnSuccessListener { image ->
                     newCoverImgUrl = image.toString()
-                    val newCoverImg = image
+//                    val newCoverImg = image
                     val db = Firebase.firestore.collection("products")
                     val key = args.productId
                     db.document(key).update("productCoverImg" ,newCoverImgUrl)
@@ -234,7 +209,7 @@ class EditListingFragment : Fragment(){
                 it.storage.downloadUrl.addOnSuccessListener { image ->
                     listImages.add(image!!.toString())
                     if (addedImagelist.size == listImages.size){
-                        val newProductImg = image
+//                        val newProductImg = image
                         val db = Firebase.firestore.collection("products")
                         val key = args.productId
                         val docRef = db.document(key)
@@ -263,25 +238,25 @@ class EditListingFragment : Fragment(){
     private fun validateData() :Boolean{
         if (binding.etName.text.toString().isEmpty()) {
             binding.etName.requestFocus()
-            binding.etName.error = "Empty"
+            binding.etName.error = getString(R.string.empty)
             return false
         } else if (binding.etPrice.text.toString().isEmpty()) {
             binding.etPrice.requestFocus()
-            binding.etPrice.error = "Empty"
+            binding.etPrice.error = getString(R.string.empty)
             return false
         } else if (coverImage == null){
-            Toast.makeText(requireContext(), "Please select cover image", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), getString(R.string.selectCover), Toast.LENGTH_SHORT)
                 .show()
             return false
         }
 
         else if (list.size < 1){
-            Toast.makeText(requireContext(), "Please select product image", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), getString(R.string.selectProd), Toast.LENGTH_SHORT)
                 .show()
             return false
         }
         else if (binding.catSpinner.selectedItemPosition == 0) {
-            Toast.makeText(requireContext(), "Please select category", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), getString(R.string.plsSelectCat), Toast.LENGTH_SHORT)
                 .show()
             return false
 
@@ -322,6 +297,4 @@ class EditListingFragment : Fragment(){
                 Toast.makeText(requireContext(), getString(R.string.wentWrong), Toast.LENGTH_SHORT).show()
             }
     }
-
-
 }

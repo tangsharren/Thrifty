@@ -172,7 +172,7 @@ class AddListingFragment : Fragment() {
                 dialog.dismiss()
                 Toast.makeText(
                     requireContext(),
-                    "Something went wrong with storage",
+                    getString(R.string.storageError),
                     Toast.LENGTH_SHORT
                 ).show()
             }

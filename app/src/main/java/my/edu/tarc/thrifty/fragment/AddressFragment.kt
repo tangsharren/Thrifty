@@ -109,7 +109,7 @@ class AddressFragment : Fragment() {
                 binding.userPostcode.setText(it.getString("postcode"))
             }
             .addOnFailureListener {
-                //Toast.makeText(this,"Something went wrong",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),getString(R.string.wentWrong),Toast.LENGTH_SHORT).show()
             }
     }
 }

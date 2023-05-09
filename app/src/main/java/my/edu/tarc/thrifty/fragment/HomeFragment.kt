@@ -27,7 +27,6 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding =  FragmentHomeBinding.inflate(layoutInflater)
 
         binding.categoryRecycler.setOnClickListener {
@@ -59,7 +58,6 @@ class HomeFragment : Fragment() {
                     val data = doc.data?.get("img")
                     list.add(data.toString())
                 }
-                Log.d("MyApp","Slider get in home:"+list.toString())
                 val slideList = ArrayList<SlideModel>()
                 for(data in list){
                     slideList.add(SlideModel(data, ScaleTypes.CENTER_INSIDE))

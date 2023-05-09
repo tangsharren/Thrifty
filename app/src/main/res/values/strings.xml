@@ -117,6 +117,26 @@
     <string name="add_to_cart">Add To Cart</string>
     <string name="of_carbon_footprint_saved">of carbon footprint saved!</string>
     <string name="sorting">Sorting</string>
+    <string name="checkEmail">Check your email</string>
+    <string name="noEmail">Email not found</string>
+    <string name="deletedAcc">Account deleted successfully! You will be logged out now...</string>
+    <string name="noEmailExist">No users matched the email.</string>
+    <string name="updatedPic">Profile Pic Updated</string>
+    <string name="selectImg">Please select image</string>
+    <string name="removeUser">Removed user successfully</string>
+    <string name="failedAuthen">Re-authentication failed:</string>
+    <string name="inputPsw">Please input password</string>
+    <string name="loggedOut">You are logged out now...</string>
+    <string name="plsSelectCat">Please select category</string>
+    <string name="empty">Empty</string>
+    <string name="sortPrice">Sort by price</string>
+    <string name="sortCarbon">Sort by carbon footprint saved</string>
+    <string name="sortDate">Sort by order date</string>
+    <string name="sortName">Sort by product name</string>
+    <string name="carbonPast">Total of  %.2f kg carbon footprint is saved from your past purchase!</string>
+    <string name="placedOrder">Order Placed</string>
+    <string name="currentCat">"Current Category: "</string>
+    <string name="uploaded">Uploaded</string>
 
 
     <string-array name="encourageMsg">

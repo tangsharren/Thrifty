@@ -40,21 +40,20 @@ class AllOrderFragment : Fragment(){
             val sortPopup = PopupMenu(requireContext(), sortButton)
             sortPopup.menuInflater.inflate(R.menu.sort_order, sortPopup.menu)
             sortPopup.setOnMenuItemClickListener { item ->
-                Log.d("MyApp", "Sort by: ${item.itemId}")
                 when (item.itemId) {
                     R.id.orderProdName -> {
                         // Sort by name
                         list.sortBy { it.name }
                         adapter = AllOrdersAdapter(list, requireContext())
                         binding.recyclerView.adapter = adapter
-                        Toast.makeText(requireContext(),"Sort by product name",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),getString(R.string.sortName),Toast.LENGTH_SHORT).show()
                     }
                     R.id.orderProdCarbon -> {
                         // Sort by carbon
                         list.sortBy { it.carbon?.toFloat()  }
                         adapter = AllOrdersAdapter(list, requireContext())
                         binding.recyclerView.adapter = adapter
-                        Toast.makeText(requireContext(),"Sort by carbon footprint saved",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),getString(R.string.sortCarbon),Toast.LENGTH_SHORT).show()
 
                     }
                     R.id.orderPrice -> {
@@ -62,7 +61,7 @@ class AllOrderFragment : Fragment(){
                         list.sortBy { it.price?.toFloat()  }
                         adapter = AllOrdersAdapter(list, requireContext())
                         binding.recyclerView.adapter = adapter
-                        Toast.makeText(requireContext(),"Sort by price",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),getString(R.string.sortPrice),Toast.LENGTH_SHORT).show()
 
                     }
                     R.id.orderDate -> {
@@ -70,7 +69,7 @@ class AllOrderFragment : Fragment(){
                         list.sortBy { it.orderDate }
                         adapter = AllOrdersAdapter(list, requireContext())
                         binding.recyclerView.adapter = adapter
-                        Toast.makeText(requireContext(),"Sort by order date",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),getString(R.string.sortDate),Toast.LENGTH_SHORT).show()
 
                     }
                 }
@@ -136,7 +135,7 @@ class AllOrderFragment : Fragment(){
                         totalCarbonSaved += item.carbon!!.toFloat()
                     }
                 }
-                binding.carbonMsg.text = String.format( "Total of  %.2f kg carbon footprint is saved from your past purchase!", totalCarbonSaved)
+                binding.carbonMsg.text = String.format( getString(R.string.carbonPast), totalCarbonSaved)
                 list.sortBy{it.name}
                 Log.d("MyApp","OrderList:$list")
                 adapter = AllOrdersAdapter(list, requireContext())

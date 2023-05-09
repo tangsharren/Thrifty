@@ -48,21 +48,21 @@ class AllProductFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener
                         list.sortBy { it.productName }
                         adapter = AllProductAdapter(requireContext(), list)
                         binding.allProductRecycler.adapter = adapter
-                        Toast.makeText(requireContext(),"Sort by product name",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.sortName),Toast.LENGTH_SHORT).show()
                     }
                     R.id.prodCarbon -> {
                         // Sort by carbon
                         list.sortBy { it.carbon?.toFloat() }
                         adapter = AllProductAdapter(requireContext(), list)
                         binding.allProductRecycler.adapter = adapter
-                        Toast.makeText(requireContext(),"Sort by carbon footprint",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),getString(R.string.sortCarbon),Toast.LENGTH_SHORT).show()
                     }
                     R.id.prodPrice -> {
                         // Sort by price
                         list.sortBy { it.productSp?.toFloat() }
                         adapter = AllProductAdapter(requireContext(), list)
                         binding.allProductRecycler.adapter = adapter
-                        Toast.makeText(requireContext(),"Sort by product price",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),getString(R.string.sortPrice),Toast.LENGTH_SHORT).show()
                     }
                 }
                 true
@@ -145,7 +145,7 @@ class AllProductFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener
     }
 
     override fun onItemClick(catSelected : String) {
-        Toast.makeText(requireContext(),"Current Category: " + catSelected,Toast.LENGTH_SHORT ).show()
+        Toast.makeText(requireContext(),getString(R.string.currentCat) + catSelected,Toast.LENGTH_SHORT ).show()
         if(!catSelected.equals("All"))
             list = getCatProducts(catSelected)
         else if(catSelected.equals("All")||catSelected == "")

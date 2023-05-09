@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -52,18 +53,21 @@ class ListingFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener{
                     R.id.prodName -> {
                         // Sort by name
                         list.sortBy { it.productName }
+                        Toast.makeText(requireContext(),getString(R.string.sortName), Toast.LENGTH_SHORT).show()
                         adapter = AllListingAdapter(requireContext(), list)
                         binding.productRecycler.adapter = adapter
                     }
                     R.id.prodCarbon -> {
                         // Sort by carbon
                         list.sortBy { it.carbon?.toFloat()  }
+                        Toast.makeText(requireContext(),getString(R.string.sortCarbon), Toast.LENGTH_SHORT).show()
                         adapter = AllListingAdapter(requireContext(), list)
                         binding.productRecycler.adapter = adapter
                     }
                     R.id.prodPrice -> {
                         // Sort by price
                         list.sortBy { it.productSp?.toFloat()  }
+                        Toast.makeText(requireContext(),getString(R.string.sortPrice), Toast.LENGTH_SHORT).show()
                         adapter = AllListingAdapter(requireContext(), list)
                         binding.productRecycler.adapter = adapter
                     }
@@ -135,7 +139,6 @@ class ListingFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener{
     }
 
     override fun onItemClick(catSelected : String) {
-        Log.d("MyApp","catselected in fragment:" +catSelected)
         if(!catSelected.equals("All"))
             list = getCatProducts(catSelected)
 

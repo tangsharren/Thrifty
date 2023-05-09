@@ -32,10 +32,8 @@ class ProductDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentProductDetailsBinding.inflate(layoutInflater)
-
-//        getProductDetails(intent.getStringExtra("id"))
+        //args.id is the email we get from the previous fragment
         getProductDetails(args.id)
 
         return binding.root
@@ -61,7 +59,7 @@ class ProductDetailsFragment : Fragment() {
                 cartAction(proId,name,productSp,it.getString("productCoverImg"),productCarbon)
                 binding.imageSlider.setImageList(slideList)
             }.addOnFailureListener {
-                Toast.makeText(requireContext(),"Something went wrong", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),getString(R.string.wentWrong), Toast.LENGTH_SHORT).show()
             }
     }
 

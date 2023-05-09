@@ -49,7 +49,6 @@ class MoreFragment : Fragment() {
         if (it.resultCode == Activity.RESULT_OK) {
             imageUrl = it.data!!.data
             binding.profilePic.setImageURI(imageUrl)
-//            binding.profilePic.setImageResource(R.drawable.profile)
         }
     }
     override fun onCreateView(
@@ -73,7 +72,7 @@ class MoreFragment : Fragment() {
         binding.tvProfileName.text = preferences.getString("name", "")
 
         binding.btnLogout.setOnClickListener {
-            Toast.makeText(requireContext(),"You are logged out now...",Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),getString(R.string.loggedOut),Toast.LENGTH_SHORT).show()
             firebaseAuth.signOut()
             Log.d("MyApp",firebaseAuth.getCurrentUser().toString())
             val intent = Intent(requireContext(),LoginActivity::class.java)
@@ -83,8 +82,9 @@ class MoreFragment : Fragment() {
             }
 
         }
+        //Reauthentication is required before removing account
         binding.btnRemoveAcc.setOnClickListener {
-            // Inflate your custom layout for the dialog
+            // Inflate custom layout for the dialog
             val dialogView = layoutInflater.inflate(R.layout.dialog_reauthentic, null)
 
             // Create an AlertDialog builder and set the title and message
@@ -101,10 +101,10 @@ class MoreFragment : Fragment() {
 
             // Set the onClickListener for the reauthenticate button
             reauthenticateButton.setOnClickListener {
-                // Get the password from the EditText in your custom layout
+                // Get the password from the EditText in custom layout
                 val passwordInput = dialogView.findViewById<TextInputEditText>(R.id.etPassword)
                 if (passwordInput.text.isNullOrEmpty()){
-                    Toast.makeText(requireContext(),"Please input password",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),getString(R.string.inputPsw),Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
                 }
                 val password = passwordInput.text.toString()
@@ -114,21 +114,19 @@ class MoreFragment : Fragment() {
 
                 // Create a credential with the password
                 val credential = EmailAuthProvider.getCredential(user!!.email!!, password)
-                Toast.makeText(requireContext(), "Please wait...", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.plsWait), Toast.LENGTH_SHORT).show()
                 // Reauthenticate the user with the credential
                 user.reauthenticate(credential)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             // Reauthentication successful
-                            Toast.makeText(requireContext(), "Removed user successfully", Toast.LENGTH_SHORT).show()
-                            //https://www.youtube.com/watch?v=BfiYnovc6jU&t=9s
+                            Toast.makeText(requireContext(), getString(R.string.removeUser), Toast.LENGTH_SHORT).show()
                             removeUser(email)
-                            //https://www.youtube.com/watch?v=8XujhEbaHNQ
                             deletePerson(email)
                             dialog.dismiss()
                         } else {
                             // Reauthentication failed
-                            Toast.makeText(requireContext(), "Reauthentication failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), getString(R.string.failedAuthen) +task.exception?.message, Toast.LENGTH_SHORT).show()
                             passwordInput.text?.clear()
                         }
                     }
@@ -144,7 +142,7 @@ class MoreFragment : Fragment() {
                 dialog.dismiss()
             }
         }
-
+        //Reset password email will be sent
         binding.tvChangePsw.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
             val view = layoutInflater.inflate(R.layout.dialog_forgot, null)
@@ -181,34 +179,30 @@ class MoreFragment : Fragment() {
         }
         return binding.root
     }
+
     private fun validateData() {
         if (imageUrl == null)
-            Toast.makeText(requireContext(),"Please select image",Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),getString(R.string.selectImg),Toast.LENGTH_SHORT).show()
         else
             uploadImage()
     }
     private fun uploadImage() {
         val fileName = UUID.randomUUID().toString() + ".jpg"
 
-        val refStorage = FirebaseStorage.getInstance().reference.child("products/$fileName")
+        val refStorage = FirebaseStorage.getInstance().reference.child("users/$fileName")
         refStorage.putFile(imageUrl!!)
             .addOnSuccessListener {
                 it.storage.downloadUrl.addOnSuccessListener {
                         image -> storeData(image.toString())
 
-                    Toast.makeText(requireContext(),"Uploaded", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),getString(R.string.uploaded), Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener{
-                Toast.makeText(requireContext(),"Something went wrong with storage", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),getString(R.string.wentWrong), Toast.LENGTH_SHORT).show()
             }
     }
     private fun storeData(url: String){
-//        val email : String
-//        val user = firebaseAuth.getCurrentUser()
-//        user.let {
-//            email = it!!.email!!
-//        }
         preferences = requireActivity().getSharedPreferences("user", MODE_PRIVATE)
         val email = preferences.getString("email", "")!!
         val data = hashMapOf<String, Any>(
@@ -218,13 +212,12 @@ class MoreFragment : Fragment() {
         Firebase.firestore.collection("users")
             .document(email)
             .update(data).addOnSuccessListener {
-//                binding.profilePic.setImageResource(R.drawable.profile)
-                Toast.makeText(requireContext(),"Profile Pic Updated",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),getString(R.string.updatedPic),Toast.LENGTH_SHORT).show()
                 getProfilePic()
             }
 
             .addOnFailureListener {
-                Toast.makeText(requireContext(),"Something went wrong",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),getString(R.string.wentWrong),Toast.LENGTH_SHORT).show()
             }
     }
     private fun getProfilePic() :Int{
@@ -237,7 +230,6 @@ class MoreFragment : Fragment() {
                 gotProfilePic = 1
             }
             .addOnFailureListener {
-//                binding.profilePic.setImageResource(R.drawable.profile)
                 Log.d("MyApp","No profile pic")
             }
         return gotProfilePic
@@ -251,11 +243,10 @@ class MoreFragment : Fragment() {
         }
         firebaseAuth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(requireContext(), "Check your email's spam", Toast.LENGTH_SHORT).show()
-                }
+                if (task.isSuccessful)
+                    Toast.makeText(requireContext(), getString(R.string.checkEmail), Toast.LENGTH_SHORT).show()
                 else{
-                    Toast.makeText(requireContext(), "Email not found", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.noEmail), Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -263,7 +254,7 @@ class MoreFragment : Fragment() {
         val user = firebaseAuth.getCurrentUser()
         user?.delete()?.addOnCompleteListener {
             if(it.isSuccessful){
-                Toast.makeText(requireContext(),"Account deleted successfully! You will be logged out now...",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),getString(R.string.deletedAcc),Toast.LENGTH_SHORT).show()
                 val intent = Intent(requireContext(),LoginActivity::class.java)
                 startActivity(intent)
                 if(activity != null) {
@@ -295,7 +286,7 @@ class MoreFragment : Fragment() {
             }
         } else {
             withContext(Dispatchers.Main) {
-                Toast.makeText(requireContext(), "No users matched the email.", Toast.LENGTH_LONG)
+                Toast.makeText(requireContext(), getString(R.string.noEmailExist), Toast.LENGTH_LONG)
                     .show()
             }
         }
