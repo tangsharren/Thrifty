@@ -10,16 +10,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.adapter.AllOrdersAdapter
 import my.edu.tarc.thrifty.databinding.FragmentAllOrderBinding
 import my.edu.tarc.thrifty.model.AllOrderModel
-import my.edu.tarc.thrifty.model.CategoryModel
-import my.edu.tarc.thriftyadmin.adapter.CategorySearchAdapter
 import java.util.*
 import kotlin.collections.ArrayList
 

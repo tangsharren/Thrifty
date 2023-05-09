@@ -58,13 +58,9 @@ class MoreFragment : Fragment() {
     ): View? {
         binding = FragmentMoreBinding.inflate(layoutInflater)
         firebaseAuth = FirebaseAuth.getInstance()
-//        if(getProfilePic()==0)
-//            binding.profilePic.setImageResource(R.drawable.profile)
         getProfilePic()
 
         binding.tvUpdateAdd.setOnClickListener {
-//            val addressIntent = Intent(context, AddressActivity::class.java)
-//            startActivity(addressIntent)
             it.findNavController().navigate(R.id.action_moreFragment_to_addressFragment)
 
         }
@@ -183,15 +179,6 @@ class MoreFragment : Fragment() {
             val action = MoreFragmentDirections.actionMoreFragmentToListingFragment(email)
             findNavController().navigate(action)
         }
-
-        //get the total carbon saved calculated in all order fragment
-        //but we must open the fragment in order to get it;(
-//        var totalCarbonSaved:Float
-//        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("carbonSaved")?.observe(viewLifecycleOwner) { data ->
-//            totalCarbonSaved = data.toFloat()
-//            Log.d("profile",totalCarbonSaved.toString())
-//            binding.tvCarbonTotal.text = totalCarbonSaved.toString() +"kg"
-//        }
         return binding.root
     }
     private fun validateData() {

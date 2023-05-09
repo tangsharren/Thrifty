@@ -44,6 +44,9 @@ class HomeFragment : Fragment() {
         getCategories()
         getSliderImage()
         getProducts()
+        binding.buttonTrans.setOnClickListener{
+            it.findNavController().navigate(R.id.action_homeFragment_to_allProductFragment)
+        }
         return binding.root
     }
 

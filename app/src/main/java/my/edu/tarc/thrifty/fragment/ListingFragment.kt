@@ -8,15 +8,12 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.adapter.AllListingAdapter
-import my.edu.tarc.thrifty.adapter.AllProductAdapter
 import my.edu.tarc.thrifty.databinding.FragmentListingBinding
 import my.edu.tarc.thrifty.model.AddProductModel
 import my.edu.tarc.thrifty.model.CategoryModel

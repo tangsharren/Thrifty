@@ -145,10 +145,6 @@ class EditListingFragment : Fragment(){
                         position: Int,
                         id: Long
                     ) {
-
-                        if (!nowSelected.toString().equals(previousCat)){
-
-                        }
                         val selectedCategory = parent?.getItemAtPosition(position).toString()
                         Log.d("MyApp", "selectedCategory: $selectedCategory")
                         // Do something with the selected category

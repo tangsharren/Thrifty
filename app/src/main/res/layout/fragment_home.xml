@@ -17,7 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="190dp">
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
@@ -33,7 +35,12 @@
                     app:iss_text_align="CENTER"
                     app:srcCompat="@drawable/thrift_benefit" />
             </androidx.cardview.widget.CardView>
-
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/button_trans"/>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
