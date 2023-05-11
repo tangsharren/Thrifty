@@ -51,7 +51,7 @@
     <string name="carbonTotal">Total Carbon Footprint Saved : %.2f kg</string>
     <string name="costTotal">Total Cost : RM %.2f</string>
     <string name="addProd">Please add product to cart</string>
-    <string name="confirmAdd">\"Please Confirm Your address \"</string>
+    <string name="confirmAdd">Please Confirm Your address</string>
     <string name="coverUpdate">Cover Image Updated</string>
     <string name="coverError">Something went wrong with updating cover img</string>
     <string name="coverStoreError">Something went wrong with cover image storage</string>
@@ -137,6 +137,7 @@
     <string name="placedOrder">Order Placed</string>
     <string name="currentCat">"Current Category: "</string>
     <string name="uploaded">Uploaded</string>
+    <string name="searchHint">Search...</string>
 
 
     <string-array name="encourageMsg">
@@ -148,4 +149,26 @@
         <item>Let\'s discover your treasures here, from vintage gems to designer labels</item>
         <item>Reusing 1 kg of clothing saves 25 kg of CO2 according to a study.</item>
     </string-array>
+    <string name="orderID">Order ID:</string>
+    <string name="sold">Sold by :</string>
+    <string name="upload_profile_picture">Upload Profile Picture</string>
+    <string name="usernameMore">Username :</string>
+    <string name="nameMore">name</string>
+    <string name="email_addressMore">Email Address :</string>
+    <string name="emailMore">email</string>
+    <string name="passwordMore">Password:</string>
+    <string name="change">Change</string>
+    <string name="addressMore">Address :</string>
+    <string name="updateMore">Update</string>
+    <string name="all_orders">All Orders:</string>
+    <string name="click_here_to_view">Click here to view</string>
+    <string name="listings_sold">Listings Sold:</string>
+    <string name="logout">logout</string>
+    <string name="remove_account">remove account</string>
+    <string name="all_listings">All Listings:</string>
+    <string name="sold_by_hotmail_com">Sold by hotmail.com</string>
+    <string name="desc">Desc...</string>
+    <string name="ordered_by">Ordered by:</string>
+    <string name="dispatched">Dispatched</string>
+    <string name="buyer">Buyer:\n</string>
 </resources>

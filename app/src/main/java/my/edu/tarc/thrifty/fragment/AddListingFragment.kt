@@ -98,7 +98,11 @@ class AddListingFragment : Fragment() {
         categoryList = ArrayList()
         Firebase.firestore.collection("categories").get().addOnSuccessListener {
             categoryList.clear()
+            // iterates over each document in the collection we get.
+            // doc represents the current document and it is of type DocumentSnapshot, which contains the data and metadata of document.
             for (doc in it.documents) {
+                // converts the document data into an instance of CategoryModel class using the toObject() method.
+                //toObject() method takes the class type as a parameter and returns an instance CategoryModel class.
                 val data = doc.toObject(CategoryModel::class.java)
                 categoryList.add(data!!.cat!!)
             }
@@ -138,21 +142,27 @@ class AddListingFragment : Fragment() {
     private fun validateData() {
         if (binding.productNameEdt.text.toString().isEmpty()) {
             binding.productNameEdt.requestFocus()
-            binding.productNameEdt.error = "Empty"
+            binding.productNameEdt.error = getString(R.string.emptyFields)
+        } else if (binding.productDescriptionEdt.text.toString().isEmpty()) {
+            binding.productDescriptionEdt.requestFocus()
+            binding.productDescriptionEdt.error = getString(R.string.emptyFields)
+        } else if (binding.etCarbon.text.toString().isEmpty()) {
+            binding.etCarbon.requestFocus()
+            binding.etCarbon.error = getString(R.string.emptyFields)
         } else if (binding.productSpEdt.text.toString().isEmpty()) {
             binding.productSpEdt.requestFocus()
-            binding.productSpEdt.error = "Empty"
-        } else if (coverImage == null)
+            binding.productSpEdt.error = getString(R.string.emptyFields)
+        } else if (binding.productCategoryDropdown.selectedItemPosition == 0) {
+            Toast.makeText(requireContext(), getString(R.string.selectWarn), Toast.LENGTH_SHORT)
+                .show()
+
+        }else if (coverImage == null)
             Toast.makeText(requireContext(), getString(R.string.selectCover), Toast.LENGTH_SHORT)
                 .show()
         else if (list.size < 1)
             Toast.makeText(requireContext(), getString(R.string.selectProd), Toast.LENGTH_SHORT)
                 .show()
-        else if (binding.productCategoryDropdown.selectedItemPosition == 0) {
-            Toast.makeText(requireContext(), getString(R.string.selectWarn), Toast.LENGTH_SHORT)
-                .show()
-
-        } else
+         else
             uploadImage()
     }
 
@@ -217,6 +227,7 @@ class AddListingFragment : Fragment() {
             binding.productSpEdt.text.toString(),
             listImages,
             args.email,
+            "Available"
             )
         db.document(key).set(data)
             .addOnSuccessListener {

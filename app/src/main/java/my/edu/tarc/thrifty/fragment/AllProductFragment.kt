@@ -1,6 +1,9 @@
 package my.edu.tarc.thrifty.fragment
 
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +11,7 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import my.edu.tarc.thrifty.R
@@ -25,11 +29,14 @@ class AllProductFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener
     private lateinit var binding: FragmentAllProductBinding
     private lateinit var list: ArrayList<AddProductModel>
     private lateinit var adapter: AllProductAdapter
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAllProductBinding.inflate(layoutInflater)
+
 
         list = ArrayList()
         list = getProducts()
@@ -119,9 +126,12 @@ class AllProductFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener
     fun searchList(text: String) {
         val searchList = ArrayList<AddProductModel>()
         for (dataClass in list) {
-            if (dataClass.productName?.lowercase()
-                    ?.contains(text.lowercase(Locale.getDefault())) == true
-            ) {
+            //true if the productName is not null and
+            //contains the text parameter(the query) as a substring in lowercase letters.
+            if (dataClass.productName?.lowercase()?.contains(text.lowercase(Locale.getDefault())) == true||
+                dataClass.productCategory?.lowercase()?.contains(text.lowercase(Locale.getDefault())) == true ||
+                dataClass.productDescription?.lowercase()?.contains(text.lowercase(Locale.getDefault())) == true ||
+                    dataClass.userEmail?.lowercase()?.contains(text.lowercase(Locale.getDefault())) == true) {
                 searchList.add(dataClass)
             }
         }
@@ -130,9 +140,13 @@ class AllProductFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener
     private fun getCategories(){
         val list = ArrayList<CategoryModel>()
         Firebase.firestore.collection("categories")
-            .get().addOnSuccessListener {
+            .addSnapshotListener { querySnapshot, e ->
+                if (e != null) {
+                    Log.d("MyApp", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
                 list.clear()
-                for(doc in it.documents){
+                for(doc in querySnapshot!!){
                     val data = doc.toObject(CategoryModel::class.java)
                     list.add(data!!)
                 }
@@ -154,10 +168,16 @@ class AllProductFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener
     }
     private fun getCatProducts(category:String?) :ArrayList<AddProductModel>{
         val list = ArrayList<AddProductModel>()
-        Firebase.firestore.collection("products").whereEqualTo("productCategory",category)
-            .get().addOnSuccessListener {
+        Firebase.firestore.collection("products")
+            .whereEqualTo("productCategory",category)
+            .whereEqualTo("availability","Available")
+            .addSnapshotListener { querySnapshot, e ->
+                if (e != null) {
+                    Log.d("MyApp", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
                 list.clear()
-                for(doc in it.documents){
+                for(doc in querySnapshot!!){
                     val data = doc.toObject(AddProductModel::class.java)
                     list.add(data!!)
                 }
@@ -170,13 +190,19 @@ class AllProductFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener
     private fun getProducts():ArrayList<AddProductModel> {
         val list = ArrayList<AddProductModel>()
         Firebase.firestore.collection("products")
-            .get().addOnSuccessListener {
+            .whereEqualTo("availability","Available")
+            .addSnapshotListener { querySnapshot, e ->
+                if (e != null) {
+                    Log.d("MyApp", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
                 list.clear()
-                for (doc in it.documents) {
+                for (doc in querySnapshot!!) {
                     val data = doc.toObject(AddProductModel::class.java)
                     list.add(data!!)
                 }
                 list.sortBy{it.productName}
+
                 adapter = AllProductAdapter(requireContext(), list)
                 binding.allProductRecycler.adapter = adapter
             }

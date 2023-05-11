@@ -1,5 +1,7 @@
 package my.edu.tarc.thrifty.fragment
 
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -22,13 +24,15 @@ import my.edu.tarc.thriftyadmin.adapter.CategoryAdapter
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var preferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding =  FragmentHomeBinding.inflate(layoutInflater)
-
+        preferences = requireActivity().getSharedPreferences("user", MODE_PRIVATE)
+        val currentUser = preferences.getString("email", "")!!
         binding.categoryRecycler.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment)
         }
@@ -38,7 +42,9 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_cartFragment)
         }
         binding.tvAllProduct.setOnClickListener {
-            it.findNavController().navigate(R.id.action_homeFragment_to_allProductFragment)
+            val action = HomeFragmentDirections.actionHomeFragmentToAllProductFragment(currentUser)
+            findNavController().navigate(action)
+//            it.findNavController().navigate(R.id.action_homeFragment_to_allProductFragment)
         }
         getCategories()
         getSliderImage()
@@ -52,9 +58,13 @@ class HomeFragment : Fragment() {
     private fun getSliderImage() {
         val list = ArrayList<String>()
         Firebase.firestore.collection("slider")
-            .get().addOnSuccessListener {
+            .addSnapshotListener { querySnapshot, e ->
+                if (e != null) {
+                    Log.d("MyApp", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
                 list.clear()
-                for(doc in it.documents){
+                for(doc in querySnapshot!!){
                     val data = doc.data?.get("img")
                     list.add(data.toString())
                 }
@@ -69,11 +79,17 @@ class HomeFragment : Fragment() {
     private fun getProducts() {
         val list = ArrayList<AddProductModel>()
         Firebase.firestore.collection("products")
-            .get().addOnSuccessListener {
+            .whereEqualTo("availability","Available")
+            .addSnapshotListener { querySnapshot, e ->
+                if (e != null) {
+                    Log.d("MyApp", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
                 list.clear()
-                for(doc in it.documents){
+                for(doc in querySnapshot!!){
                     val data = doc.toObject(AddProductModel::class.java)
                     list.add(data!!)
+                    list.sortBy { it.productName }
                 }
                 binding.productRecycler.adapter = ProductAdapter(requireContext(),list)
             }
@@ -83,9 +99,13 @@ class HomeFragment : Fragment() {
     private fun getCategories(){
         val list = ArrayList<CategoryModel>()
         Firebase.firestore.collection("categories")
-            .get().addOnSuccessListener {
+            .addSnapshotListener { querySnapshot, e ->
+                if (e != null) {
+                    Log.d("MyApp", "Listen failed.", e)
+                    return@addSnapshotListener
+                }
                 list.clear()
-                for(doc in it.documents){
+                for(doc in querySnapshot!!){
                     val data = doc.toObject(CategoryModel::class.java)
                     list.add(data!!)
                     list.sortBy { it.cat }

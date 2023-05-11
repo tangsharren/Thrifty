@@ -11,9 +11,6 @@
         android:label="Home Page"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_cartFragment"
-            app:destination="@id/cartFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_allProductFragment"
             app:destination="@id/allProductFragment" />
         <action
@@ -24,6 +21,12 @@
         <action
             android:id="@+id/action_homeFragment_to_categoryFragment"
             app:destination="@id/categoryFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_editListingFragment"
+            app:destination="@id/editListingFragment" />
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
@@ -36,6 +39,8 @@
         <action
             android:id="@+id/action_cartFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment" />
+        <argument android:name="email"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/moreFragment"
@@ -52,12 +57,19 @@
         <action
             android:id="@+id/action_moreFragment_to_listingFragment"
             app:destination="@id/listingFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_orderStatusFragment"
+            app:destination="@id/orderStatusFragment" />
     </fragment>
     <fragment
         android:id="@+id/allOrderFragment"
         android:name="my.edu.tarc.thrifty.fragment.AllOrderFragment"
         android:label="All Orders"
-        tools:layout="@layout/fragment_all_order" />
+        tools:layout="@layout/fragment_all_order" >
+        <action
+            android:id="@+id/action_allOrderFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/allProductFragment"
         android:name="my.edu.tarc.thrifty.fragment.AllProductFragment"
@@ -66,6 +78,12 @@
         <action
             android:id="@+id/action_allProductFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment" />
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_allProductFragment_to_editListingFragment"
+            app:destination="@id/editListingFragment" />
     </fragment>
     <fragment
         android:id="@+id/addressFragment"
@@ -153,5 +171,17 @@
         <argument
             android:name="productId"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderStatusFragment"
+        android:name="my.edu.tarc.thrifty.fragment.OrderStatusFragment"
+        android:label="Manage listing sold"
+        tools:layout="@layout/fragment_order_status" >
+        <action
+            android:id="@+id/action_orderStatusFragment_to_productDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+        <action
+            android:id="@+id/action_orderStatusFragment_to_editListingFragment"
+            app:destination="@id/editListingFragment" />
     </fragment>
 </navigation>

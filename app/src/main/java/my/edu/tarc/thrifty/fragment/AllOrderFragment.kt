@@ -102,9 +102,8 @@ class AllOrderFragment : Fragment(){
     fun searchList(text: String) {
         val searchList = ArrayList<AllOrderModel>()
         for (dataClass in list) {
-            if (dataClass.name?.lowercase()
-                    ?.contains(text.lowercase(Locale.getDefault())) == true
-            ) {
+            if (dataClass.name?.lowercase()?.contains(text.lowercase(Locale.getDefault())) == true||
+                dataClass.status?.lowercase()?.contains(text.lowercase(Locale.getDefault())) == true ) {
                 searchList.add(dataClass)
             }
         }

@@ -33,7 +33,7 @@ class ProductDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentProductDetailsBinding.inflate(layoutInflater)
-        //args.id is the email we get from the previous fragment
+        //args.id is the product id we get from the previous fragment
         getProductDetails(args.id)
 
         return binding.root
@@ -46,10 +46,12 @@ class ProductDetailsFragment : Fragment() {
                 val productSp = it.getString("productSp")
                 val productDesc = it.getString("productDescription")
                 val productCarbon = it.getString("carbon")
+                val seller = it.getString("userEmail")
                 binding.tvName.text = name
                 binding.tvPrice.text = getString(R.string.rm) + productSp
-                binding.tvDesc.text = productDesc
+                binding.desc.text = productDesc
                 binding.tvCarbons.text = getString(R.string.total_carbon_footprint_saved) + productCarbon + getString(R.string.kg)
+                binding.seller.text = "Sold by :"+seller
                 Log.d("MyApp",list.toString())
                 val slideList = ArrayList<SlideModel>()
                 for(data in list){

@@ -96,10 +96,14 @@ class ListingFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener{
         val list = ArrayList<AddProductModel>()
         val queryByName = Firebase.firestore.collection("products").
         whereEqualTo("userEmail",args.email)
-        queryByName.get().addOnSuccessListener {
+        queryByName.addSnapshotListener { querySnapshot, e ->
+            if (e != null) {
+                Log.d("MyApp", "Listen failed.", e)
+                return@addSnapshotListener
+            }
             list.clear()
 
-            for(doc in it.documents){
+            for(doc in querySnapshot!!){
                 val data = doc.toObject(AddProductModel::class.java)
                 list.add(data!!)
             }
@@ -113,9 +117,9 @@ class ListingFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener{
     fun searchList(text: String) {
         val searchList = ArrayList<AddProductModel>()
         for (dataClass in list) {
-            if (dataClass.productName?.lowercase()
-                    ?.contains(text.lowercase(Locale.getDefault())) == true
-            ) {
+            if (dataClass.productName?.lowercase()?.contains(text.lowercase(Locale.getDefault())) == true ||
+                dataClass.productCategory?.lowercase()?.contains(text.lowercase(Locale.getDefault())) == true ||
+                dataClass.productDescription?.lowercase()?.contains(text.lowercase(Locale.getDefault())) == true ) {
                 searchList.add(dataClass)
             }
         }

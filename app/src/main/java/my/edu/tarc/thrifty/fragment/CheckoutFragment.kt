@@ -9,26 +9,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import my.edu.tarc.thrifty.MainActivity
 import my.edu.tarc.thrifty.R
-import my.edu.tarc.thrifty.databinding.FragmentAddressBinding
-import my.edu.tarc.thrifty.databinding.FragmentCartBinding
 import my.edu.tarc.thrifty.databinding.FragmentCheckoutBinding
 import my.edu.tarc.thrifty.roomdb.AppDatabase
 import my.edu.tarc.thrifty.roomdb.ProductModel
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class CheckoutFragment : Fragment() {
@@ -71,11 +65,12 @@ class CheckoutFragment : Fragment() {
                     productId,
                     it.getString("carbon"),
                     currentDate.toString(),
-                    currentTime.toString())
+                    currentTime.toString(),
+                it.getString("userEmail"))
             }
     }
 
-    private fun saveData(name: String?, price: String?, productId: String,carbon: String?,orderDate: String?,orderTime: String?) {
+    private fun saveData(name: String?, price: String?, productId: String,carbon: String?,orderDate: String?,orderTime: String?, userListed:String?) {
         preferences = requireActivity().getSharedPreferences("user", MODE_PRIVATE)
         val email = preferences.getString("email", "")!!
 
@@ -89,6 +84,7 @@ class CheckoutFragment : Fragment() {
         data["carbon"] = carbon!!
         data["orderDate"] = orderDate!!
         data["orderTime"] = orderTime!!
+        data["userSeller"] = userListed!!
 
         val firestore = Firebase.firestore.collection("allOrders")
         val key = firestore.document().id
@@ -97,8 +93,8 @@ class CheckoutFragment : Fragment() {
         firestore.document(key).set(data).addOnSuccessListener {
             Toast.makeText(requireContext(),getString(R.string.placedOrder),Toast.LENGTH_SHORT).show()
 
-            //Delete the product after purchasing
-            deleteProduct(productId)
+            //Update the product availability after purchasing
+            updateAvailability(productId)
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
             if(activity != null) {
@@ -109,16 +105,18 @@ class CheckoutFragment : Fragment() {
         }
     }
 
-    private fun deleteProduct(productId: String) {
-        val db = Firebase.firestore
-        val storageRef = db.collection("products").document(productId!!)
+    private fun updateAvailability(productId: String) {
+        //update product availability
+        val availability = hashMapOf<String, Any>()
+        availability["availability"] = "Unavailable"
 
-        storageRef.delete()
-            .addOnSuccessListener {
-               Log.d("MyApp","Purchased product deleted")
+        Firebase.firestore.collection("products")
+            .document(productId).update(availability).addOnSuccessListener {
+//                Toast.makeText(context, "Product is unavailable now", Toast.LENGTH_SHORT).show()
+                Log.d("MyApp",productId + " is unavaible now")
+            }.addOnFailureListener {
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
             }
-            .addOnFailureListener { e ->
-                Log.d("MyApp", e.toString())
-            }
+
     }
 }

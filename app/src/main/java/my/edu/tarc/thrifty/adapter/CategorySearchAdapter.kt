@@ -25,9 +25,7 @@ class CategorySearchAdapter(val listener:OnItemClickListener,var context: Contex
 
         val button = holder.binding.btnCategory
         button.text = list[position].cat
-
         val currentItem = list[position].cat.toString()
-        Log.d("MyApp", currentItem )
        button.setOnClickListener {
             listener.onItemClick(currentItem)
         }

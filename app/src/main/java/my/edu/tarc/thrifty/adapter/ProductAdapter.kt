@@ -2,9 +2,11 @@ package my.edu.tarc.thrifty.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -29,6 +31,9 @@ class ProductAdapter (val context: Context, val list:ArrayList<AddProductModel>)
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
+        var preferences: SharedPreferences
+        preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
+        val currentUser = preferences.getString("email", "")!!
         val data = list[position]
 
         Glide.with(context).load(data.productCoverImg).into(holder.binding.imageView2)
@@ -38,19 +43,33 @@ class ProductAdapter (val context: Context, val list:ArrayList<AddProductModel>)
         holder.binding.btnPrice.text = context.getString(R.string.rm) + data.productSp
 
         holder.itemView.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToProductDetailsFragment(
-                data.productCategory!!,
-                list[position].productId!!
-            )
-            findNavController(holder.itemView).navigate(action)
+            if(list[position].userEmail == currentUser){
+                Toast.makeText(context,"This is your own listing", Toast.LENGTH_SHORT).show()
+                val action = HomeFragmentDirections.actionHomeFragmentToEditListingFragment(list[position].productId!!)
+                findNavController(holder.itemView).navigate(action)
+            }
+            else {
+                val action = HomeFragmentDirections.actionHomeFragmentToProductDetailsFragment(
+                    data.productCategory!!,
+                    list[position].productId!!
+                )
+                findNavController(holder.itemView).navigate(action)
+            }
         }
 
         holder.binding.btnPrice.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToProductDetailsFragment(
-                data.productCategory!!,
-                list[position].productId!!
-            )
-            findNavController(holder.itemView).navigate(action)
+            if(list[position].userEmail == currentUser){
+                Toast.makeText(context,"This is your own listing", Toast.LENGTH_SHORT).show()
+                val action = HomeFragmentDirections.actionHomeFragmentToEditListingFragment(list[position].productId!!)
+                findNavController(holder.itemView).navigate(action)
+            }
+            else {
+                val action = HomeFragmentDirections.actionHomeFragmentToProductDetailsFragment(
+                    data.productCategory!!,
+                    list[position].productId!!
+                )
+                findNavController(holder.itemView).navigate(action)
+            }
         }
     }
 

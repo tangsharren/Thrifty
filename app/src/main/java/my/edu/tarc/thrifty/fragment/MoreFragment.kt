@@ -49,6 +49,7 @@ class MoreFragment : Fragment() {
         if (it.resultCode == Activity.RESULT_OK) {
             imageUrl = it.data!!.data
             binding.profilePic.setImageURI(imageUrl)
+        Log.d("MyApp",imageUrl.toString())
         }
     }
     override fun onCreateView(
@@ -65,6 +66,9 @@ class MoreFragment : Fragment() {
         }
         binding.tvViewOrders.setOnClickListener {
             it.findNavController().navigate(R.id.action_moreFragment_to_allOrderFragment)
+        }
+        binding.tvUpdateOrder.setOnClickListener {
+            it.findNavController().navigate(R.id.action_moreFragment_to_orderStatusFragment)
         }
         preferences = requireActivity().getSharedPreferences("user", MODE_PRIVATE)
         val email = preferences.getString("email", "")!!
@@ -169,6 +173,7 @@ class MoreFragment : Fragment() {
             val intent = Intent("android.intent.action.GET_CONTENT")
             intent.type = "image/*"
             launchGalleryActivity.launch(intent)
+//            binding.profilePic.setImageURI(it.)
         }
         binding.tvUpload.setOnClickListener {
             validateData()

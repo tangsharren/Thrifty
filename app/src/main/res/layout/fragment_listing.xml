@@ -45,7 +45,7 @@
             app:closeIcon="@drawable/baseline_clear"
             app:iconifiedByDefault="false"
             app:queryBackground="@android:color/transparent"
-            app:queryHint="Search by product name"
+            app:queryHint="@string/searchHint"
             app:searchHintIcon="@null"
             app:searchIcon="@drawable/baseline_search" />
 

@@ -39,7 +39,7 @@ class EditProductImageAdapter(var context: Context, val list : ArrayList<Uri>, v
         deleteButton.setOnClickListener{
             val currentPosition = holder.bindingAdapterPosition
 
-            Toast.makeText(context,"Image delete in adapter for $productId:$list[position]",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,"Image deleted for $productId:$list[position]",Toast.LENGTH_SHORT).show()
             val deletedImgUrl = list[currentPosition] // Get the URL to delete
             list.removeAt(currentPosition) // Remove the item from the list
             notifyItemRemoved(position)

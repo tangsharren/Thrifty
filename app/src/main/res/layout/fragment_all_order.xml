@@ -33,7 +33,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:queryBackground="@android:color/transparent"
-            app:queryHint="Search by product name"
+            app:queryHint="@string/searchHint"
             app:searchHintIcon="@null"
             app:searchIcon="@drawable/baseline_search" />
 
@@ -90,4 +90,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/carbonMsg"
         tools:listitem="@layout/all_order_item" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

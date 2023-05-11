@@ -91,13 +91,14 @@ class EditListingFragment : Fragment(){
             intent.type = "image/*"
             launchProductActivity.launch(intent)
         }
-        //Store the user's updated details only if all fields are correct
+        //Store the user's updated details only if all fields are filled
         binding.btnUpdate.setOnClickListener {
-            if(validateData())
+            if(validateData()) {
                 storeData()
-
-            else(!validateData())
-                Toast.makeText(requireContext(),R.string.wentWrong,Toast.LENGTH_SHORT).show()
+            }
+            else{
+                Toast.makeText(requireContext(), R.string.emptyField, Toast.LENGTH_SHORT).show()
+            }
         }
 
 
@@ -238,29 +239,35 @@ class EditListingFragment : Fragment(){
     private fun validateData() :Boolean{
         if (binding.etName.text.toString().isEmpty()) {
             binding.etName.requestFocus()
-            binding.etName.error = getString(R.string.empty)
+            binding.etName.error = getString(R.string.emptyFields)
             return false
-        } else if (binding.etPrice.text.toString().isEmpty()) {
+        } else if (binding.etDesc.text.toString().isEmpty()) {
+            binding.etDesc.requestFocus()
+            binding.etDesc.error = getString(R.string.emptyFields)
+            return false
+        } else if (binding.etCarbon.text.toString().isEmpty()) {
+            binding.etCarbon.requestFocus()
+            binding.etCarbon.error = getString(R.string.emptyFields)
+            return false
+        }else if (binding.etPrice.text.toString().isEmpty()) {
             binding.etPrice.requestFocus()
-            binding.etPrice.error = getString(R.string.empty)
+            binding.etPrice.error = getString(R.string.emptyFields)
+            return false
+        }else if (binding.catSpinner.selectedItemPosition == 0) {
+            Toast.makeText(requireContext(), getString(R.string.plsSelectCat), Toast.LENGTH_SHORT)
+                .show()
             return false
         } else if (coverImage == null){
             Toast.makeText(requireContext(), getString(R.string.selectCover), Toast.LENGTH_SHORT)
                 .show()
             return false
         }
-
         else if (list.size < 1){
             Toast.makeText(requireContext(), getString(R.string.selectProd), Toast.LENGTH_SHORT)
                 .show()
             return false
         }
-        else if (binding.catSpinner.selectedItemPosition == 0) {
-            Toast.makeText(requireContext(), getString(R.string.plsSelectCat), Toast.LENGTH_SHORT)
-                .show()
-            return false
-
-        } else if(newCoverImage !=null){
+         else if(newCoverImage !=null){
             uploadCoverImage()
         }
 

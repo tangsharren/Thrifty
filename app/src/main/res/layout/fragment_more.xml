@@ -78,7 +78,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Upload Profile Picture"
+                        android:text="@string/upload_profile_picture"
                         android:textColor="#ECE6E6"
                         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                         app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
@@ -112,7 +112,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Username :  "
+                                android:text="@string/usernameMore"
                                 android:textColor="@color/darkPurple"
                                 android:textSize="18sp" />
 
@@ -122,7 +122,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="name"
+                                android:text="@string/nameMore"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/black"
                                 android:textSize="18sp" />
@@ -150,7 +150,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Email Address : "
+                                android:text="@string/email_addressMore"
                                 android:textColor="@color/darkPurple"
                                 android:textSize="18sp" />
 
@@ -160,7 +160,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="email"
+                                android:text="@string/emailMore"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/black"
                                 android:textSize="18sp" />
@@ -188,7 +188,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Password:"
+                                android:text="@string/passwordMore"
                                 android:textColor="@color/darkPurple"
                                 android:textSize="18sp" />
 
@@ -198,7 +198,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Change"
+                                android:text="@string/change"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/grey_font"
                                 android:textSize="18sp" />
@@ -226,7 +226,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Address :"
+                                android:text="@string/addressMore"
                                 android:textColor="@color/darkPurple"
                                 android:textSize="18sp" />
 
@@ -236,7 +236,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Update"
+                                android:text="@string/updateMore"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/grey_font"
                                 android:textSize="18sp" />
@@ -264,7 +264,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="All Orders: "
+                                android:text="@string/all_orders"
                                 android:textColor="@color/darkPurple"
                                 android:textSize="18sp" />
 
@@ -274,7 +274,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Click here to view"
+                                android:text="@string/click_here_to_view"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/grey_font"
                                 android:textSize="18sp" />
@@ -304,7 +304,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="All Listings: "
+                                android:text="@string/all_listings"
                                 android:textColor="@color/darkPurple"
                                 android:textSize="18sp" />
 
@@ -314,13 +314,49 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Click here to view"
+                                android:text="@string/click_here_to_view"
                                 android:textAlignment="viewEnd"
                                 android:textColor="@color/grey_font"
                                 android:textSize="18sp" />
 
                         </LinearLayout>
+                        <View
+                            android:id="@+id/view7"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="#CAC6C6"
+                            tools:layout_marginStart="10dp" />
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="10dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:paddingTop="10dp">
+
+                            <TextView
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/listings_sold"
+                                android:textColor="@color/darkPurple"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/tvUpdateOrder"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/click_here_to_view"
+                                android:textAlignment="viewEnd"
+                                android:textColor="@color/grey_font"
+                                android:textSize="18sp" />
+
+                        </LinearLayout>
                         <View
                             android:id="@+id/view10"
                             android:layout_width="match_parent"
@@ -338,7 +374,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="logout"
+                        android:text="@string/logout"
                         android:textColor="@color/white"
                         app:cornerRadius="20dp"
                         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
@@ -351,7 +387,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:backgroundTint="@color/red"
-                        android:text="remove account"
+                        android:text="@string/remove_account"
                         android:textColor="@color/white"
                         app:cornerRadius="20dp"
                         app:layout_constraintEnd_toEndOf="@+id/btnLogout"

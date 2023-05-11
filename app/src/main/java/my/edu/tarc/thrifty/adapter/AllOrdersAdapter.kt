@@ -8,11 +8,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import my.edu.tarc.thrifty.R
 import my.edu.tarc.thrifty.databinding.AllOrderItemBinding
+import my.edu.tarc.thrifty.fragment.AllOrderFragmentDirections
+import my.edu.tarc.thrifty.fragment.ListingFragmentDirections
 import my.edu.tarc.thrifty.model.AddProductModel
 import my.edu.tarc.thrifty.model.AllOrderModel
 //For recycler view in all order fragment
@@ -30,11 +33,11 @@ class AllOrdersAdapter(var list : ArrayList<AllOrderModel> , val context : Conte
 
     override fun onBindViewHolder(holder: AllOrderViewHolder, position: Int) {
         holder.binding.productTitle.text = list[position].name
-        holder.binding.orderId.text = "Order ID: "+list[position].orderId
-        holder.binding.productPrice.text = "RM" + list[position].price
+        holder.binding.orderId.text = context.getString(R.string.orderID)+list[position].orderId
+        holder.binding.productPrice.text = context.getString(R.string.rm) + list[position].price
         holder.binding.productCarbon.text = list[position].carbon +"kg carbon saved"
-        holder.binding.orderTime.text = "Time: "+list[position].orderTime
-        holder.binding.orderDate.text = "Date: "+list[position].orderDate
+        holder.binding.orderTime.text = context.getString(R.string.time)+list[position].orderTime
+        holder.binding.orderDate.text = context.getString(R.string.date)+list[position].orderDate
 
         var totalCarbonSaved=0.0
         for(item in list){
@@ -63,14 +66,19 @@ class AllOrdersAdapter(var list : ArrayList<AllOrderModel> , val context : Conte
             builder.setMessage(context.getString(R.string.cfmCancelOrder))
             builder.setPositiveButton(context.getString(R.string.yes)) { _, _ ->
                 holder.binding.btnCancelOrder.visibility = GONE
-                updateStatus(context.getString(R.string.cancel),list[position].orderId!!)
+                updateStatus(context.getString(R.string.cancel),list[position].orderId!!,list[position].productId!!)
             }
             builder.setNegativeButton(context.getString(R.string.no), null)
             val dialog = builder.create()
             dialog.show()
         }
+        holder.itemView.setOnClickListener {
+            //go to the product details page
+            val action = AllOrderFragmentDirections.actionAllOrderFragmentToProductDetailsFragment("",list[position].productId!!)
+            Navigation.findNavController(holder.itemView).navigate(action)
+        }
     }
-    fun updateStatus(str:String , doc:String){
+    fun updateStatus(str:String , doc:String,productId:String){
         val data = hashMapOf<String, Any>()
         data["status"] = str
         Firebase.firestore.collection("allOrders")
@@ -79,6 +87,17 @@ class AllOrdersAdapter(var list : ArrayList<AllOrderModel> , val context : Conte
             }.addOnFailureListener {
                 Toast.makeText(context,it.message,Toast.LENGTH_SHORT).show()
             }
+        //update product availability
+        val availability = hashMapOf<String, Any>()
+        availability["availability"] = "Available"
+        if(str == "Canceled"){
+            Firebase.firestore.collection("products")
+                .document(productId).update(availability).addOnSuccessListener {
+                    Toast.makeText(context, "Product is available now", Toast.LENGTH_SHORT).show()
+                }.addOnFailureListener {
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                }
+        }
     }
     override fun getItemCount(): Int {
         return list.size
