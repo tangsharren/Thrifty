@@ -19,7 +19,6 @@ import my.edu.tarc.thrifty.fragment.HomeFragmentDirections
 import my.edu.tarc.thrifty.model.AddProductModel
 //For the product recycler view in home page
 //Used by homeFragment's product recycler
-
 class ProductAdapter (val context: Context, val list:ArrayList<AddProductModel>)
     :RecyclerView.Adapter<ProductAdapter.ProductViewHolder>(){
         inner class ProductViewHolder(val binding:LayoutProductItemBinding)

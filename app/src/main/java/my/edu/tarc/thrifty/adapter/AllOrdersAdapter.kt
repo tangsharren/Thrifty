@@ -90,14 +90,14 @@ class AllOrdersAdapter(var list : ArrayList<AllOrderModel> , val context : Conte
         //update product availability
         val availability = hashMapOf<String, Any>()
         availability["availability"] = "Available"
-        if(str == "Canceled"){
-            Firebase.firestore.collection("products")
-                .document(productId).update(availability).addOnSuccessListener {
-                    Toast.makeText(context, "Product is available now", Toast.LENGTH_SHORT).show()
-                }.addOnFailureListener {
-                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-                }
-        }
+
+        Firebase.firestore.collection("products")
+            .document(productId).update(availability).addOnSuccessListener {
+                Toast.makeText(context, "Product is available now", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+            }
+
     }
     override fun getItemCount(): Int {
         return list.size
