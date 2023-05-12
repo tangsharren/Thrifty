@@ -101,6 +101,7 @@ class MainActivity : AppCompatActivity() {
         }
         NavigationUI.setupActionBarWithNavController(this,navController)
         onBackPressedDispatcher.addCallback(this, callback)
+
     }
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp()

@@ -127,7 +127,7 @@ class AllOrderFragment : Fragment(){
                     val data = doc.toObject(AllOrderModel::class.java)
                     list.add(data)
                 }
-
+                //Total carbon saved for all orders excluding canceled order
                 var totalCarbonSaved = 0.0
                 for (item in list) {
                     if (item.status != "Canceled") {
