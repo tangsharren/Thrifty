@@ -18,6 +18,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import my.edu.tarc.thrifty.activity.LoginActivity
 import my.edu.tarc.thrifty.databinding.ActivityMainBinding
+import my.edu.tarc.thrifty.fragment.ProductDetailsFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -82,20 +83,24 @@ class MainActivity : AppCompatActivity() {
         }
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val currentFragment = navController.currentDestination!!.id
+                val currentFragment = navController.currentDestination?.id ?: return
+
                 Log.d("MyApp", "current i : $i")
                 if(currentFragment ==  R.id.homeFragment)
                     finish()
                 else if(currentFragment ==  R.id.cartFragment ){
-                    navController.navigate(R.id.homeFragment)
+//                    navController.navigate(R.id.homeFragment)
+                    navController.popBackStack(R.id.homeFragment, false)
                     i = 0
                 }
                 else if(currentFragment ==  R.id.moreFragment){
-                    navController.navigate(R.id.homeFragment)
+//                    navController.navigate(R.id.homeFragment)
+                    navController.popBackStack(R.id.homeFragment, false)
                     i = 0
                 }
                 else {
-                    navController.popBackStack()
+//                    navController.popBackStack()
+                    navController.navigateUp()
                 }
             }
         }
@@ -104,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 
     }
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp()
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
 }

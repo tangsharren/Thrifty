@@ -145,7 +145,18 @@ class EditListingFragment : Fragment(){
                 val productCarbon = it.getString("carbon")
                 val productCat = it.getString("productCategory")
                 coverImage = Uri.parse(it.getString("productCoverImg"))
-
+                val productAvailability = it.getString("availability")
+                if(productAvailability != "Available"){
+                    binding.btnUpdate.isEnabled = false
+                    binding.btnProdImg.isEnabled = false
+                    binding.btnCoverImg.isEnabled = false
+                    binding.etName.isEnabled = false
+                    binding.etDesc.isEnabled = false
+                    binding.etCarbon.isEnabled = false
+                    binding.etPrice.isEnabled = false
+                    binding.catSpinner.isEnabled = false
+                    Toast.makeText(requireContext(),"Sorry, you can no longer edit your listing after the sales.",Toast.LENGTH_SHORT).show()
+                }
                 Glide.with(requireContext()).load(it.getString("productCoverImg")).into(binding.productCoverImg)
                 Log.d("MyApp","oldProdImgs in getListingDetails:"+ oldProdImages.toString())
 

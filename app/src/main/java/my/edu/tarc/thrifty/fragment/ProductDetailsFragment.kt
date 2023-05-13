@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -57,9 +58,16 @@ class ProductDetailsFragment : Fragment() {
                 for(data in list){
                     slideList.add(SlideModel(data, ScaleTypes.CENTER_CROP))
                 }
-
+                //if the product is ordered by someone then cannot add to cart
+                val availability = it.getString("availability")
+                if(availability == "Unavailable"){
+                    binding.tvAddToCart.isVisible = false
+                    Toast.makeText(requireContext(),"Sorry, this product is unavailable for purchase",Toast.LENGTH_LONG).show()
+                }
                 cartAction(proId,name,productSp,it.getString("productCoverImg"),productCarbon)
                 binding.imageSlider.setImageList(slideList)
+
+
             }.addOnFailureListener {
                 Toast.makeText(requireContext(),getString(R.string.wentWrong), Toast.LENGTH_SHORT).show()
             }

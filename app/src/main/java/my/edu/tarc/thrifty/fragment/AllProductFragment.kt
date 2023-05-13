@@ -131,7 +131,7 @@ class AllProductFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener
             if (dataClass.productName?.lowercase()?.contains(text.lowercase(Locale.getDefault())) == true||
                 dataClass.productCategory?.lowercase()?.contains(text.lowercase(Locale.getDefault())) == true ||
                 dataClass.productDescription?.lowercase()?.contains(text.lowercase(Locale.getDefault())) == true ||
-                    dataClass.userEmail?.lowercase()?.contains(text.lowercase(Locale.getDefault())) == true) {
+                dataClass.userEmail?.lowercase()?.contains(text.lowercase(Locale.getDefault())) == true) {
                 searchList.add(dataClass)
             }
         }

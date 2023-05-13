@@ -54,6 +54,7 @@ class AllOrdersAdapter(var list : ArrayList<AllOrderModel> , val context : Conte
             }
             context.getString(R.string.deliver) -> {
                 holder.binding.productStatus.text =  context.getString(R.string.deliver)
+                holder.binding.btnCancelOrder.isVisible = false
             }
             context.getString(R.string.cancel) -> {
                 holder.binding.productStatus.text = context.getString(R.string.cancel)
@@ -76,6 +77,7 @@ class AllOrdersAdapter(var list : ArrayList<AllOrderModel> , val context : Conte
             //go to the product details page
             val action = AllOrderFragmentDirections.actionAllOrderFragmentToProductDetailsFragment("",list[position].productId!!)
             Navigation.findNavController(holder.itemView).navigate(action)
+
         }
     }
     fun updateStatus(str:String , doc:String,productId:String){
