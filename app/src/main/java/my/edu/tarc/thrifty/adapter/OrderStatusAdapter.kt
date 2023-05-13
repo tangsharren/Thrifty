@@ -61,6 +61,10 @@ class OrderStatusAdapter(val list : ArrayList<AllOrderModel>, val context : Cont
                 holder.binding.proceedButton.visibility = View.GONE
                 holder.binding.cancelButton.isEnabled = false
             }
+            "Cancel" -> {
+                holder.binding.proceedButton.visibility = View.GONE
+                holder.binding.cancelButton.isEnabled = false
+            }
 
         }
         holder.binding.proceedButton.setOnClickListener {

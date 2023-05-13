@@ -23,7 +23,7 @@
     <string name="ordered">Ordered</string>
     <string name="dispatch">Dispatched</string>
     <string name="deliver">Delivered</string>
-    <string name="cancel">Canceled</string>
+    <string name="cancelStatus">Canceled</string>
     <string name="cancelOrder">Cancel Order</string>
     <string name="cfmCancelOrder">Are you sure you want to cancel this order?</string>
     <string name="yes">Yes</string>

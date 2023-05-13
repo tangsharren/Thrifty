@@ -56,8 +56,8 @@ class AllOrdersAdapter(var list : ArrayList<AllOrderModel> , val context : Conte
                 holder.binding.productStatus.text =  context.getString(R.string.deliver)
                 holder.binding.btnCancelOrder.isVisible = false
             }
-            context.getString(R.string.cancel) -> {
-                holder.binding.productStatus.text = context.getString(R.string.cancel)
+            context.getString(R.string.cancelStatus) -> {
+                holder.binding.productStatus.text = context.getString(R.string.cancelStatus)
                 holder.binding.btnCancelOrder.isVisible = false
             }
         }
@@ -67,7 +67,7 @@ class AllOrdersAdapter(var list : ArrayList<AllOrderModel> , val context : Conte
             builder.setMessage(context.getString(R.string.cfmCancelOrder))
             builder.setPositiveButton(context.getString(R.string.yes)) { _, _ ->
                 holder.binding.btnCancelOrder.visibility = GONE
-                updateStatus(context.getString(R.string.cancel),list[position].orderId!!,list[position].productId!!)
+                updateStatus(context.getString(R.string.cancelStatus),list[position].orderId!!,list[position].productId!!)
             }
             builder.setNegativeButton(context.getString(R.string.no), null)
             val dialog = builder.create()
