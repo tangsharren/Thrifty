@@ -1,5 +1,6 @@
 package my.edu.tarc.thriftyadmin.adapter
 
+import android.app.Dialog
 import android.content.Context
 import android.net.Uri
 import android.util.Log
@@ -33,31 +34,38 @@ class EditProductImageAdapter(var context: Context, val list : ArrayList<Uri>, v
     }
 
     override fun onBindViewHolder(holder: EditProductImageViewHolder, position: Int) {
+        var dialog: Dialog
+        dialog = Dialog(context)
+        dialog.setContentView(R.layout.progress_layout)
+        dialog.setCancelable(false)
+
         val deleteButton = holder.binding.deleteImg
         Glide.with(context).load(list[position].toString()).into(holder.binding.prodImgEdit)
 
         deleteButton.setOnClickListener{
+            dialog.show()
             val currentPosition = holder.bindingAdapterPosition
 
-            Toast.makeText(context,"Image deleted for $productId:$list[position]",Toast.LENGTH_SHORT).show()
             val deletedImgUrl = list[currentPosition] // Get the URL to delete
             list.removeAt(currentPosition) // Remove the item from the list
+
             notifyItemRemoved(position)
             notifyDataSetChanged()
             Log.d("MyApp",list.toString())
-
-
             Log.d("MyApp","deletedImgUrl: $deletedImgUrl")
 
             // Delete the file
-            val docRef =Firebase.firestore.collection("products").document(productId)
+            val docRef = Firebase.firestore.collection("products").document(productId)
             docRef.update("productImages", FieldValue.arrayRemove(deletedImgUrl)) // Remove the URL from the array
                 .addOnSuccessListener {
                     Log.d("MyApp", "DocumentSnapshot successfully updated!")
+                    Toast.makeText(context,"Image deleted for $productId:$list[position]",Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
                 }
                 .addOnFailureListener { e ->
                     Log.w("MyApp", "Error updating document", e)
                 }
+
         }
     }
 

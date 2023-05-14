@@ -1,5 +1,7 @@
 package my.edu.tarc.thrifty.fragment
 
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -35,7 +37,10 @@ class ProductDetailsFragment : Fragment() {
     ): View? {
         binding = FragmentProductDetailsBinding.inflate(layoutInflater)
         //args.id is the product id we get from the previous fragment
-        getProductDetails(args.id)
+        checkIfFragmentAttached{
+            getProductDetails(args.id)
+        }
+
 
         return binding.root
     }
@@ -49,7 +54,7 @@ class ProductDetailsFragment : Fragment() {
                 val productCarbon = it.getString("carbon")
                 val seller = it.getString("userEmail")
                 binding.tvName.text = name
-                binding.tvPrice.text = getString(R.string.rm) + productSp
+                binding.tvPrice.text = "RM"+ productSp
                 binding.desc.text = productDesc
                 binding.tvCarbons.text = getString(R.string.total_carbon_footprint_saved) + productCarbon + getString(R.string.kg)
                 binding.seller.text = "Sold by :"+seller
@@ -67,34 +72,48 @@ class ProductDetailsFragment : Fragment() {
                 cartAction(proId,name,productSp,it.getString("productCoverImg"),productCarbon)
                 binding.imageSlider.setImageList(slideList)
 
-
             }.addOnFailureListener {
                 Toast.makeText(requireContext(),getString(R.string.wentWrong), Toast.LENGTH_SHORT).show()
             }
     }
-
+    private lateinit var loadingDialog: Dialog
     private fun cartAction(proId: String, name: String?, productSp: String?, coverImg: String?,carbon: String?) {
+
+        loadingDialog = Dialog(requireContext())
+        loadingDialog.setContentView(R.layout.progress_layout)
+        loadingDialog.setCancelable(false)
+
         val productDao = AppDatabase.getInstance(requireContext()).productDao()
         if(productDao.isExit(proId)!=null)
             binding.tvAddToCart.text = getString(R.string.goCart)
         else
             binding.tvAddToCart.text = getString(R.string.addCart)
+
         binding.tvAddToCart.setOnClickListener{
-            if(productDao.isExit(proId)!=null){
-                openCart()
-            }else{
-                addToCart(productDao, proId, name, productSp,coverImg,carbon)
+            loadingDialog.show()
+            checkIfFragmentAttached {
+                Thread.sleep(2000)
+                if(productDao.isExit(proId)!=null){
+                    loadingDialog.show()
+                    openCart()
+                }else{
+                    addToCart(productDao, proId, name, productSp,coverImg,carbon)
+                }
             }
+
+
         }
     }
 
     private fun addToCart(productDao: ProductDao, proId: String, name: String?, productSp: String?, coverImg: String?, carbon: String?) {
         val data = ProductModel(proId,name,coverImg,productSp,carbon)
-        Log.d("MyApp",carbon!!)
         lifecycleScope.launch(Dispatchers.IO){
             productDao.insertProduct(data)
+            Thread.sleep(2000)
             binding.tvAddToCart.text = getString(R.string.goCart)
+            loadingDialog.dismiss()
         }
+
     }
 
     private fun openCart() {
@@ -102,8 +121,16 @@ class ProductDetailsFragment : Fragment() {
         val editor = preference.edit()
         editor.putBoolean("isCart",true)
         editor.apply()
-
+        loadingDialog.dismiss()
         val intent = Intent(requireContext(),MainActivity::class.java)
         startActivity(intent)
+    }
+    fun checkIfFragmentAttached(operation: Context.() -> Unit) {
+        if (isAdded && context != null) {
+            operation(requireContext())
+        }
+        else{
+            Thread.sleep(2000)
+        }
     }
 }

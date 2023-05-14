@@ -1,5 +1,6 @@
 package my.edu.tarc.thrifty.adapter
 
+import android.app.Dialog
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,7 +31,7 @@ class AllOrdersAdapter(var list : ArrayList<AllOrderModel> , val context : Conte
             AllOrderItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         )
     }
-
+    private lateinit var loadingDialog: Dialog
     override fun onBindViewHolder(holder: AllOrderViewHolder, position: Int) {
         holder.binding.productTitle.text = list[position].name
         holder.binding.orderId.text = context.getString(R.string.orderID)+list[position].orderId
@@ -38,6 +39,11 @@ class AllOrdersAdapter(var list : ArrayList<AllOrderModel> , val context : Conte
         holder.binding.productCarbon.text = list[position].carbon +"kg carbon saved"
         holder.binding.orderTime.text = context.getString(R.string.time)+list[position].orderTime
         holder.binding.orderDate.text = context.getString(R.string.date)+list[position].orderDate
+
+
+        loadingDialog = Dialog(context)
+        loadingDialog.setContentView(R.layout.progress_layout)
+        loadingDialog.setCancelable(false)
 
         var totalCarbonSaved=0.0
         for(item in list){
@@ -48,9 +54,11 @@ class AllOrdersAdapter(var list : ArrayList<AllOrderModel> , val context : Conte
         when(list[position].status){
             context.getString(R.string.ordered) -> {
                 holder.binding.productStatus.text = context.getString(R.string.ordered)
+                holder.binding.btnCancelOrder.isVisible = true
             }
             context.getString(R.string.dispatch) -> {
                 holder.binding.productStatus.text =  context.getString(R.string.dispatch)
+                holder.binding.btnCancelOrder.isVisible = true
             }
             context.getString(R.string.deliver) -> {
                 holder.binding.productStatus.text =  context.getString(R.string.deliver)
@@ -66,8 +74,10 @@ class AllOrdersAdapter(var list : ArrayList<AllOrderModel> , val context : Conte
             builder.setTitle(context.getString(R.string.cancelOrder))
             builder.setMessage(context.getString(R.string.cfmCancelOrder))
             builder.setPositiveButton(context.getString(R.string.yes)) { _, _ ->
+                loadingDialog.show()
                 holder.binding.btnCancelOrder.visibility = GONE
                 updateStatus(context.getString(R.string.cancelStatus),list[position].orderId!!,list[position].productId!!)
+
             }
             builder.setNegativeButton(context.getString(R.string.no), null)
             val dialog = builder.create()
@@ -96,6 +106,7 @@ class AllOrdersAdapter(var list : ArrayList<AllOrderModel> , val context : Conte
         Firebase.firestore.collection("products")
             .document(productId).update(availability).addOnSuccessListener {
                 Toast.makeText(context, "Product is available now", Toast.LENGTH_SHORT).show()
+                loadingDialog.dismiss()
             }.addOnFailureListener {
                 Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
             }

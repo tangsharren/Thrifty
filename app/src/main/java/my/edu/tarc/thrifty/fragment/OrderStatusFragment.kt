@@ -1,5 +1,6 @@
 package my.edu.tarc.thrifty.fragment
 
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -40,8 +41,10 @@ class OrderStatusFragment : Fragment() {
                     val data = doc.toObject(AllOrderModel::class.java)
                     list.add(data!!)
                 }
+                checkIfFragmentAttached {
+                    binding.recyclerView.adapter = OrderStatusAdapter(list,requireContext())
+                }
 
-                binding.recyclerView.adapter = OrderStatusAdapter(list,requireContext())
             }
         Firebase.firestore.collection("allOrders").get().addOnFailureListener {
             Log.d("MyApp", "no!!")
@@ -49,5 +52,12 @@ class OrderStatusFragment : Fragment() {
 
         return binding.root
     }
-
+    fun checkIfFragmentAttached(operation: Context.() -> Unit) {
+        if (isAdded && context != null) {
+            operation(requireContext())
+        }
+        else{
+            Thread.sleep(2000)
+        }
+    }
 }

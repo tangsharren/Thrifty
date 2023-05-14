@@ -1,5 +1,6 @@
 package my.edu.tarc.thrifty.fragment
 
+import android.app.Dialog
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
@@ -29,13 +30,18 @@ class CheckoutFragment : Fragment() {
     private val args : AddressFragmentArgs by navArgs()
     private lateinit var binding : FragmentCheckoutBinding
     private lateinit var preferences: SharedPreferences
+    private lateinit var loadingDialog: Dialog
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentCheckoutBinding.inflate(layoutInflater)
-        Toast.makeText(requireContext(),getString(R.string.placedOrder), Toast.LENGTH_SHORT).show()
+
+        loadingDialog = Dialog(requireActivity())
+        loadingDialog.setContentView(R.layout.progress_layout)
+        loadingDialog.setCancelable(false)
+        loadingDialog.show()
+
         uploadData()
         return binding.root
     }
@@ -43,7 +49,10 @@ class CheckoutFragment : Fragment() {
         val id = args.productIds.toList()
         for(currentId in id!!){
             fetchData(currentId)
+            Toast.makeText(requireContext(),getString(R.string.placedOrder),Toast.LENGTH_SHORT).show()
         }
+
+
     }
 
     private fun fetchData(productId: String?) {
@@ -66,7 +75,7 @@ class CheckoutFragment : Fragment() {
                     it.getString("carbon"),
                     currentDate.toString(),
                     currentTime.toString(),
-                it.getString("userEmail"))
+                    it.getString("userEmail"))
             }
     }
 
@@ -91,10 +100,10 @@ class CheckoutFragment : Fragment() {
         data["orderId"] = key
 
         firestore.document(key).set(data).addOnSuccessListener {
-            Toast.makeText(requireContext(),getString(R.string.placedOrder),Toast.LENGTH_SHORT).show()
-
             //Update the product availability after purchasing
+            Thread.sleep(1000)
             updateAvailability(productId)
+
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
             if(activity != null) {

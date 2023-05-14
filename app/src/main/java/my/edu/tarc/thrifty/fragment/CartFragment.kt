@@ -1,5 +1,6 @@
 package my.edu.tarc.thrifty.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -31,14 +32,18 @@ class CartFragment : Fragment() {
         val dao = AppDatabase.getInstance(requireContext()).productDao()
 
         list = ArrayList()
+        checkIfFragmentAttached {
+            dao.getAllProducts().observe(requireActivity()) {
+                checkIfFragmentAttached {
+                    binding.cartRecycler.adapter = CartAdapter(requireContext(), it)
+                }
+                list.clear()
+                for (data in it) {
+                    list.add(data.productId)
+                }
+                totalCost(it)
 
-        dao.getAllProducts().observe(requireActivity()){
-            binding.cartRecycler.adapter = CartAdapter(requireContext(),it)
-            list.clear()
-            for(data in it){
-                list.add(data.productId)
             }
-            totalCost(it)
         }
         return binding.root
 
@@ -51,7 +56,7 @@ class CartFragment : Fragment() {
             total += item.productSp!!.toFloat()
             carbon += item.carbon!!.toFloat()
         }
-        binding.tvCarbonSaved.text = String.format(getString(R.string.carbonTotal), carbon)
+        binding.tvCarbonSaved.text = String.format("Total Carbon Footprint Saved : %.2f kg", carbon)
         binding.tvItemCount.text = getString(R.string.itemCart)+data.size
         binding.tvTotal.text = String.format(getString(R.string.costTotal), total)
         binding.btnCheckout.setOnClickListener {
@@ -67,5 +72,13 @@ class CartFragment : Fragment() {
         }
     }
 
-
+    fun checkIfFragmentAttached(operation: Context.() -> Unit) {
+        if (isAdded && context != null) {
+            operation(requireContext())
+        }
+        else{
+            Thread.sleep(3000)
+            Log.d("MyApp","Cart fragment not attached")
+        }
+    }
 }

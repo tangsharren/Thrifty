@@ -1,5 +1,6 @@
 package my.edu.tarc.thrifty.adapter
 
+import android.app.Dialog
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -31,6 +32,11 @@ class AllListingAdapter  (val context: Context, var list:ArrayList<AddProductMod
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val data = list[position]
 
+        var loadingDialog: Dialog
+        loadingDialog = Dialog(context)
+        loadingDialog.setContentView(R.layout.progress_layout)
+        loadingDialog.setCancelable(false)
+
         Glide.with(context).load(data.productCoverImg).into(holder.binding.imageView2)
         holder.binding.tvProName.text = data.productName
         holder.binding.tvCat.text = data.productCategory
@@ -42,12 +48,14 @@ class AllListingAdapter  (val context: Context, var list:ArrayList<AddProductMod
             builder.setTitle(context.getString(R.string.deleteListing))
             builder.setMessage(context.getString(R.string.cfmDelete))
             builder.setPositiveButton("Yes") { _, _ ->
+                loadingDialog.show()
                 val db = Firebase.firestore
                 val storageRef = db.collection("products").document(list[position].productId!!)
 
                 storageRef.delete()
                     .addOnSuccessListener {
                         Toast.makeText(context,context.getString(R.string.prodDeleted), Toast.LENGTH_SHORT).show()
+                        loadingDialog.dismiss()
                     }
                     .addOnFailureListener { e ->
                         Log.d("MyApp", e.toString())

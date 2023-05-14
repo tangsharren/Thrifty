@@ -1,5 +1,6 @@
 package my.edu.tarc.thrifty.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -109,8 +110,10 @@ class ListingFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener{
             }
             //the listing will be sorted by product name by default
             list.sortBy{it.productName}
-            adapter = AllListingAdapter(requireContext(),list)
-            binding.productRecycler.adapter = adapter
+            checkIfFragmentAttached {
+                adapter = AllListingAdapter(requireContext(), list)
+                binding.productRecycler.adapter = adapter
+            }
         }
         return list
     }
@@ -148,8 +151,10 @@ class ListingFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener{
 
         else if(catSelected.equals("All")||catSelected == ""){
             list = getListings()
-        }
 
+        }
+        if (list.isEmpty())
+            Toast.makeText(requireContext(),"No Listings in $catSelected Category",Toast.LENGTH_SHORT).show()
 
     }
     private fun getCatProducts(category:String?)  :ArrayList<AddProductModel>{
@@ -168,5 +173,13 @@ class ListingFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener{
                 binding.productRecycler.adapter = adapter
             }
         return list
+    }
+    fun checkIfFragmentAttached(operation: Context.() -> Unit) {
+        if (isAdded && context != null) {
+            operation(requireContext())
+        }
+        else{
+            Thread.sleep(2000)
+        }
     }
 }

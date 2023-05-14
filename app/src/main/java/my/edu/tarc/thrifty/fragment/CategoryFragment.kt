@@ -32,7 +32,7 @@ class CategoryFragment : Fragment() {
     }
     private fun getProducts(category:String?) {
         val list = ArrayList<AddProductModel>()
-        Firebase.firestore.collection("products").whereEqualTo("product",category)
+        Firebase.firestore.collection("products").whereEqualTo("productCategory",category)
             .get().addOnSuccessListener {
                 list.clear()
                 for(doc in it.documents){

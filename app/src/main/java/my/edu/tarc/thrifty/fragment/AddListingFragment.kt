@@ -24,6 +24,7 @@ import my.edu.tarc.thrifty.model.CategoryModel
 import java.util.*
 import kotlin.collections.ArrayList
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import my.edu.tarc.thrifty.databinding.FragmentAddListingBinding
 
@@ -187,11 +188,11 @@ class AddListingFragment : Fragment() {
                 ).show()
             }
     }
-
+    private var i = 0
     private fun uploadProductImage() {
         dialog.show()
         val fileName = UUID.randomUUID().toString() + ".jpg"
-        var i = 0
+
         val refStorage = FirebaseStorage.getInstance().reference.child("products/$fileName")
         refStorage.putFile(list[i])
             .addOnSuccessListener {
@@ -240,8 +241,14 @@ class AddListingFragment : Fragment() {
                 binding.productDescriptionEdt.text!!.clear()
                 binding.etCarbon.text!!.clear()
                 binding.productCategoryDropdown.setSelection(0)
-                dialog.dismiss()
+
+                Thread.sleep(2000)
+
                 Toast.makeText(requireContext(), getString(R.string.addedProd), Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+                val navController = findNavController()
+                navController.popBackStack()
+
             }
             .addOnFailureListener {
                 dialog.dismiss()

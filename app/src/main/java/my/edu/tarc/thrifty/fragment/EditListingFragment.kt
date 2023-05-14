@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FieldValue
@@ -95,6 +96,7 @@ class EditListingFragment : Fragment(){
         binding.btnUpdate.setOnClickListener {
             if(validateData()) {
                 storeData()
+
             }
             else{
                 Toast.makeText(requireContext(), R.string.emptyField, Toast.LENGTH_SHORT).show()
@@ -290,6 +292,7 @@ class EditListingFragment : Fragment(){
         return true
     }
     private fun storeData() {
+        dialog.show()
         val db = Firebase.firestore.collection("products")
         val key = args.productId
         categoryList = ArrayList()
@@ -308,7 +311,14 @@ class EditListingFragment : Fragment(){
                 "productCategory" to newCat,
                 "carbon" to newCarbon))
             .addOnSuccessListener {
+                Thread.sleep(2000)
                 Toast.makeText(requireContext(), getString(R.string.updateListing), Toast.LENGTH_SHORT).show()
+
+                Thread.sleep(900)
+                dialog.dismiss()
+                val navController = findNavController()
+                navController.popBackStack()
+
             }
             .addOnFailureListener {
                 dialog.dismiss()

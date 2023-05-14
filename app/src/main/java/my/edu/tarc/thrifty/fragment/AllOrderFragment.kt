@@ -1,5 +1,6 @@
 package my.edu.tarc.thrifty.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,7 +29,6 @@ class AllOrderFragment : Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentAllOrderBinding.inflate(layoutInflater)
         list= ArrayList()
 
@@ -36,7 +36,6 @@ class AllOrderFragment : Fragment(){
 
         val sortButton = binding.btnSort
         sortButton.setOnClickListener {
-            // Kotlin code for the popup
             val sortPopup = PopupMenu(requireContext(), sortButton)
             sortPopup.menuInflater.inflate(R.menu.sort_order, sortPopup.menu)
             sortPopup.setOnMenuItemClickListener { item ->
@@ -134,12 +133,25 @@ class AllOrderFragment : Fragment(){
                         totalCarbonSaved += item.carbon!!.toFloat()
                     }
                 }
-                binding.carbonMsg.text = String.format( getString(R.string.carbonPast), totalCarbonSaved)
+                binding.carbonMsg.text = String.format( "Total of %.2f kg carbon footprint is saved from your past purchase!", totalCarbonSaved)
                 list.sortBy{it.name}
                 Log.d("MyApp","OrderList:$list")
-                adapter = AllOrdersAdapter(list, requireContext())
-                binding.recyclerView.adapter = adapter
+
+                checkIfFragmentAttached {
+                    adapter = AllOrdersAdapter(list, requireContext())
+                    binding.recyclerView.adapter = adapter
+                }
             }
         return list
+    }
+    fun checkIfFragmentAttached(operation: Context.() -> Unit) {
+        if (isAdded && context != null) {
+//            Thread.sleep(2000)
+            operation(requireContext())
+        }
+        else{
+            Thread.sleep(1000)
+        }
+
     }
 }

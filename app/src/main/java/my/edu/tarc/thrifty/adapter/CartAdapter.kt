@@ -1,5 +1,6 @@
 package my.edu.tarc.thrifty.adapter
 
+import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -37,8 +38,14 @@ class CartAdapter(val context: Context, val list: List<ProductModel>) :
             Navigation.findNavController(holder.itemView).navigate(action)
         }
 
+        var loadingDialog: Dialog
+        loadingDialog = Dialog(context)
+        loadingDialog.setContentView(R.layout.progress_layout)
+        loadingDialog.setCancelable(false)
+
         val dao = AppDatabase.getInstance(context).productDao()
         holder.binding.imageView5.setOnClickListener {
+            loadingDialog.show()
             GlobalScope.launch(Dispatchers.IO) {
                 dao.deleteProduct(
                     ProductModel(
@@ -49,6 +56,7 @@ class CartAdapter(val context: Context, val list: List<ProductModel>) :
                         list[position].carbon
                     )
                 )
+                loadingDialog.dismiss()
             }
         }
     }

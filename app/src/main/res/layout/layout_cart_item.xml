@@ -23,12 +23,18 @@
 
         <TextView
             android:id="@+id/tvProNames"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="@string/name"
+            app:layout_constraintEnd_toStartOf="@id/imageView5"
+            android:text="22222222222222222222222222222222222222222222222222222"
+            android:singleLine="true"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:scrollHorizontally="true"
+            android:marqueeRepeatLimit="marquee_forever"
             app:layout_constraintStart_toEndOf="@+id/imageView4"
             app:layout_constraintTop_toTopOf="parent" />
 

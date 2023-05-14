@@ -1,5 +1,6 @@
 package my.edu.tarc.thrifty.fragment
 
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -201,11 +202,21 @@ class AllProductFragment : Fragment() ,CategorySearchAdapter.OnItemClickListener
                     val data = doc.toObject(AddProductModel::class.java)
                     list.add(data!!)
                 }
-                list.sortBy{it.productName}
-
-                adapter = AllProductAdapter(requireContext(), list)
-                binding.allProductRecycler.adapter = adapter
+                list.sortBy { it.productName }
+                checkIfFragmentAttached {
+                    adapter = AllProductAdapter(requireContext(), list)
+                    binding.allProductRecycler.adapter = adapter
+                }
             }
         return list
+    }
+    fun checkIfFragmentAttached(operation: Context.() -> Unit) {
+        if (isAdded && context != null) {
+            Thread.sleep(2000)
+            operation(requireContext())
+        }
+        else{
+            Thread.sleep(2000)
+        }
     }
 }

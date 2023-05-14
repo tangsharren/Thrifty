@@ -1,5 +1,6 @@
 package my.edu.tarc.thrifty.fragment
 
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -91,7 +92,9 @@ class HomeFragment : Fragment() {
                     list.add(data!!)
                     list.sortBy { it.productName }
                 }
-                binding.productRecycler.adapter = ProductAdapter(requireContext(),list)
+                checkIfFragmentAttached {
+                    binding.productRecycler.adapter = ProductAdapter(requireContext(), list)
+                }
             }
     }
 
@@ -113,5 +116,10 @@ class HomeFragment : Fragment() {
                  binding.categoryRecycler.adapter = CategoryAdapter(requireContext(),list)
             }
 
+    }
+    fun checkIfFragmentAttached(operation: Context.() -> Unit) {
+        if (isAdded && context != null) {
+            operation(requireContext())
+        }
     }
 }

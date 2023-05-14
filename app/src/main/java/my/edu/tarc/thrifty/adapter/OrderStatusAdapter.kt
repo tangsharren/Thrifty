@@ -1,11 +1,13 @@
 package my.edu.tarc.thrifty.adapter
 
+import android.app.Dialog
 import android.content.Context
 import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
@@ -27,7 +29,7 @@ class OrderStatusAdapter(val list : ArrayList<AllOrderModel>, val context : Cont
         val binding = OrderStatusItemBinding.inflate(LayoutInflater.from(context), parent, false)
         return OrderStatusViewHolder(binding)
     }
-
+    private lateinit var loadingDialog: Dialog
     override fun onBindViewHolder(holder: OrderStatusViewHolder, position: Int) {
         val data = list[position]
         holder.binding.productTitle.text = data.name
@@ -38,6 +40,11 @@ class OrderStatusAdapter(val list : ArrayList<AllOrderModel>, val context : Cont
         holder.binding.orderDate.text = context.getString(R.string.date)+data.orderDate
         holder.binding.orderTime.text = context.getString(R.string.time)+data.orderTime
 
+
+        loadingDialog = Dialog(context)
+        loadingDialog.setContentView(R.layout.progress_layout)
+        loadingDialog.setCancelable(false)
+
         holder.binding.cancelButton.setOnClickListener {
             holder.binding.proceedButton.visibility = View.GONE
             updateStatus("Canceled", list[position].orderId!!,list[position].productId!!)
@@ -45,25 +52,37 @@ class OrderStatusAdapter(val list : ArrayList<AllOrderModel>, val context : Cont
         when (list[position].status) {
             "Ordered" -> {
                 holder.binding.proceedButton.text = "Dispatched"
+                holder.binding.proceedButton.isEnabled = true
+                holder.binding.cancelButton.isEnabled = true
+                holder.binding.proceedButton.isVisible = true
+                holder.binding.cancelButton.isVisible = true
             }
 
             "Dispatched" -> {
-                if (holder.binding.proceedButton.text != "Already Delivered")
+                if (holder.binding.proceedButton.text != "Already Delivered"){
                     holder.binding.proceedButton.text = "Delivered"
+                    holder.binding.proceedButton.isEnabled = true
+                    holder.binding.cancelButton.isEnabled = true
+                    holder.binding.proceedButton.isVisible = true
+                    holder.binding.cancelButton.isVisible = true
+                }
             }
             "Delivered" -> {
                 holder.binding.cancelButton.visibility = View.GONE
                 holder.binding.proceedButton.isEnabled = false
+                holder.binding.proceedButton.isVisible = true
                 holder.binding.proceedButton.text = "Already Delivered"
 
             }
             "Canceled" -> {
                 holder.binding.proceedButton.visibility = View.GONE
                 holder.binding.cancelButton.isEnabled = false
+                holder.binding.cancelButton.isVisible = true
             }
             "Cancel" -> {
                 holder.binding.proceedButton.visibility = View.GONE
                 holder.binding.cancelButton.isEnabled = false
+                holder.binding.cancelButton.isVisible = true
             }
 
         }
@@ -85,10 +104,12 @@ class OrderStatusAdapter(val list : ArrayList<AllOrderModel>, val context : Cont
     }
 
     fun updateStatus(str: String, doc: String,productId:String) {
+        loadingDialog.show()
         val data = hashMapOf<String, Any>()
         data["status"] = str
         Firebase.firestore.collection("allOrders")
             .document(doc).update(data).addOnSuccessListener {
+                loadingDialog.dismiss()
                 Toast.makeText(context, "Status Updated", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
                 Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
@@ -99,6 +120,7 @@ class OrderStatusAdapter(val list : ArrayList<AllOrderModel>, val context : Cont
         if(str == "Canceled"){
             Firebase.firestore.collection("products")
                 .document(productId).update(availability).addOnSuccessListener {
+                    loadingDialog.dismiss()
                     Toast.makeText(context, "Product is available now", Toast.LENGTH_SHORT).show()
                 }.addOnFailureListener {
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
